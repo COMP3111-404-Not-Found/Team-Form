@@ -22,7 +22,7 @@ function getRandomIntInclusive(min, max) {
 // Please change this function accordingly
 // Reference: https://console.firebase.google.com
 //
-function initalizeFirebase() {
+function initializeFirebase() {
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyCLpIUTYMaE4dZstWorw7aJaaLrGSew62I",

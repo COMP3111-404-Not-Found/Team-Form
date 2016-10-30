@@ -29,3 +29,8 @@ $(document).ready(function() {
         }
     });
 });
+
+angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
+.controller('IndexCtrl', function($scope, $firebaseObject, $firebaseArray) {
+    initializeFirebase();
+});
