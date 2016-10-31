@@ -1,5 +1,5 @@
 angular.module('teamform-login-app', ['firebase', 'ngMaterial'])
-.controller('LoginCtrl', function($scope, $firebaseObject, $firebaseArray) {
+.controller('LoginCtrl', function($scope, $firebaseObject, $firebaseArray, $window) {
     initializeFirebase();
 
     var provider = new firebase.auth.FacebookAuthProvider();
@@ -12,6 +12,7 @@ angular.module('teamform-login-app', ['firebase', 'ngMaterial'])
             // The signed-in user info.
             var user = result.user;
             console.log(user);
+            $window.open('/index.html', '_self');
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
@@ -23,14 +24,13 @@ angular.module('teamform-login-app', ['firebase', 'ngMaterial'])
         });
     };
 
-    // logout function
-    $scope.logout = function() {
-        firebase.auth().signOut().then(function() {
-            // Sign-out successful.
-            console.log('sign-out successful');
-        }, function(error) {
-            // An error happened.
-            console.log('sign-out error');
-        });
-    };
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            console.log(user);
+        } else {
+            // No user is signed in.
+            console.log('no user is signed in');
+        }
+    });
 });
