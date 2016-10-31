@@ -29,8 +29,13 @@
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
 </head>
-<body>
-
+<body ng-app="teamform-login-app">
+    <div ng-controller="LoginCtrl">
+        <form>
+            <md-button class="md-raised">Login</md-button>
+            <md-button class="md-raised">Logout</md-button>
+        </form>
+    </div>
 
     <!-- JavaScript of this page -->
 
