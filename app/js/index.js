@@ -77,4 +77,11 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
             console.log('no user is signed in');
         }
     });
+
+
+    /* events */
+    var eventRef = firebase.database().ref();
+
+    var eventObj = $firebaseObject(eventRef);
+    eventObj.$bindTo($scope, "events");
 });
