@@ -116,7 +116,7 @@
                 <md-list ng-cloak>
                     <md-list-item class="secondary-button-padding" ng-repeat="(eventKey, eventValue) in events">
                         <p>{{eventKey}}</p>
-                        <md-button class="md-secondary">Edit</md-button>
+                        <md-button class="md-secondary" ng-click="editEvent(eventKey)">Edit</md-button>
                     </md-list-item>
                     <md-divider></md-divider>
                 </md-list>
