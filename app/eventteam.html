@@ -34,6 +34,19 @@
         <h1>{{eventName}}</h1>
 
         <md-button class="md-raised" ng-href="admin.html?q={{eventName}}">Edit</md-button>
+
+
+        <div id="team-list">
+            <md-content layout-padding>
+                <md-subheader class="md-no-sticky">Teams</md-subheader>
+                <md-list ng-cloak>
+                    <md-list-item class="secondary-button-padding" ng-repeat="(teamKey, teamValue) in teams">
+                        <p>{{teamKey}}</p>
+                        <md-button class="md-secondary" ng-href="team.html?q={{eventName}}">Edit</md-button>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
     </div>
 
 
