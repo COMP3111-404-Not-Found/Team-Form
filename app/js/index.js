@@ -31,7 +31,7 @@ $(document).ready(function() {
 });
 
 angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
-.controller('IndexCtrl', function($scope, $firebaseObject, $firebaseArray, $window) {
+.controller('IndexCtrl', function($scope, $firebaseObject, $firebaseArray) {
     initializeFirebase();
 
 
@@ -84,9 +84,4 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
 
     var eventObj = $firebaseObject(eventRef);
     eventObj.$bindTo($scope, "events");
-
-    // open the admin page for editing the event
-    $scope.editEvent = function(eventName) {
-        $window.open("admin.html?q="+eventName, "_self");
-    };
 });
