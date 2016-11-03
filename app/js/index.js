@@ -68,13 +68,25 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
         });
     };
 
+    $scope.user = null;
+
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             // User is signed in.
             console.log(user);
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = user;
+            });
         } else {
             // No user is signed in.
             console.log('no user is signed in');
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = null;
+            });
         }
     });
 
@@ -84,4 +96,16 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
 
     var eventObj = $firebaseObject(eventRef);
     eventObj.$bindTo($scope, "events");
+
+
+    // join event function
+    $scope.joinEvent = function(eventName) {
+        var member = {};
+        member[$scope.user.uid] = {name: $scope.user.displayName};
+
+        var eventMemberRef = firebase.database().ref().child(eventName).child("member");
+        var eventMemberObj = $firebaseObject(eventMemberRef);
+
+        eventMemberRef.update(member);
+    };
 });
