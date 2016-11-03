@@ -31,7 +31,16 @@
 </head>
 <body ng-app="teamform-user-app">
     <div ng-controller="UserCtrl">
+        <div ng-if="user">
+            <h1>{{user.displayName}}</h1>
+            <h2>{{user.email}}</h2>
 
+            <p>{{userObj | json}}</p>
+        </div>
+
+        <div ng-if="!user">
+            <p>no user is signed in</p>
+        </div>
     </div>
 
 
