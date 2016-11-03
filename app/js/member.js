@@ -28,7 +28,7 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
 
             var refPath = getURLParameter("q") + "/member/" + userID;
 
-            retrieveOnceFirebase(firebase, refPath, function(data) {
+            retrieveOnceFirebase(firebase, "events/" + refPath, function(data) {
 
                 if (data.child("name").val() != null) {
                     $scope.userName = data.child("name").val();
@@ -60,7 +60,7 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
             };
 
             var refPath = getURLParameter("q") + "/member/" + userID;
-            var ref = firebase.database().ref(refPath);
+            var ref = firebase.database().ref("events/" + refPath);
 
             ref.set(newData, function() {
                 // complete call back
@@ -74,7 +74,7 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
 
     $scope.refreshTeams = function() {
         var refPath = getURLParameter("q") + "/team";
-        var ref = firebase.database().ref(refPath);
+        var ref = firebase.database().ref("events/" + refPath);
 
         // Link and sync a firebase object
         $scope.selection = [];

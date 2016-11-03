@@ -92,7 +92,7 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
 
 
     /* events */
-    var eventRef = firebase.database().ref();
+    var eventRef = firebase.database().ref().child("events");
 
     var eventObj = $firebaseObject(eventRef);
     eventObj.$bindTo($scope, "events");
@@ -103,7 +103,7 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
         var member = {};
         member[$scope.user.uid] = {name: $scope.user.displayName};
 
-        var eventMemberRef = firebase.database().ref().child(eventName).child("member");
+        var eventMemberRef = firebase.database().ref().child("events").child(eventName).child("member");
         var eventMemberObj = $firebaseObject(eventMemberRef);
 
         eventMemberRef.update(member);

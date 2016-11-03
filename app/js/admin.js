@@ -16,7 +16,7 @@ angular.module('teamform-admin-app', ['firebase', 'ngMaterial'])
         var refPath, ref, eventName;
         eventName = getURLParameter("q");
         refPath = eventName + "/admin/param";
-        ref = firebase.database().ref(refPath);
+        ref = firebase.database().ref("events/" + refPath);
         // Link and sync a firebase object
         $scope.param = $firebaseObject(ref);
         $scope.param.$loaded()
@@ -37,10 +37,10 @@ angular.module('teamform-admin-app', ['firebase', 'ngMaterial'])
             });
         refPath = eventName + "/team";
         $scope.team = [];
-        $scope.team = $firebaseArray(firebase.database().ref(refPath));
+        $scope.team = $firebaseArray(firebase.database().ref("events/" + refPath));
         refPath = eventName + "/member";
         $scope.member = [];
-        $scope.member = $firebaseArray(firebase.database().ref(refPath));
+        $scope.member = $firebaseArray(firebase.database().ref("events/" + refPath));
         $scope.changeMinTeamSize = function(delta) {
             var newVal = $scope.param.minTeamSize + delta;
             if (newVal >= 1 && newVal <= $scope.param.maxTeamSize) {
