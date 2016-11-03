@@ -61,11 +61,11 @@
                             </div>
 
                             <div class="col-md-1 col-xs-1">
-                                <button type="button" class="btn btn-primary" ng-click="saveFunc();" >Add</button>
+                                <button type="button" class="btn btn-primary" ng-click="saveFunc()" >Add</button>
                             </div>
 
                             <div class="col-md-1 col-xs-1">
-                                <button type="button" class="btn btn-primary" ng-click="loadFunc();" >Load</button>
+                                <button type="button" class="btn btn-primary" ng-click="loadFunc()" >Load</button>
                             </div>
                         </div>
 
@@ -78,12 +78,29 @@
                             <span class="badge">
                             {{param.currentTeamSize}}</span>
 
-                        <button><span class="glyphicon glyphicon-plus" ng-click="changeCurrentTeamSize(1);"></span></button>
+                        <button><span class="glyphicon glyphicon-plus" ng-click="changeCurrentTeamSize(1)"></span></button>
 
-                        <button><span class="glyphicon glyphicon-minus" ng-click="changeCurrentTeamSize(-1);"></span></button>
+                        <button><span class="glyphicon glyphicon-minus" ng-click="changeCurrentTeamSize(-1)"></span></button>
 
                         </span>
                     </div>
+
+
+                    <div class="form-group">
+                      <label for="inputPreferredSkills" class="control-label">Preferred Skills: </label>
+                      <br>
+
+                      <div class="row">
+                        <div class="col-md-8 col-xs-8">
+                            <input type="text" class="form-control" id="inputPreferredSkills" placeholder="Enter your preferred skill" ng-model="param.skill">
+                        </div>
+
+                        <div class="col-md-1 col-xs-1">
+                            <button type="button" class="btn btn-primary" ng-click="addSkill()" >Add Skill</button>
+                        </div>
+                      </div>
+                    </div>
+
 
                 </form>
 
