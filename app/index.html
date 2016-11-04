@@ -20,7 +20,7 @@
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
 
     <!-- Angular Material CDN -->
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
     <!-- CSS files -->
     <link href="css/app.css">
@@ -114,25 +114,10 @@
         <div id="event-list">
             <md-content layout-padding>
                 <md-list ng-cloak>
-                    <md-list-item ng-repeat="(eventKey, eventValue) in events">
-                        <a ng-href="eventteam.html?event={{eventKey}}">{{eventKey}}</a>
-                        <md-menu class="md-secondary">
-                            <md-button>
-                                More
-                            </md-button>
-                            <md-menu-content width="4">
-                                <md-menu-item>
-                                    <md-button ng-href="eventteam.html?event={{eventKey}}">Event Page</md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button ng-click="joinEvent(eventKey)">Join</md-button>
-                                </md-menu-item>
-                                <md-divider></md-divider>
-                                <md-menu-item>
-                                    <md-button>Edit</md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
+                    <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="secondary-button-padding">
+                        <span>{{eventKey}}</span>
+                        <md-button ng-click="joinEvent(eventKey)" class="md-secondary">Join</md-button>
+                        <md-button ng-href="admin.html?q={{eventKey}}" class="md-secondary">Edit</md-button>
                     </md-list-item>
                 </md-list>
             </md-content>
