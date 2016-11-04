@@ -18,6 +18,41 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
     // Call Firebase initialization code defined in site.js
     initializeFirebase();
 
+
+    $scope.user = null;
+
+    var userRef = null;
+    $scope.userObj = null;
+
+    // observe the auth state change
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            console.log(user);
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = user;
+
+                // get the user object from the database
+                userRef = firebase.database().ref().child("users").child(user.uid);
+                $scope.userObj = $firebaseObject(userRef);
+            });
+        } else {
+            // No user is signed in.
+            console.log('no user is signed in');
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = null;
+
+                userRef = null;
+                $scope.userObj = null;
+            });
+        }
+    });
+
+
     $scope.userID = "";
     $scope.userName = "";
     $scope.teams = {};
@@ -58,6 +93,18 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
                 'name': userName,
                 'selection': $scope.selection
             };
+
+            // add the event to the user's profile
+            var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events");
+            var userEventsArray = $firebaseArray(userEventsRef);
+
+            userEventsArray.$add(getURLParameter("q"));
+
+            // update the user's profile
+            var userRef = firebase.database().ref().child("users").child($scope.user.uid);
+
+            userRef.update(newData);
+
 
             var refPath = getURLParameter("q") + "/member/" + userID;
             var ref = firebase.database().ref("events/" + refPath);
