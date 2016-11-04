@@ -87,22 +87,22 @@
 
 
                     <div class="form-group">
-                      <label for="inputPreferredSkills" class="control-label">Preferred Skills: </label>
-                      <br>
+                        <label for="inputPreferredSkills" class="control-label">Preferred Skills: </label>
+                        <br>
 
-                      <div class="row">
-                        <div class="col-md-8 col-xs-8">
-                            <input type="text" class="form-control" id="inputPreferredSkills" placeholder="Enter your preferred skill" ng-model="param.skill">
-                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-xs-8">
+                                <input type="text" class="form-control" id="inputPreferredSkills" placeholder="Enter your preferred skill" ng-model="param.skill">
+                            </div>
 
-                        <div class="col-md-1 col-xs-1">
-                            <button type="button" class="btn btn-primary" ng-click="addSkill()" >Add Skill</button>
+                            <div class="col-md-1 col-xs-1">
+                                <button type="button" class="btn btn-primary" ng-click="addSkill()" >Add Skill</button>
+                            </div>
                         </div>
-                      </div>
                     </div>
 
 
-                </form>
+                    </form>
 
                     <div class="row">
                         <div class="col-sm-6">
@@ -135,21 +135,21 @@
                 <div class="col-md-4 col-xs-4 text-left">
 
                     <h3>All teams:</h3>
-                        <ul ng-repeat="t in team">
-                            <li>
+                    <ul ng-repeat="t in team">
+                        <li>
 
-                                User ID: {{t.$id}}  <br>
-                                Preferred team size: <span class="badge">{{t.size}}</span> <br>
-                                Current team members: {{t.teamMembers}}
+                            User ID: {{t.$id}}  <br>
+                            Preferred team size: <span class="badge">{{t.size}}</span> <br>
+                            Current team members: {{t.teamMembers}}
 
-                            </li>
+                        </li>
 
-                        </ul>
+                    </ul>
 
                 </div>
             </div>
-            </div>
         </div>
+    </div>
 
     <!-- JavaScript of this page -->
 

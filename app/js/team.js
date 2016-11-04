@@ -10,8 +10,7 @@ $(document).ready(function(){
 });
 
 angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
-.controller('TeamCtrl', ['$scope', '$firebaseObject', '$firebaseArray',
-	function($scope, $firebaseObject, $firebaseArray) {
+.controller('TeamCtrl', ['$scope', '$firebaseObject', '$firebaseArray', function($scope, $firebaseObject, $firebaseArray) {
 
 	// Call Firebase initialization code defined in site.js
 	initializeFirebase();
@@ -28,7 +27,7 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
 	};
 
 	refPath =  eventName + "/admin";
-	retrieveOnceFirebase(firebase, refPath, function(data) {
+	retrieveOnceFirebase(firebase, "events/" + refPath, function(data) {
 
 		if ( data.child("param").val() != null ) {
 			$scope.range = data.child("param").val();
@@ -40,11 +39,11 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
 
 	refPath = eventName + "/member";
 	$scope.member = [];
-	$scope.member = $firebaseArray(firebase.database().ref(refPath));
+	$scope.member = $firebaseArray(firebase.database().ref("events/" + refPath));
 
 	refPath = eventName + "/team";
 	$scope.team = [];
-	$scope.team = $firebaseArray(firebase.database().ref(refPath));
+	$scope.team = $firebaseArray(firebase.database().ref("events/" + refPath));
 
 	$scope.requests = [];
 	$scope.refreshViewRequestsReceived = function() {
@@ -87,7 +86,7 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
 			};
 
 			var refPath = getURLParameter("q") + "/team/" + teamID;
-			var ref = firebase.database().ref(refPath);
+			var ref = firebase.database().ref("events/" + refPath);
 
 			// for each team members, clear the selection in /[eventName]/team/
 			$.each($scope.param.teamMembers, function(i,obj){
@@ -121,7 +120,7 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
 		var teamID = $.trim( $scope.param.teamName );
 		var eventName = getURLParameter("q");
 		var refPath = eventName + "/team/" + teamID ;
-		retrieveOnceFirebase(firebase, refPath, function(data) {
+		retrieveOnceFirebase(firebase, "events/" + refPath, function(data) {
 
 			if ( data.child("size").val() != null ) {
 				$scope.param.currentTeamSize = data.child("size").val();
