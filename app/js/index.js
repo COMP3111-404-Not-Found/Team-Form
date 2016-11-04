@@ -46,6 +46,13 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
             // The signed-in user info.
             var user = result.user;
             console.log(user);
+
+
+            // update the user's profile
+            var userRef = firebase.database().ref().child("users").child(user.uid);
+            var userObj = $firebaseObject(userRef);
+
+            userRef.update({name: user.displayName});
         }).catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
