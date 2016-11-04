@@ -17,6 +17,41 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
     // Call Firebase initialization code defined in site.js
     initializeFirebase();
 
+
+    $scope.user = null;
+
+    var userRef = null;
+    $scope.userObj = null;
+
+    // observe the auth state change
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            console.log(user);
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = user;
+
+                // get the user object from the database
+                userRef = firebase.database().ref().child("users").child(user.uid);
+                $scope.userObj = $firebaseObject(userRef);
+            });
+        } else {
+            // No user is signed in.
+            console.log('no user is signed in');
+
+            // refresh the scope
+            $scope.$apply(function() {
+                $scope.user = null;
+
+                userRef = null;
+                $scope.userObj = null;
+            });
+        }
+    });
+
+
     var refPath = "";
     var eventName = getURLParameter("q");
 
@@ -168,6 +203,12 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
             $scope.param.teamMembers.length < $scope.param.currentTeamSize  ) {
 
             // Not exists, and the current number of team member is less than the preferred team size
+            // update the team for the event in the user's profile
+            var userEventRef = firebase.database().ref().child("users").child(r).child("events").child(getURLParameter("q"));
+
+            userEventRef.update({team: $scope.param.teamName});
+
+
             $scope.param.teamMembers.push(r);
 
             $scope.saveFunc();

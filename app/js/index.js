@@ -108,10 +108,9 @@ angular.module('teamform-index-app', ['firebase', 'ngMaterial'])
     // join event function
     $scope.joinEvent = function(eventName) {
         // add the event to the user's profile
-        var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events");
-        var userEventsArray = $firebaseArray(userEventsRef);
+        var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events").child(eventName);
 
-        userEventsArray.$add(eventName);
+        userEventsRef.update({team: ""});
 
 
         var member = {};
