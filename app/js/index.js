@@ -31,7 +31,7 @@ $(document).ready(function() {
 });
 
 angular.module("teamform-index-app", ["firebase", "ngMaterial"])
-.controller("IndexCtrl", function($scope, $firebaseObject, $firebaseArray) {
+.controller("IndexCtrl", function($scope, $firebaseObject, $firebaseArray, $window, $mdDialog) {
     initializeFirebase();
 
 
@@ -103,6 +103,20 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
 
     var eventObj = $firebaseObject(eventRef);
     eventObj.$bindTo($scope, "events");
+
+
+    // create new event function
+    $scope.createEvent = function() {
+        var eventNameInput = $mdDialog.prompt()
+            .title("Create a New Event")
+            .ok("Create")
+            .cancel("Cancel")
+
+        $mdDialog.show(eventNameInput)
+            .then(function(event) {
+                $window.open("admin.html?q=" + event, "_self");
+            });
+    };
 
 
     // join event function
