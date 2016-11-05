@@ -1,5 +1,5 @@
 angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
-.controller("EventTeamCtrl", function($scope, $firebaseObject, $firebaseArray) {
+.controller("EventTeamCtrl", function($scope, $firebaseObject, $firebaseArray, $mdDialog) {
     initializeFirebase();
 
 
@@ -40,11 +40,34 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     $scope.eventName = getURLParameter("event");
 
 
+    var eventAdminParamRef = firebase.database().ref().child("events").child($scope.eventName).child("admin").child("param");
+    var eventAdminParamObj = $firebaseObject(eventAdminParamRef);
+    eventAdminParamObj.$loaded().then(function(admin) {
+        $scope.minTeamSize = admin.minTeamSize;
+        $scope.maxTeamSize = admin.maxTeamSize;
+    });
+
+
     /* teams */
     var teamRef = firebase.database().ref().child("events").child($scope.eventName).child("team");
 
     var teamObj = $firebaseObject(teamRef);
     teamObj.$bindTo($scope, "teams");
+
+
+    // create new team function
+    $scope.createTeam = function() {
+        var teamNameInput = $mdDialog.prompt()
+            .title("Create a New Team")
+            .ok("Create")
+            .cancel("Cancel");
+
+        $mdDialog.show(teamNameInput)
+            .then(function(team) {
+                var newTeamRef = teamRef.child(team);
+                newTeamRef.set({size: parseInt(($scope.minTeamSize + $scope.maxTeamSize) / 2), currentTeamSize: 0});
+            });
+    };
 
 
     // request team function

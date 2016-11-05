@@ -110,7 +110,7 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
         var eventNameInput = $mdDialog.prompt()
             .title("Create a New Event")
             .ok("Create")
-            .cancel("Cancel")
+            .cancel("Cancel");
 
         $mdDialog.show(eventNameInput)
             .then(function(event) {
