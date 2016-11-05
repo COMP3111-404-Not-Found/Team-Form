@@ -206,7 +206,7 @@ angular.module('teamform-team-app', ['firebase', 'ngMaterial'])
             // update the team for the event in the user's profile
             var userEventRef = firebase.database().ref().child("users").child(r).child("events").child(getURLParameter("q"));
 
-            userEventRef.update({team: $scope.param.teamName});
+            userEventRef.update({team: $scope.param.teamName, selection: null});
 
 
             $scope.param.teamMembers.push(r);
