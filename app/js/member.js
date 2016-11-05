@@ -10,8 +10,8 @@ $(document).ready(function() {
     }
 });
 
-angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
-.controller('MemberCtrl', ['$scope', '$firebaseObject', '$firebaseArray', function($scope, $firebaseObject, $firebaseArray) {
+angular.module("teamform-member-app", ["firebase", "ngMaterial"])
+.controller("MemberCtrl", function($scope, $firebaseObject, $firebaseArray) {
 
     // TODO: implementation of MemberCtrl
 
@@ -149,4 +149,4 @@ angular.module('teamform-member-app', ['firebase', 'ngMaterial'])
 
     $scope.refreshTeams(); // call to refresh teams...
 
-}]);
+});

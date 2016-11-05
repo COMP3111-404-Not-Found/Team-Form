@@ -1,5 +1,5 @@
-angular.module('teamform-user-app', ['firebase', 'ngMaterial'])
-.controller('UserCtrl', function($scope, $firebaseObject, $firebaseArray) {
+angular.module("teamform-user-app", ["firebase", "ngMaterial"])
+.controller("UserCtrl", function($scope, $firebaseObject, $firebaseArray) {
     initializeFirebase();
 
     $scope.user = null;
