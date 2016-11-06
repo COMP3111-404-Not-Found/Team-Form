@@ -7,8 +7,16 @@ $(document).ready(function() {
     }
 });
 
-angular.module("teamform-admin-app", ["firebase", "ngMaterial"])
+angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 .controller("AdminCtrl", function($scope, $firebaseObject, $firebaseArray) {
+
+    // Date
+    $scope.startDate = new Date();
+    $scope.endDate = new Date();
+
+    // TextArea: details
+    $scope.details;
+
     // TODO: implementation of AdminCtrl
     // Initialize $scope.param as an empty JSON object
     $scope.param = {};
@@ -48,17 +56,25 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial"])
             $scope.param.minTeamSize = newVal;
         }
         $scope.param.$save();
-    }
+    };
     $scope.changeMaxTeamSize = function(delta) {
         var newVal = $scope.param.maxTeamSize + delta;
         if (newVal >= 1 && newVal >= $scope.param.minTeamSize) {
             $scope.param.maxTeamSize = newVal;
         }
         $scope.param.$save();
-    }
+    };
     $scope.saveFunc = function() {
         $scope.param.$save();
         // Finally, go back to the front-end
         window.location.href = "index.html";
-    }
+    };
+    $scope.saveDate = function() {
+        //console.log($scope.startDate);
+        ref.update({'startDate': $scope.startDate.toString(), 'endDate': $scope.endDate.toString()});
+    };
+    $scope.saveContent = function() {
+        //console.log($scope.details);
+        ref.update({'details': $scope.details});
+    };
 });
