@@ -45,6 +45,9 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     eventAdminParamObj.$loaded().then(function(admin) {
         $scope.minTeamSize = admin.minTeamSize;
         $scope.maxTeamSize = admin.maxTeamSize;
+        $scope.startDate = admin.startDate;
+        $scope.endDate = admin.endDate;
+        $scope.details = admin.details;
     });
 
 

@@ -32,6 +32,20 @@
 <body ng-app="teamform-eventteam-app">
     <div ng-controller="EventTeamCtrl">
         <h1>{{eventName}}</h1>
+        <div class="row">
+            <strong>
+            <div class="col-sm-4">Minumum Team Size: {{minTeamSize}}</div>
+            <div class="col-sm-4">Maximum Team Size: {{maxTeamSize}}</div>
+            </strong>
+        </div>
+        <div class="row">
+            <strong>
+            <div class="col-sm-4">Start Date: {{startDate | date:'yyyy-MM-dd'}}</div>
+            <div class="col-sm-4">End Date: {{endDate | date:'yyyy-MM-dd'}}</div>
+            </strong>
+        </div>
+        <strong>Details: {{details}}</strong>
+        <br>
 
         <md-button class="md-raised" ng-href="admin.html?q={{eventName}}">Edit</md-button>
 

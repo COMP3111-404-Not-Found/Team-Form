@@ -69,12 +69,10 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         // Finally, go back to the front-end
         window.location.href = "index.html";
     };
-    $scope.saveDate = function() {
-        //console.log($scope.startDate);
-        ref.update({'startDate': $scope.startDate.toString(), 'endDate': $scope.endDate.toString()});
-    };
     $scope.saveContent = function() {
+        //console.log($scope.startDate);
         //console.log($scope.details);
-        ref.update({'details': $scope.details});
+        ref.update({'startDate': $scope.startDate, 'endDate': $scope.endDate,
+            'details': $scope.details});
     };
 });
