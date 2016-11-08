@@ -40,29 +40,25 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
 
     // login function
     $scope.login = function() {
-        firebase.auth().signInWithPopup(provider).then(function(result) {
+        firebase.auth().signInWithRedirect(provider);
+    };
+
+    firebase.auth().getRedirectResult().then(function(result) {
+        if (result.credential) {
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
             var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            console.log(user);
-
-
-            // update the user's profile
-            var userRef = firebase.database().ref().child("users").child(user.uid);
-            var userObj = $firebaseObject(userRef);
-
-            userRef.update({name: user.displayName});
-        }).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // The email of the user's account used.
-            var email = error.email;
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential;
-        });
-    };
+        }
+        // The signed-in user info.
+        var user = result.user;
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+    });
 
     // logout function
     $scope.logout = function() {
@@ -81,6 +77,12 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
         if (user) {
             // User is signed in.
             console.log(user);
+
+            // update the user's profile
+            var userRef = firebase.database().ref().child("users").child(user.uid);
+            var userObj = $firebaseObject(userRef);
+
+            userRef.update({name: user.displayName});
 
             // refresh the scope
             $scope.$apply(function() {

@@ -31,8 +31,8 @@
 </head>
 <body ng-app="teamform-index-app">
     <div ng-controller="IndexCtrl">
-        <md-button class="md-raised" ng-click="login()">Login</md-button>
-        <md-button class="md-raised" ng-click="logout()">Logout</md-button>
+        <md-button ng-click="login()" ng-if="!user" class="md-raised">Login</md-button>
+        <md-button ng-click="logout()" ng-if="user" class="md-raised">Logout</md-button>
 
         <div class="navbar-wrapper">
             <div class="container">
