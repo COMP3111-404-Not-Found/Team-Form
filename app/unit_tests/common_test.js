@@ -1,4 +1,4 @@
-describe('Test site.js', function() {
+describe('Test common_test.js', function() {
 	
     //
     // A test case of getAvailableTeam
