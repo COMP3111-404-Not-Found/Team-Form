@@ -1,7 +1,7 @@
 describe('Test site.js', function() {
 	
     //
-    // Example: A test case of getAvailableTeam
+    // A test case of getAvailableTeam
     //
     describe('getAvailableTeam Coverage Test', function() {
 
@@ -21,12 +21,13 @@ describe('Test site.js', function() {
         	}];
 
             var answer = getAvailableTeam(teams);
-            expect(answer = [{
+            var expected = [{
 				currentTeamSize: 1,
 				size: 5,
 				skills: ["C++"],
 				teamMembers:[{name:"STO", uid:"qwertyqwerty"}]
-			}]).toEqual(true);
+			}]
+            expect(answer).toEqual(expected);
         });
 
     });
