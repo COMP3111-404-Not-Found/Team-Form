@@ -55,29 +55,31 @@
                     <button><span class="glyphicon glyphicon-minus" ng-click="changeMaxTeamSize(-1);"></span></button>
                     <br><br>
                     <button type="button" class="btn btn-primary" ng-click="saveFunc();" >Create/Modify</button>
-                    <!-- Datepicker -->
-                    <br><br>
-                    <div class="row" ng-cloak>
-                        <div layout-gt-xs="row">
-                            <div flex-gt-xs>
-                                <h4>Start Date: </h4>
-                                <md-datepicker ng-model="startDate" ng-required="true" md-placeholder="Enter date"></md-datepicker>
-                            </div>
+                    <form>
+                        <!-- Datepicker -->
+                        <br><br>
+                        <div class="row" ng-cloak>
+                            <div layout-gt-xs="row">
+                                <div flex-gt-xs>
+                                    <h4>Start Date: </h4>
+                                    <md-datepicker ng-model="startDate" ng-change="startChange()" ng-required="true" md-placeholder="Enter date"></md-datepicker>
+                                </div>
 
-                            <div flex-gt-xs>
-                                <h4>End Date: </h4>
-                                <md-datepicker ng-model="endDate" ng-required="true" md-placeholder="Enter date"></md-datepicker>
+                                <div flex-gt-xs>
+                                    <h4>End Date: </h4>
+                                    <md-datepicker ng-model="endDate" md-min-date="minDate" ng-required="true" md-placeholder="Enter date"></md-datepicker>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <br>
-                    <br><br>
-                    <!-- TextArea -->
-                    <md-input-container class="md-block">
-                        <label>Details: </label>
-                        <textarea ng-model="details" ng-required="true" md-maxlength="150" rows="2" md-select-on-focus></textarea>
-                    </md-input-container>
-                    <button type="submit" class="btn btn-primary" ng-click="saveContent()" >Submit</button>
+                        <br>
+                        <br><br>
+                        <!-- TextArea -->
+                        <md-input-container class="md-block">
+                            <label>Details: </label>
+                            <textarea ng-model="details" ng-required="true" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                        </md-input-container>
+                        <button type="submit" class="btn btn-primary" ng-click="saveContent()" >Submit</button>
+                    </form>
 
                 </div>
                 <div class="col-md-2 col-xs-2"></div>
