@@ -1,10 +1,6 @@
 $(document).ready(function() {
-    $('#admin_page_controller').hide();
-    $('#text_event_name').text("Error: Invalid event name ");
-    var eventName = getURLParameter("q");
-    if (eventName != null && eventName !== '') {
-        $('#text_event_name').text("Event name: " + eventName);
-    }
+    // change the title in the navigation to the event name
+    $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("q") + " Event Admin");
 });
 
 angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])

@@ -20,6 +20,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial"])
                 // get the user object from the database
                 userRef = firebase.database().ref().child("users").child(user.uid);
                 $scope.userObj = $firebaseObject(userRef);
+
+                // change the title in the navigation to the name of the signed in user
+                $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html($scope.user.displayName);
             });
         } else {
             // No user is signed in.
@@ -31,6 +34,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial"])
 
                 userRef = null;
                 $scope.userObj = null;
+
+                // change the title in the navigation to "User"
+                $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html("User");
             });
         }
     });

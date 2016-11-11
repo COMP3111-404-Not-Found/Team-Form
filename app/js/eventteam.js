@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    // change the title in the navigation to the event name
+    $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("event") + " Event Team");
+});
+
 angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 .controller("EventTeamCtrl", function($scope, $firebaseObject, $firebaseArray, $mdDialog) {
     initializeFirebase();

@@ -1,15 +1,6 @@
 $(document).ready(function() {
-    $("#text_event_name").text("Error: Invalid event name");
-
-    var eventName = getURLParameter("event");
-    if (eventName != null && eventName !== "") {
-        $("#text_event_name").text("Event name: " + eventName);
-    }
-
-    var teamName = getURLParameter("team");
-    if (teamName !== null && teamName !== "") {
-        $("#text_team_name").text("Team name: " + teamName);
-    }
+    // change the title in the navigation to the team name
+    $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("team") + " (" + getURLParameter("event") + ")");
 });
 
 angular.module("teamform-team-app", ["firebase", "ngMaterial"])

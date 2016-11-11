@@ -66,26 +66,24 @@
                         <h2>{{user.email}}</h2>
                         <img ng-src="{{user.photoURL}}" />
 
-                        <md-content class="md-padding">
-                            <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
-                                <md-card-title>
-                                    <md-card-title-text>
-                                        <span class="md-headline">{{eventKey}}</span>
-                                        <span class="md-subhead">{{eventValue.team}}</span>
-                                    </md-card-title-text>
-                                </md-card-title>
-                                <md-card-content ng-if="!eventValue.team">
-                                    <md-subheader>Requests</md-subheader>
-                                    <md-content>
-                                        <md-list ng-cloak>
-                                            <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?q={{eventKey}}">
-                                                <span>{{request}}</span>
-                                            </md-list-item>
-                                        </md-list>
-                                    </md-content>
-                                </md-card-content>
-                            </md-card>
-                        </md-content>
+                        <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline">{{eventKey}}</span>
+                                    <span class="md-subhead">{{eventValue.team}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content ng-if="!eventValue.team">
+                                <md-subheader>Requests</md-subheader>
+                                <md-content>
+                                    <md-list ng-cloak>
+                                        <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?q={{eventKey}}">
+                                            <span>{{request}}</span>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-content>
+                            </md-card-content>
+                        </md-card>
                     </div>
 
                     <div ng-if="!user">

@@ -61,7 +61,6 @@
 
             <main class="mdl-layout__content">
                 <md-content ng-cloak layout-padding>
-                    <h1>{{eventName}}</h1>
                     <div class="row">
                         <strong>
                         <div class="col-sm-4">Minumum Team Size: {{minTeamSize}}</div>
@@ -81,19 +80,17 @@
 
 
                     <div id="team-list">
-                        <md-content class="md-padding">
-                            <md-card ng-repeat="(teamKey, teamValue) in teams">
-                                <md-card-title>
-                                    <md-card-title-text>
-                                        <span class="md-headline">{{teamKey}}</span>
-                                    </md-card-title-text>
-                                </md-card-title>
-                                <md-card-actions layout="row" layout-align="end center">
-                                    <md-button ng-click="requestTeam(teamKey)">Request</md-button>
-                                    <md-button ng-href="team.html?event={{eventName}}&team={{teamKey}}">Edit</md-button>
-                                </md-card-actions>
-                            </md-card>
-                        </md-content>
+                        <md-card ng-repeat="(teamKey, teamValue) in teams">
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline">{{teamKey}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button ng-click="requestTeam(teamKey)">Request</md-button>
+                                <md-button ng-href="team.html?event={{eventName}}&team={{teamKey}}">Edit</md-button>
+                            </md-card-actions>
+                        </md-card>
                     </div>
 
                     <md-button ng-click="createTeam($event)" class="md-fab" aria-label="create team"><i class="material-icons">create</i></md-button>
