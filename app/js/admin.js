@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // change the title in the navigation to the event name
-    $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("q") + " Event Admin");
+    $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("event") + " Event Admin");
 });
 
 angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
@@ -12,7 +12,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
     // Call Firebase initialization code defined in site.js
     initializeFirebase();
     var refPath, ref, eventName;
-    eventName = getURLParameter("q");
+    eventName = getURLParameter("event");
     refPath = eventName + "/admin/param";
     ref = firebase.database().ref("events/" + refPath);
     // Link and sync a firebase object
