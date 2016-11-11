@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="teamform-team-app">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,51 +22,77 @@
     <!-- Angular Material CDN -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- CSS files -->
-    <link href="css/app.css">
-    <link href="css/team.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/team.css">
 
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
 </head>
 <body>
-    <a href="index.html"
-    <button id="btn_admin" type="button" class="btn btn-primary" >
-    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
-    Back</button></a>
-    <br>
+    <div ng-app="teamform-team-app" ng-controller="TeamCtrl">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <!-- navigation bar -->
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout__title">Team</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a href="index.html" class="mdl-navigation__link">Home</a>
+                        <a href="about.html" class="mdl-navigation__link">About</a>
+                        <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    </nav>
+                </div>
+            </header>
+            <!-- navigation drawer -->
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout__title">Team Form</span>
+                <nav class="mdl-navigation">
+                    <a href="index.html" class="mdl-navigation__link">Home</a>
+                    <a href="about.html" class="mdl-navigation__link">About</a>
+                    <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    <br>
+                    <p class="mdl-navigation__link" style="color: black">Click on the page to close the navigation.</p>
+                </nav>
+            </div>
 
 
-    <div ng-controller="TeamCtrl">
-        <h1 id="text_event_name"></h1>
-        <h1 id="text_team_name"></h1>
+            <main class="mdl-layout__content">
+                <md-content ng-cloak layout-padding>
+                    <h1 id="text_event_name"></h1>
+                    <h1 id="text_team_name"></h1>
 
-        <div>
-            <span>Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): {{size}}</span>
-            <button ng-click="changeCurrentTeamSize(1)"><span class="glyphicon glyphicon-plus"></span></button>
-            <button ng-click="changeCurrentTeamSize(-1)"><span class="glyphicon glyphicon-minus"></span></button>
+                    <div>
+                        <span>Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): {{size}}</span>
+                        <button ng-click="changeCurrentTeamSize(1)"><span class="glyphicon glyphicon-plus"></span></button>
+                        <button ng-click="changeCurrentTeamSize(-1)"><span class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+
+                    <div>
+                        <span>Preferred skills:</span>
+                        <ul>
+                            <li ng-repeat="skill in skills">{{skill.$value}}</li>
+                        <ul>
+                    </div>
+
+                    <form>
+                        <md-input-container>
+                            <label>Preferred skills</label>
+                            <input ng-model="skillInput">
+                        </md-input-container>
+                        <md-button ng-click="addSkill()" class="md-raised">Add Skill</md-button>
+                    </form>
+
+                    <p>Team members ({{currentTeamSize}}):</p>
+                    <button ng-repeat="member in members" ng-click="removeMember(member)">{{member.name}}</button>
+
+                    <p>Requests received:</p>
+                    <button ng-repeat="request in requests" ng-click="addMember(request)">{{request.name}}</button>
+                </md-content>
+            </main>
         </div>
-
-        <div>
-            <span>Preferred skills:</span>
-            <ul>
-                <li ng-repeat="skill in skills">{{skill.$value}}</li>
-            <ul>
-        </div>
-
-        <form>
-            <md-input-container>
-                <label>Preferred skills</label>
-                <input ng-model="skillInput">
-            </md-input-container>
-            <md-button ng-click="addSkill()" class="md-raised">Add Skill</md-button>
-        </form>
-
-        <p>Team members ({{currentTeamSize}}):</p>
-        <button ng-repeat="member in members" ng-click="removeMember(member)">{{member.name}}</button>
-
-        <p>Requests received:</p>
-        <button ng-repeat="request in requests" ng-click="addMember(request)">{{request.name}}</button>
     </div>
 
 

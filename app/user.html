@@ -22,44 +22,77 @@
     <!-- Angular Material CDN -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- CSS files -->
-    <link href="css/app.css">
-    <link href="css/user.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/user.css">
 
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
 </head>
-<body ng-app="teamform-user-app">
-    <div ng-controller="UserCtrl">
-        <div ng-if="user">
-            <h1>{{user.displayName}}</h1>
-            <h2>{{user.email}}</h2>
-            <img ng-src="{{user.photoURL}}" />
+<body>
+    <div ng-app="teamform-user-app" ng-controller="UserCtrl">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <!-- navigation bar -->
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout__title">User</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a href="index.html" class="mdl-navigation__link">Home</a>
+                        <a href="about.html" class="mdl-navigation__link">About</a>
+                        <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    </nav>
+                </div>
+            </header>
+            <!-- navigation drawer -->
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout__title">Team Form</span>
+                <nav class="mdl-navigation">
+                    <a href="index.html" class="mdl-navigation__link">Home</a>
+                    <a href="about.html" class="mdl-navigation__link">About</a>
+                    <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    <br>
+                    <p class="mdl-navigation__link" style="color: black">Click on the page to close the navigation.</p>
+                </nav>
+            </div>
 
-            <md-content class="md-padding">
-                <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline">{{eventKey}}</span>
-                            <span class="md-subhead">{{eventValue.team}}</span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-content ng-if="!eventValue.team">
-                        <md-subheader>Requests</md-subheader>
-                        <md-content>
-                            <md-list ng-cloak>
-                                <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?q={{eventKey}}">
-                                    <span>{{request}}</span>
-                                </md-list-item>
-                            </md-list>
+
+            <main class="mdl-layout__content">
+                <md-content ng-cloak layout-padding>
+                    <div ng-if="user">
+                        <h1>{{user.displayName}}</h1>
+                        <h2>{{user.email}}</h2>
+                        <img ng-src="{{user.photoURL}}" />
+
+                        <md-content class="md-padding">
+                            <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline">{{eventKey}}</span>
+                                        <span class="md-subhead">{{eventValue.team}}</span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content ng-if="!eventValue.team">
+                                    <md-subheader>Requests</md-subheader>
+                                    <md-content>
+                                        <md-list ng-cloak>
+                                            <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?q={{eventKey}}">
+                                                <span>{{request}}</span>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-content>
+                                </md-card-content>
+                            </md-card>
                         </md-content>
-                    </md-card-content>
-                </md-card>
-            </md-content>
-        </div>
+                    </div>
 
-        <div ng-if="!user">
-            <p>no user is signed in</p>
+                    <div ng-if="!user">
+                        <p>no user is signed in</p>
+                    </div>
+                </md-content>
+            </main>
         </div>
     </div>
 

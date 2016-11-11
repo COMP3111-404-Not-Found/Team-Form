@@ -22,118 +22,78 @@
     <!-- Angular Material CDN -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- CSS files -->
-    <link href="css/app.css">
-    <link href="css/index.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/index.css">
 
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
 </head>
-<body ng-app="teamform-index-app">
-    <div ng-controller="IndexCtrl">
-        <md-button ng-click="login()" ng-if="!user" class="md-raised">Login</md-button>
-        <md-button ng-click="logout()" ng-if="user" class="md-raised">Logout</md-button>
-
-        <div class="navbar-wrapper">
-            <div class="container">
-                <nav class="navbar navbar-static-top navbar-default">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#">teamform</a>
-                        </div>
-                        <div id="navbar" class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#page_about">About teamform</a></li>
-                                        <li><a href="#page_team">Development team</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">TODO: Add menu items here... </a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Coverage <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="coverage/index.html" target="_blank">Report</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="unit_tests/test_site.js" target="_blank">test_site.js (sample)</a></li>
-                                        <li><a href="#">TODO: Add more test cases here... </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+<body>
+    <div ng-app="teamform-index-app" ng-controller="IndexCtrl">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <!-- navigation bar -->
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout__title">Home</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a href="index.html" class="mdl-navigation__link">Home</a>
+                        <a href="about.html" class="mdl-navigation__link">About</a>
+                        <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    </nav>
+                </div>
+            </header>
+            <!-- navigation drawer -->
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout__title">Team Form</span>
+                <nav class="mdl-navigation">
+                    <a href="index.html" class="mdl-navigation__link">Home</a>
+                    <a href="about.html" class="mdl-navigation__link">About</a>
+                    <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    <br>
+                    <p class="mdl-navigation__link" style="color: black">Click on the page to close the navigation.</p>
                 </nav>
             </div>
-        </div>
 
-        <!-- A sample login page -->
-        <div class="container" id="page_home">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <h1>teamform</h1>
-                                <p>A real-time online team forming app for any event</p>
-                            </div>
-                            <br>
 
-                            <div class="text-center">
-                                <input id="input_text" type="text" class="input-lg">
-                                <br>
-                                <em>Enter a name (e.g. COMP3111-L1, COMP3111-L2 or COMP3111H) to create/join an event</em>
-                                <br>
-                                <br>
+            <main class="mdl-layout__content">
+                <md-content ng-cloak layout-padding>
+                    <md-button ng-click="login()" ng-if="!user" class="md-raised">Login</md-button>
+                    <md-button ng-click="logout()" ng-if="user" class="md-raised">Logout</md-button>
 
-                                <div>
-                                    <button id="btn_admin" type="button" class="btn btn-primary">Administrator</button>
-                                    <button id="btn_leader" type="button" class="btn btn-primary">Team Leader</button>
-                                    <button id="btn_member" type="button" class="btn btn-primary">Member</button>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                        </div>
+
+                    <!-- event list -->
+                    <div id="event-list">
+                        <md-list>
+                            <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="secondary-button-padding">
+                                <span>{{eventKey}}</span>
+                                <md-button ng-click="joinEvent(eventKey)" class="md-secondary">Join</md-button>
+                                <md-button ng-href="admin.html?q={{eventKey}}" class="md-secondary">Edit</md-button>
+                            </md-list-item>
+                        </md-list>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div id="event-list">
-            <md-content layout-padding>
-                <md-list ng-cloak>
-                    <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="secondary-button-padding">
-                        <span>{{eventKey}}</span>
-                        <md-button ng-click="joinEvent(eventKey)" class="md-secondary">Join</md-button>
-                        <md-button ng-href="admin.html?q={{eventKey}}" class="md-secondary">Edit</md-button>
-                    </md-list-item>
-                </md-list>
-            </md-content>
-        </div>
+                    <md-button ng-click="createEvent($event)" class="md-fab" aria-label="create event"><i class="material-icons">create</i></md-button>
 
-        <md-button ng-click="createEvent($event)" class="md-fab" aria-label="create event"><span class="glyphicon glyphicon-plus"></span></md-button>
 
-        <!-- Marketing messaging and featurettes
-        ================================================== -->
-        <!-- Wrap the rest of the page in another container to center all the content. -->
-        <div class="container marketing">
-            <!-- FOOTER -->
-            <hr>
-            <footer>
-                <p class="pull-right"><a href="#">Back to top</a></p>
-                <p>&copy; 2017 COMP3111/H teaching team </p>
-                <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
-            </footer>
+                    <!-- Marketing messaging and featurettes
+                    ================================================== -->
+                    <!-- Wrap the rest of the page in another container to center all the content. -->
+                    <div class="container marketing">
+                        <!-- FOOTER -->
+                        <hr>
+                        <footer>
+                            <p class="pull-right"><a href="#">Back to top</a></p>
+                            <p>&copy; 2017 COMP3111/H teaching team </p>
+                            <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
+                        </footer>
+                    </div>
+                </md-content>
+            </main>
         </div>
-        <!-- /.container -->
     </div>
 
 

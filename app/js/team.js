@@ -156,4 +156,9 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
             $scope.skillInput = null;
         });
     };
+})
+.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('orange')
+    .accentPalette('indigo');
 });

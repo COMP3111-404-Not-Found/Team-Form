@@ -98,4 +98,9 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
             userEventRef.set(requests);
         });
     };
+})
+.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('orange')
+    .accentPalette('indigo');
 });

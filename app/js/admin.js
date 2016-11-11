@@ -101,4 +101,9 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         ref.update({'startDate': $scope.startDate.getTime(), 'endDate': $scope.endDate.getTime(),
             'details': $scope.details});
     };
+})
+.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('orange')
+    .accentPalette('indigo');
 });

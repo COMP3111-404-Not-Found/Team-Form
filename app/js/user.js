@@ -34,4 +34,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial"])
             });
         }
     });
+})
+.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('orange')
+    .accentPalette('indigo');
 });

@@ -22,193 +22,184 @@
     <!-- Angular Material CDN -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- CSS files -->
-    <link rel="stylesheet" type="text/css" href="css/app.css">
-    <link rel="stylesheet" type="text/css" href="css/about.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/about.css">
+
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
 </head>
-<body ng-app="teamform-about-app">
-    <div ng-controller="AboutCtrl">
-        <div class="navbar-wrapper">
-            <div class="container">
-                <nav class="navbar navbar-static-top navbar-default">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#">teamform</a>
-                        </div>
-                        <div id="navbar" class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#page_about">About teamform</a></li>
-                                        <li><a href="#page_team">Development team</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="#">TODO: Add menu items here... </a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Coverage <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="coverage/index.html" target="_blank">Report</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="unit_tests/test_site.js" target="_blank">test_site.js (sample)</a></li>
-                                        <li><a href="#">TODO: Add more test cases here... </a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+<body>
+    <div ng-app="teamform-about-app" ng-controller="AboutCtrl">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <!-- navigation bar -->
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout__title">About</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a href="index.html" class="mdl-navigation__link">Home</a>
+                        <a href="about.html" class="mdl-navigation__link">About</a>
+                        <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    </nav>
+                </div>
+            </header>
+            <!-- navigation drawer -->
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout__title">Team Form</span>
+                <nav class="mdl-navigation">
+                    <a href="index.html" class="mdl-navigation__link">Home</a>
+                    <a href="about.html" class="mdl-navigation__link">About</a>
+                    <a href="user.html" class="mdl-navigation__link">Profile</a>
+                    <br>
+                    <p class="mdl-navigation__link" style="color: black">Click on the page to close the navigation.</p>
                 </nav>
             </div>
-        </div>
 
-        <!-- Marketing messaging and featurettes
-        ================================================== -->
-        <!-- Wrap the rest of the page in another container to center all the content. -->
-        <div class="container marketing">
-            <!-- START THE FEATURETTES -->
 
-            <div class="row featurette" id="page_about">
+            <main class="mdl-layout__content">
+                <md-content ng-cloak layout-padding>
+                    <!-- Marketing messaging and featurettes
+                    ================================================== -->
+                    <!-- Wrap the rest of the page in another container to center all the content. -->
+                    <div class="container marketing">
+                        <!-- START THE FEATURETTES -->
 
-                <div class="col-md-12">
-                    <!-- just a temporary header -->
-                	<h4 class="aboutTitle">About Us</h4>
-                    <!-- / -->
-                    <h2 class="featurette-heading">
-                        What is teamform?
-                        <br>
-                        <span class="text-muted">A real-time online team forming app</span>
-                    </h2>
-                    <p class="lead">The following roles are supported in teamform:</p>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h3 class="text-center">Administrator</h3>
-                            <ul>
-                                <li>Be responsible for creating an event for team forming (e.g. COMP3111, COMP3111H, hackUST)</li>
-                                <li>Be able to set the minimum and maximum team size for the event (e.g. 5..7 team members in COMP3111 and 5..8 team members in COMP3111H)</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="text-center">Team</h3>
-                            <ul>
-                                <li>Be able to add and remove requests made by members</li>
-                                <li>Once a member joins the team, all his/her requests will be deleted</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-4">
-                            <h3 class="text-center">Member</h3>
-                            <ul>
-                                <li>Be able to request to join multiple teams</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr class="featurette-divider">
+                        <div class="row featurette" id="page_about">
 
-            <!-- START THE FEATURETTES -->
-            <div class="row featurette" id="page_team">
-                <div class="col-md-12">
-                    <h2 class="featurette-heading">
-                        Development Team
-                        <br>
-                        <span class="text-muted">{{teamName}}</span>
-                    </h2>
-                    <!-- <div class="row border" > -->
-                        <md-card md-theme="default" md-theme-watch ng-repeat="member in team">
-                            <md-card-title class='text-align-center'>
-                                <div class="col-md-4">
-                                    <md-card-title-media>
-                                        <div class="md-media-lg card-media">
-                                            <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
-                                        </div>
-                                    </md-card-title-media>
-                                    <md-card-title-text>
-                                        <span class="md-headline">{{member.name}}</span><br>
-                                        <span class="md-subhead">{{member.email}}</span>
-                                    </md-card-title-text>
+                            <div class="col-md-12">
+                                <h2 class="featurette-heading">
+                                    What is teamform?
+                                    <br>
+                                    <span class="text-muted">A real-time online team forming app</span>
+                                </h2>
+                                <p class="lead">The following roles are supported in teamform:</p>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h3 class="text-center">Administrator</h3>
+                                        <ul>
+                                            <li>Be responsible for creating an event for team forming (e.g. COMP3111, COMP3111H, hackUST)</li>
+                                            <li>Be able to set the minimum and maximum team size for the event (e.g. 5..7 team members in COMP3111 and 5..8 team members in COMP3111H)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3 class="text-center">Team</h3>
+                                        <ul>
+                                            <li>Be able to add and remove requests made by members</li>
+                                            <li>Once a member joins the team, all his/her requests will be deleted</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3 class="text-center">Member</h3>
+                                        <ul>
+                                            <li>Be able to request to join multiple teams</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <h4>{{member.information}}</h4>
-                                </div>
-                            </md-card-title>
-                        </md-card>
-
-                        <div class="col-md-4 text-center">
-                            <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
-                            <div class="caption">
-                                <h4>{{member.name}}</h4>
-                                <p>{{member.email}}</p>
                             </div>
                         </div>
-                        <div class="col-md-8">
-                            <h4>{{members.information}}</h4>
+                        <hr class="featurette-divider">
+
+                        <!-- START THE FEATURETTES -->
+                        <div class="row featurette" id="page_team">
+                            <div class="col-md-12">
+                                <h2 class="featurette-heading">
+                                    Development Team
+                                    <br>
+                                    <span class="text-muted">{{teamName}}</span>
+                                </h2>
+                                <!-- <div class="row border" > -->
+                                    <md-card md-theme="default" md-theme-watch ng-repeat="member in team">
+                                        <md-card-title class='text-align-center'>
+                                            <div class="col-md-4">
+                                                <md-card-title-media>
+                                                    <div class="md-media-lg card-media">
+                                                        <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
+                                                    </div>
+                                                </md-card-title-media>
+                                                <md-card-title-text>
+                                                    <span class="md-headline">{{member.name}}</span><br>
+                                                    <span class="md-subhead">{{member.email}}</span>
+                                                </md-card-title-text>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h4>{{member.information}}</h4>
+                                            </div>
+                                        </md-card-title>
+                                    </md-card>
+
+                                    <div class="col-md-4 text-center">
+                                        <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
+                                        <div class="caption">
+                                            <h4>{{member.name}}</h4>
+                                            <p>{{member.email}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4>{{members.information}}</h4>
+                                    </div>
+                                <!-- </div> -->
+                            </div>
                         </div>
-                    <!-- </div> -->
-                </div>
-            </div>
-            <!-- /END THE FEATURETTES -->
-            <br>
-            <hr>
-            <!-- Dev Process -->
-            <div class="row featurette" id="page_team">
-                <div class="col-md-12">
-                    <h2 class="featurette-heading">
-                        Development Process
+                        <!-- /END THE FEATURETTES -->
                         <br>
-                        <span class="text-muted">How we developed...</span>
-                    </h2>
-                    
-                    <p class="lead">Phase Development has been chosen for the project.<br><a href="https://comp3111-404.slack.com/messages/project/">Slack</a> and <a href="https://github.com/COMP3111-404-Not-Found/Team-Form">GitHub Project</a> have been utilized throughout the development.<br><br>Several Additional Libraries are included, as shown below:</p>
-                    <ul class="list">
-                        <li>Angular Material, Material Design Lite</li>
-                        <li>UI Bootstrap</li>
-                        <li>Google Maps API</li>
-                        <li>Angular Routing</li>
-                        <li>JS PDF</li>
-                    </ul>
-                    <br>
-                    <p class="lead">Thank you for following the development of TeamForm.</p>
-                </div>
-            </div>
-            <!-- /end Dev Process -->
-            <!-- FOOTER -->
-            <hr>
-            <footer>
-                <p class="pull-right"><a href="#">Back to top</a></p>
-                <p>&copy; 2017 COMP3111/H teaching team </p>
-                <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
-            </footer>
+                        <hr>
+                        <!-- Dev Process -->
+                        <div class="row featurette" id="page_team">
+                            <div class="col-md-12">
+                                <h2 class="featurette-heading">
+                                    Development Process
+                                    <br>
+                                    <span class="text-muted">How we developed...</span>
+                                </h2>
+
+                                <p class="lead">Phase Development has been chosen for the project.<br><a href="https://comp3111-404.slack.com/messages/project/">Slack</a> and <a href="https://github.com/COMP3111-404-Not-Found/Team-Form">GitHub Project</a> have been utilized throughout the development.<br><br>Several Additional Libraries are included, as shown below:</p>
+                                <ul class="list">
+                                    <li>Angular Material, Material Design Lite</li>
+                                    <li>UI Bootstrap</li>
+                                    <li>Google Maps API</li>
+                                    <li>Angular Routing</li>
+                                    <li>JS PDF</li>
+                                </ul>
+                                <br>
+                                <p class="lead">Thank you for following the development of TeamForm.</p>
+                            </div>
+                        </div>
+                        <!-- /end Dev Process -->
+                        <!-- FOOTER -->
+                        <hr>
+                        <footer>
+                            <p class="pull-right"><a href="#">Back to top</a></p>
+                            <p>&copy; 2017 COMP3111/H teaching team </p>
+                            <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
+                        </footer>
+                    </div>
+                    <!-- /.container -->
+                </md-content>
+            </main>
         </div>
-        <!-- /.container -->
-
-
-        <!-- JavaScript of this page -->
-
-        <script src="lib/angular.min.js"></script>
-        <script src="lib/angular-route.min.js"></script>
-
-        <script src="lib/firebase.js"></script>
-        <script src="lib/angularfire.min.js"></script>
-
-        <!-- UI Bootstrap CDN -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap.min.js"></script>
-
-        <!-- Angular Material CDN -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
-
-        <script src="js/about.js"></script>
     </div>
+
+
+    <!-- JavaScript of this page -->
+
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/angular-route.min.js"></script>
+
+    <script src="lib/firebase.js"></script>
+    <script src="lib/angularfire.min.js"></script>
+
+    <!-- UI Bootstrap CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.2.0/ui-bootstrap.min.js"></script>
+
+    <!-- Angular Material CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+
+    <script src="js/about.js"></script>
 </body>
 </html>
