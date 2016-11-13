@@ -66,6 +66,34 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     });
 
 
+    /* filter and sort switches */
+    // bind variables
+    $scope.filterPlacesSwitch = false;
+    $scope.sortPlacesSwitch = false;
+    $scope.filterSkillsMatchSwitch = true;
+    $scope.sortSkillsMatchSwitch = true;
+
+    // filter teams that still have places left
+    $scope.filterPlaces = function() {
+        console.log("filterPlaces()");
+    };
+
+    // sort teams by the number of places left
+    $scope.sortPlaces = function() {
+        console.log("sortPlaces()");
+    };
+
+    // filter teams that match the signed in user skills
+    $scope.filterSkillsMatch = function() {
+        console.log("filterSkillsMatch()");
+    };
+
+    // sort teams by the number of skills matched
+    $scope.sortSkillsMatch = function() {
+        console.log("sortSkillsMatch()");
+    };
+
+
     // create new team function
     $scope.createTeam = function() {
         var teamNameInput = $mdDialog.prompt()
