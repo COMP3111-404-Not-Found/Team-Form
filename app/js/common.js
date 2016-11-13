@@ -1,7 +1,13 @@
-var isAvailable = function(team) {
+function isAvailable(team) {
 	return team.currentTeamSize < team.size;
 }
 
-var getAvailableTeam = function (teams) {
+/**
+ * filter teams that still have places left
+ *
+ * @param teams array of teams
+ * @return filtered teams
+ */
+function getAvailableTeam(teams) {
 	return teams.filter(isAvailable);
 }
