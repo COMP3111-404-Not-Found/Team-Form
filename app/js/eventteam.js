@@ -60,7 +60,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     var teamRef = firebase.database().ref().child("events").child($scope.eventName).child("team");
 
     var teamObj = $firebaseObject(teamRef);
-    teamObj.$bindTo($scope, "teams");
+    teamObj.$bindTo($scope, "teamsDatabase");
+    teamObj.$loaded().then(function(teams) {
+        $scope.teams = teams;
+    });
 
 
     // create new team function

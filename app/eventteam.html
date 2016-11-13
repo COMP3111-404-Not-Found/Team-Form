@@ -61,20 +61,18 @@
 
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
-                    <div class="row">
-                        <strong>
-                        <div class="col-sm-4">Minumum Team Size: {{minTeamSize}}</div>
-                        <div class="col-sm-4">Maximum Team Size: {{maxTeamSize}}</div>
-                        </strong>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">Minumum Team Size: {{minTeamSize}}</div>
+                            <div class="col-sm-6">Maximum Team Size: {{maxTeamSize}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">Start Date: {{startDate | date:'yyyy-MM-dd'}}</div>
+                            <div class="col-sm-6">End Date: {{endDate | date:'yyyy-MM-dd'}}</div>
+                        </div>
+                        <span>Details: {{details}}</span>
+                        <br>
                     </div>
-                    <div class="row">
-                        <strong>
-                        <div class="col-sm-4">Start Date: {{startDate | date:'yyyy-MM-dd'}}</div>
-                        <div class="col-sm-4">End Date: {{endDate | date:'yyyy-MM-dd'}}</div>
-                        </strong>
-                    </div>
-                    <strong>Details: {{details}}</strong>
-                    <br>
 
                     <md-button class="md-raised" ng-href="admin.html?event={{eventName}}">Edit</md-button>
 
