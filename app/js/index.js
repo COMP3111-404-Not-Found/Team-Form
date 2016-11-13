@@ -84,7 +84,7 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
 
         $mdDialog.show(eventNameInput)
             .then(function(event) {
-                $window.open("admin.html?q=" + event, "_self");
+                $window.open("admin.html?event=" + event, "_self");
             });
     };
 
