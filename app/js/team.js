@@ -3,6 +3,41 @@ $(document).ready(function() {
     $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("team") + " (" + getURLParameter("event") + ")");
 });
 
+// add the user's skills to the team when adding a member
+function addTeamSkills(teamSkills, userSkills) {
+    userSkills.forEach(function(userSkill) {
+        if (!teamSkills.includes(userSkill)) {
+            teamSkills.push(userSkill);
+        }
+    });
+
+    return teamSkills;
+}
+
+// remove the user's skills from the team when removing a member
+function removeTeamSkills(teamSkills, teamMembers, member) {
+    return teamSkills.filter(function(teamSkill) {
+        // keep the skill if the member does not have it
+        if (!member.skills.includes(teamSkill)) {
+            return true;
+        }
+
+        // check if any other members also have the skill
+        for (var i in teamMembers) {
+            if (teamMembers[i].uid === member.uid) {
+                continue;
+            }
+
+            // keep the skill if another member has it
+            if (teamMembers[i].skills.includes(teamSkill)) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+}
+
 angular.module("teamform-team-app", ["firebase", "ngMaterial"])
 .controller("TeamCtrl", function($scope, $firebaseObject, $firebaseArray) {
     // Call Firebase initialization code defined in site.js
@@ -66,6 +101,12 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
 
     var eventTeamMembersRef = eventTeamRef.child("teamMembers");
     $scope.members = $firebaseArray(eventTeamMembersRef);
+    var membersArray = [];
+    $scope.members.$loaded().then(function(members) {
+        members.forEach(function(member) {
+            membersArray.push({uid: member.$id, name: member.name, skills: member.skills});
+        });
+    });
 
     var skillsRef = eventTeamRef.child("skills");
     $scope.skills = $firebaseArray(skillsRef);
@@ -101,22 +142,12 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     };
 
 
-    function addTeamSkills(teamSkills, userSkills) {
-        userSkills.forEach(function(userSkill) {
-            if (!teamSkillsArray.includes(userSkill)) {
-                teamSkills.push(userSkill);
-            }
-        });
-
-        return teamSkills;
-    }
-
     // add member function
     $scope.addMember = function(request) {
         if ($scope.currentTeamSize < $scope.size) {
             // add the member to the team
             var member = {};
-            member[$scope.currentTeamSize] = {uid: request.uid, name: request.name};
+            member[$scope.currentTeamSize] = {uid: request.uid, name: request.name, skills: request.skills};
             console.log(member);
             eventTeamMembersRef.update(member);
 
@@ -147,7 +178,7 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
         $scope.members.$remove(member);
 
         // update the skills that the team have
-        teamSkillsRef.set(removeTeamSkills(teamSkillsArray, request.skills));
+        teamSkillsRef.set(removeTeamSkills(teamSkillsArray, membersArray, member));
 
         // update the team for the event in the user's profile
         var userEventRef = firebase.database().ref().child("users").child(member.uid).child("events").child(eventName);
