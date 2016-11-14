@@ -70,6 +70,15 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     var skillsRef = eventTeamRef.child("skills");
     $scope.skills = $firebaseArray(skillsRef);
 
+    var teamSkillsRef = eventTeamRef.child("teamSkills");
+    $scope.teamSkills = $firebaseArray(teamSkillsRef);
+    var teamSkillsArray = [];
+    $scope.teamSkills.$loaded().then(function(teamSkills) {
+        teamSkills.forEach(function(teamSkill) {
+            teamSkillsArray.push(teamSkill.$value);
+        });
+    });
+
 
     var eventTeamMemberRequestsRef = eventRef.child("member");
     var eventTeamMemberRequestsArray = $firebaseArray(eventTeamMemberRequestsRef);
@@ -78,7 +87,7 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
 
         members.forEach(function(member) {
             if (member.selection !== undefined && member.selection.includes(teamName)) {
-                $scope.requests.push({uid: member.$id, name: member.name});
+                $scope.requests.push({uid: member.$id, name: member.name, skills: member.skills});
             }
         });
     });
@@ -92,6 +101,16 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     };
 
 
+    function addTeamSkills(teamSkills, userSkills) {
+        userSkills.forEach(function(userSkill) {
+            if (!teamSkillsArray.includes(userSkill)) {
+                teamSkills.push(userSkill);
+            }
+        });
+
+        return teamSkills;
+    }
+
     // add member function
     $scope.addMember = function(request) {
         if ($scope.currentTeamSize < $scope.size) {
@@ -100,6 +119,9 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
             member[$scope.currentTeamSize] = {uid: request.uid, name: request.name};
             console.log(member);
             eventTeamMembersRef.update(member);
+
+            // update the skills that the team have
+            teamSkillsRef.set(addTeamSkills(teamSkillsArray, request.skills));
 
             // update the request for the user
             var eventTeamMemberRequestRef = eventTeamMemberRequestsRef.child(request.uid);
@@ -123,6 +145,9 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     $scope.removeMember = function(member) {
         // remove the member from the team
         $scope.members.$remove(member);
+
+        // update the skills that the team have
+        teamSkillsRef.set(removeTeamSkills(teamSkillsArray, request.skills));
 
         // update the team for the event in the user's profile
         var userEventRef = firebase.database().ref().child("users").child(member.uid).child("events").child(eventName);
