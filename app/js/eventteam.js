@@ -43,7 +43,9 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
 
     $scope.eventName = getURLParameter("event");
-
+    if ($scope.eventName === null) {
+        $scope.eventName = "test";
+    }
 
     var eventAdminParamRef = firebase.database().ref().child("events").child($scope.eventName).child("admin").child("param");
     var eventAdminParamObj = $firebaseObject(eventAdminParamRef);
@@ -61,8 +63,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
     var teamObj = $firebaseObject(teamRef);
     teamObj.$bindTo($scope, "teamsDatabase");
+    
     teamObj.$loaded().then(function(teams) {
         $scope.teams = teams;
+        $scope.dbTeams = teams;
     });
 
 
@@ -76,6 +80,12 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // filter teams that still have places left
     $scope.filterPlaces = function() {
         console.log("filterPlaces()");
+        if ($scope.filterPlacesSwitch === true) {
+            $scope.teams = getAvailableTeam($scope.dbTeams);
+        } else {
+            $scope.teams = $scope.dbTeams;
+        }
+
     };
 
     // sort teams by the number of places left
