@@ -21,11 +21,11 @@ describe('Test common_test.js', function() {
 
         	};
 
-
-
             var matched = isMatched(team.preferredSkills, user.skills);
             var expected = ["C++","php"];
-            expect(matched).toEqual(expected);
+            
+            expect(matched.match).toEqual(expected);
+            expect(matched.number).toEqual(1);
         });
 
     });

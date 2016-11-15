@@ -1,3 +1,10 @@
+/**
+ * calculate the number of skills matched
+ *
+ * @param preferredSkills preferred skills of a team
+ * @param currentSkills skills of the signed in user
+ * @return skills match and number of skills matched
+ */
 function isMatched(preferredSkills, currentSkills){
 	var filteredArray = preferredSkills.filter(
 	function(each){
@@ -9,5 +16,5 @@ function isMatched(preferredSkills, currentSkills){
 		return false;
 	}
 	);
-	return filteredArray;	
+	return {match: filteredArray, number: filteredArray.length};	
 }
