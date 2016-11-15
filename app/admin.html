@@ -122,9 +122,8 @@
                             <div class="col-md-6 col-xs-6 text-left">
                                 <h3>All members:</h3>
                                 <ul ng-repeat="m in member">
-                                    <li>ID = {{m.$id}} <br>
-                                        Name = {{m.name}} <br>
-                                        request to join the following teams: {{m.selection | json}}
+                                    <li>
+                                        {{m.name }} request to join the following teams: {{m.selection | json}}
                                     </li>
                                 </ul>
                             </div>
