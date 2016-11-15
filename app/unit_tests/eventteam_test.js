@@ -10,6 +10,10 @@ describe("Eventteam Controller", function() {
         $firebaseArray = _$firebaseArray_;
     }));
 
+    afterEach(function() {
+        firebase.app().delete();
+    });
+
     describe("$scope.filterPlaces", function() {
         var $scope, controller;
 
@@ -19,7 +23,11 @@ describe("Eventteam Controller", function() {
         });
 
         it("filter teams that still have places left", function() {
-            expect($scope.filterPlaces()).toEqual(6);
+        	$scope.filterPlaces();
+            $scope.filterPlacesSwitch = true;
+            expect($scope.teams).toEqual($scope.dbTeams);
+        	$scope.filterPlacesSwitch = false;
+            expect($scope.teams).toEqual(getAvailableTeam($scope.dbTeams));
         });
     });
 });
