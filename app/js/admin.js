@@ -98,8 +98,8 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
             'details': $scope.details});
     };
 
-    $scope.zeroMember = function() {
-        if (teamMembers == null) {
+    $scope.zeroMember = function(teamMembers) {
+        if (teamMembers === null) {
             return false;
         } else {
             return true;
