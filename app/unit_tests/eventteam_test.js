@@ -23,11 +23,12 @@ describe("Eventteam Controller", function() {
         });
 
         it("filter teams that still have places left", function() {
-        	$scope.filterPlaces();
             $scope.filterPlacesSwitch = true;
-            expect($scope.teams).toEqual($scope.dbTeams);
-        	$scope.filterPlacesSwitch = false;
+        	$scope.filterPlaces();
             expect($scope.teams).toEqual(getAvailableTeam($scope.dbTeams));
+        	$scope.filterPlacesSwitch = false;
+        	$scope.filterPlaces();
+            expect($scope.teams).toEqual($scope.dbTeams);
         });
     });
 });
