@@ -24,10 +24,34 @@ describe("Eventteam Controller", function() {
 
         it("filter teams that still have places left", function() {
             $scope.filterPlacesSwitch = true;
-        	$scope.filterPlaces();
-            expect($scope.teams).toEqual(getAvailableTeam($scope.dbTeams));
-        	$scope.filterPlacesSwitch = false;
-        	$scope.filterPlaces();
+            $scope.dbTeams = [
+            {
+                currentTeamSize: 1,
+                size: 5,
+                skills: ["C++"],
+                teamMembers: [{name:"STO", uid:"qwertyqwerty"}]
+            },
+            {
+                currentTeamSize: 4,
+                size: 4,
+                skills: ["C++"],
+                teamMembers: [
+                {name:"STO1", uid:"qwertyqwerty"},{name:"STO2", uid:"qwertyqwerty"},
+                {name:"STO3", uid:"qwertyqwerty"},{name:"STO4", uid:"qwertyqwerty"}
+                ]
+            }];
+
+            var expected = [{
+                currentTeamSize: 1,
+                size: 5,
+                skills: ["C++"],
+                teamMembers: [{name:"STO", uid:"qwertyqwerty"}]
+            }];
+
+            $scope.filterPlaces();
+            expect($scope.teams).toEqual(expected);
+            $scope.filterPlacesSwitch = false;
+            $scope.filterPlaces();
             expect($scope.teams).toEqual($scope.dbTeams);
         });
     });
