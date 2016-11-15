@@ -40,11 +40,13 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
     };
 
     $scope.user = null;
+    $scope.signedIn = null;
 
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             // User is signed in.
             console.log(user);
+            $scope.signedIn = true;
 
             // update the user's profile
             var userRef = firebase.database().ref().child("users").child(user.uid);
@@ -59,6 +61,7 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
         } else {
             // No user is signed in.
             console.log('no user is signed in');
+            $scope.signedIn = false;
 
             // refresh the scope
             $scope.$apply(function() {
