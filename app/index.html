@@ -70,7 +70,7 @@
                         <md-list>
                             <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="secondary-button-padding">
                                 <span>{{eventKey}}</span>
-                                <md-button ng-click="joinEvent(eventKey)" ng-if="signedIn" class="md-secondary">Join</md-button>
+                                <md-button ng-click="joinEvent(eventKey)" ng-if="user" class="md-secondary">Join</md-button>
                                 <md-button ng-href="admin.html?event={{eventKey}}" class="md-secondary">Edit</md-button>
                             </md-list-item>
                         </md-list>
