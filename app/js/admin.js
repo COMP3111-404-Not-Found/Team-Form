@@ -97,6 +97,14 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         ref.update({'startDate': $scope.startDate.getTime(), 'endDate': $scope.endDate.getTime(),
             'details': $scope.details});
     };
+
+    $scope.zeroMember = function() {
+        if (teamMembers == null) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 })
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
