@@ -81,6 +81,12 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     // var refPath = "";
     var eventName = getURLParameter("event");
     var teamName = getURLParameter("team");
+    if (eventName === null) {
+        eventName = "test";
+    }
+    if (teamName === null) {
+        teamName = "test";
+    }
     var eventRef = firebase.database().ref().child("events").child(eventName);
 
 

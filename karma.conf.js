@@ -11,6 +11,10 @@ module.exports = function(config) {
             'lib/angular-mocks.js',
             'lib/firebase.js',
             'lib/angularfire.min.js',
+            'lib/angular-animate.min.js',
+            'lib/angular-aria.min.js',
+            'lib/angular-material.min.js',
+            'lib/angular-messages.min.js',
             'js/*.js',
             'unit_tests/*.js'
         ],
@@ -30,7 +34,10 @@ module.exports = function(config) {
         coverageReporter: {
             type: 'html',
             dir: 'coverage/',
-            subdir: '.'
+            subdir: '.',
+            instrumenterOptions: {
+                istanbul: { noCompact: true }
+            }
         },
         port: 8080,
         colors: true,
