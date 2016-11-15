@@ -10,17 +10,14 @@ function getAvailableTeam(teams) {
 
 function insufficientMemberTeams(teams)
 {
-    var insufficentTeams = getAvailableTeam(teams);
+    var insufficientTeams = getAvailableTeam(teams);
 
-    //if(insufficentTeams.length===0)
-        //return;
-
-    var uids ;
-    for( i=0; i<insufficentTeams.length; i++)
+    var uids= [] ;
+    for( i=0; i<insufficientTeams.length; i++)
     {
-        for(var j=0; j<insufficentTeams[i].teamMembers.length; j++)
+        for(var j=0; j<insufficientTeams[i].teamMembers.length; j++)
         {
-            uids.push(insufficentTeams[i].teamMembers[j].uid);
+            uids.push(insufficientTeams[i].teamMembers[j].uid);
 
         }
     }
