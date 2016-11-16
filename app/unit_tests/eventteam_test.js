@@ -1,13 +1,14 @@
-describe("Eventteam Controller", function() {
+describe("Event Team Controller", function() {
     beforeEach(module("teamform-eventteam-app"));
 
-    var $controller, $firebaseObject, $firebaseArray;
+    var $controller, $firebaseObject, $firebaseArray, $mdDialog;
 
-    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_) {
+    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_, _$mdDialog_) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $controller = _$controller_;
         $firebaseObject = _$firebaseObject_;
         $firebaseArray = _$firebaseArray_;
+        $mdDialog = _$mdDialog_;
     }));
 
     afterEach(function() {
@@ -19,7 +20,7 @@ describe("Eventteam Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         it("filter teams that still have places left", function() {
@@ -55,4 +56,84 @@ describe("Eventteam Controller", function() {
             expect($scope.teams).toEqual($scope.dbTeams);
         });
     });
+
+
+    describe("$scope.sortPlaces", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("sort the teams by the number of places left", function() {
+            $scope.sortPlaces();
+        });
+    });
+
+    
+    describe("$scope.filterSkillsMatch", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("filter the teams that have skills that the user has", function() {
+            $scope.filterSkillsMatch();
+        });
+    });
+
+
+    describe("$scope.sortSkillsMatch", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("sort the teams by the number of skills matched", function() {
+            $scope.sortSkillsMatch();
+        });
+    });
+
+
+    describe("$scope.createTeam", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("create a team", function() {
+            $scope.createTeam();
+        });
+    });
+
+
+    /*describe("$scope.requestTeam", function() {
+        var $scope, controller;
+
+        var teamName = "";
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            $scope.user = {
+                uid: "uid",
+                displayName: "name"
+            };
+            teamName = "team";
+        });
+
+        it("request joining a team", function() {
+            $scope.requestTeam(teamName);
+        });
+    });*/
 });
