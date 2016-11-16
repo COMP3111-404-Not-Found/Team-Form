@@ -143,6 +143,8 @@ describe("Admin Controller", function() {
 
 
     describe("$scope.startChange", function() {
+        var $scope, controller;
+
         beforeEach(function() {
             $scope = {};
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
@@ -160,6 +162,8 @@ describe("Admin Controller", function() {
 
 
     describe("$scope.saveContent", function() {
+        var $scope, controller;
+
         beforeEach(function() {
             $scope = {};
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
@@ -196,6 +200,8 @@ describe("Admin Controller", function() {
 
 
     describe("$scope.zeroMember", function() {
+        var $scope, controller;
+
         beforeEach(function() {
             $scope = {};
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
