@@ -1,4 +1,4 @@
-describe("Team Controller", function() {
+describe("Index Controller", function() {
     beforeEach(module("teamform-index-app"));
 
     var $controller, $firebaseObject, $firebaseArray;
@@ -14,12 +14,62 @@ describe("Team Controller", function() {
         firebase.app().delete();
     });
 
-    describe("$scope.changeCurrentTeamSize", function() {
+    describe("$scope.login", function() {
         var $scope, controller;
 
         beforeEach(function() {
             $scope = {};
             controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});   
+        });
+
+        it("login", function() {
+            $scope.login();
+        });
+    });
+
+
+    describe("$scope.logout", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});   
+        });
+
+        it("logout", function() {
+            $scope.logout();
+        });
+    });
+
+
+    describe("$scope.createEvent", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});   
+        });
+
+        it("create event", function() {
+            $scope.createEvent();
+        });
+    });
+
+
+    describe("$scope.joinEvent", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});   
+        });
+
+        it("join event", function() {
+            $scope.user = {
+                uid: "uid",
+                displayName: "displayName"
+            };
+            $scope.joinEvent("test");
         });
     });
 });

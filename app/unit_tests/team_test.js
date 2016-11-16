@@ -96,6 +96,39 @@ describe("Team Controller", function() {
             controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
         });
 
+        it("invalid size ($scope.size + change < $scope.currentTeamSize", function() {
+            $scope.size = 5;
+            $scope.currentTeamSize = 5;
+            $scope.minTeamSize = 1;
+            $scope.maxTeamSize = 10;
+
+            $scope.changeCurrentTeamSize(-1);
+
+            expect($scope.size).toEqual(5);
+        });
+
+        it("invalid size ($scope.size + change < $scope.minTeamSize", function() {
+            $scope.size = 5;
+            $scope.currentTeamSize = 4;
+            $scope.minTeamSize = 1;
+            $scope.maxTeamSize = 10;
+
+            $scope.changeCurrentTeamSize(-5);
+
+            expect($scope.size).toEqual(5);
+        });
+
+        it("invalid size ($scope.size + change > $scope.maxTeamSize", function() {
+            $scope.size = 5;
+            $scope.currentTeamSize = 4;
+            $scope.minTeamSize = 1;
+            $scope.maxTeamSize = 10;
+
+            $scope.changeCurrentTeamSize(6);
+
+            expect($scope.size).toEqual(5);
+        });
+
         it("increase size", function() {
             $scope.size = 5;
             $scope.currentTeamSize = 4;
@@ -117,5 +150,79 @@ describe("Team Controller", function() {
 
             expect($scope.size).toEqual(4);
         });
+    });
+
+
+    describe("$scope.addMember", function() {
+        var $scope, controller;
+
+        var request = null;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        beforeEach(function() {
+            request = {
+                uid: "uid",
+                displayName: "name"
+            };
+        });
+
+        it("the team is full already ($scope.currentTeamSize >= $scope.size", function() {
+            $scope.currentTeamSize = 5;
+            $scope.size = 5;
+
+            $scope.addMember(request);
+        });
+
+        /*it("add the member request", function() {
+            $scope.currentTeamSize = 4;
+            $scope.size = 5;
+
+            $scope.addMember();
+        });*/
+    });
+
+
+    describe("$scope.removeMember", function() {
+        var $scope, controller;
+
+        var member = null;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        beforeEach(function() {
+            member = {
+                uid: "uid",
+                displayName: "name"
+            };
+        });
+
+        /*it("remove the member", function() {
+            $scope.removeMember(member);
+        });*/
+    });
+
+
+    describe("$scope.addSkill", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        beforeEach(function() {
+            $scope.skillInput = "Programming";
+        });
+
+        /*it("add the preferred skill", function() {
+            $scope.addSkill();
+        });*/
     });
 });

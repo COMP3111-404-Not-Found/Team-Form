@@ -1,5 +1,5 @@
-describe("Team Controller", function() {
-    beforeEach(module("teamform-team-app"));
+describe("About Controller", function() {
+    beforeEach(module("teamform-about-app"));
 
     var $controller, $firebaseObject, $firebaseArray;
 
@@ -14,12 +14,16 @@ describe("Team Controller", function() {
         firebase.app().delete();
     });
 
-    describe("$scope.changeCurrentTeamSize", function() {
+    describe("about controller all", function() {
         var $scope, controller;
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AboutCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        it("about controller all test 1", function() {
+
         });
     });
 });
