@@ -102,10 +102,10 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
     };
 
     $scope.zeroMember = function(teamMembers) {
-        if (teamMembers === null) {
-            return false;
-        } else {
+        if (teamMembers === undefined) {
             return true;
+        } else {
+            return false;
         }
     };
 })
