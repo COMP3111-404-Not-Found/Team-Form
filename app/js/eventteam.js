@@ -63,44 +63,57 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
     var teamObj = $firebaseObject(teamRef);
     teamObj.$bindTo($scope, "teamsDatabase");
-    
+
     teamObj.$loaded().then(function(teams) {
-        $scope.teams = teams;
-        $scope.dbTeams = teams;
+        $scope.teams = firebaseArrayToJSArray(teams);
+        $scope.dbTeams = $scope.teams;
     });
 
 
     /* filter and sort switches */
     // bind variables
     $scope.filterPlacesSwitch = false;
-    $scope.sortPlacesSwitch = false;
     $scope.filterSkillsMatchSwitch = true;
-    $scope.sortSkillsMatchSwitch = true;
 
     // filter teams that still have places left
-    $scope.filterPlaces = function() {
+    $scope.filterPlaces = function(teams) {
         console.log("filterPlaces()");
-        if ($scope.filterPlacesSwitch === true) {
-            $scope.teams = getAvailableTeam($scope.dbTeams);
-        } else {
-            $scope.teams = $scope.dbTeams;
-        }
-
+        return getAvailableTeam(teams);
     };
 
     // sort teams by the number of places left
-    $scope.sortPlaces = function() {
+    $scope.sortPlaces = function(teams) {
         console.log("sortPlaces()");
+        return teams;
     };
 
     // filter teams that match the signed in user skills
-    $scope.filterSkillsMatch = function() {
+    $scope.filterSkillsMatch = function(teams) {
         console.log("filterSkillsMatch()");
+        return teams;
     };
 
     // sort teams by the number of skills matched
-    $scope.sortSkillsMatch = function() {
+    $scope.sortSkillsMatch = function(teams) {
         console.log("sortSkillsMatch()");
+        return teams;
+    };
+
+    // filter and sort the teams
+    $scope.filterSort = function(filterPlacesSwitch, filterSkillsMatchSwitch) {
+        var teams = firebaseArrayToJSArray($scope.dbTeams);
+
+        if (filterPlacesSwitch) {
+            teams = $scope.filterPlaces(teams);
+            teams = $scope.sortPlaces(teams);
+        }
+
+        if (filterSkillsMatchSwitch) {
+            teams = $scope.filterSkillsMatch(teams);
+            teams = $scope.sortSkillsMatch(teams);
+        }
+
+        $scope.teams = teams;
     };
 
 
