@@ -1,3 +1,26 @@
+/**
+ * parse the team firebaseObject to a JavaScript array
+ *
+ * @param teamObj team firebaseObject
+ * @return team JavaScript array
+ */
+function parseTeams(teamObj) {
+    var teams = [];
+
+    teamObj.forEach(function(value, key) {
+        teams.push({
+            name: key,
+            size: value.size,
+            currentTeamSize: value.currentTeamSize,
+            skills: value.skills,
+            teamMembers: value.teamMembers
+        });
+    });
+
+    console.log(teams);
+    return teams;
+}
+
 $(document).ready(function() {
     // change the title in the navigation to the event name
     $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("event") + " Event Team");
@@ -62,11 +85,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     var teamRef = firebase.database().ref().child("events").child($scope.eventName).child("team");
 
     var teamObj = $firebaseObject(teamRef);
-    teamObj.$bindTo($scope, "teamsDatabase");
 
     teamObj.$loaded().then(function(teams) {
-        $scope.teams = firebaseArrayToJSArray(teams);
-        $scope.dbTeams = $scope.teams;
+        $scope.teams = parseTeams(teams);
+        $scope.dbTeams = angular.copy($scope.teams);
     });
 
 
@@ -101,7 +123,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
     // filter and sort the teams
     $scope.filterSort = function(filterPlacesSwitch, filterSkillsMatchSwitch) {
-        var teams = firebaseArrayToJSArray($scope.dbTeams);
+        var teams = angular.copy($scope.dbTeams);
 
         if (filterPlacesSwitch) {
             teams = $scope.filterPlaces(teams);
@@ -113,7 +135,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
             teams = $scope.sortSkillsMatch(teams);
         }
 
-        $scope.teams = teams;
+        $scope.teams = angular.copy(teams);
     };
 
 

@@ -1,20 +1,3 @@
-/**
- * parse a firebaseArray to a JavaScript array
- *
- * @param a firebaseArray
- * @return JavaScript array
- */
-function firebaseArrayToJSArray(a) {
-	return [
-		{
-			name: "team",
-			size: 5,
-			currentTeamSize: 4
-		}
-	];
-}
-
-
 function isAvailable(team) {
 	return team.currentTeamSize < team.size;
 }

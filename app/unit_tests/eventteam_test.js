@@ -1,3 +1,33 @@
+describe("Event Team Functions", function() {
+    describe("parseTeams", function() {
+        var teamObj = {
+            team1: {
+                size: 5,
+                currentTeamSize: 1,
+                skills: ["Programming"],
+                teamMembers: [
+                    {uid: "uid", name: "name", skills: ["Programming"]}
+                ]
+            }
+        };
+
+        var expected = [
+            {
+                name: "team1",
+                size: 5,
+                currentTeamSize: 1,
+                skills: ["Programming"],
+                teamMembers: [
+                    {uid: "uid", name: "name", skills: ["Programming"]}
+                ]
+            }
+        ];
+
+        expect(parseTeams(teamObj)).toEqual(expected);
+    });
+});
+
+
 describe("Event Team Controller", function() {
     beforeEach(module("teamform-eventteam-app"));
 
@@ -71,7 +101,7 @@ describe("Event Team Controller", function() {
         });
     });
 
-    
+
     describe("$scope.filterSkillsMatch", function() {
         var $scope, controller;
 

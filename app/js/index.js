@@ -91,19 +91,24 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
 
     // join event function
     $scope.joinEvent = function(eventName) {
-        // add the event to the user's profile
-        var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events").child(eventName);
+        var userProfileRef = firebase.database().ref().child("users").child($scope.user.uid);
+        var userProfileObj = $firebaseObject(userProfileRef);
 
-        userEventsRef.update({team: ""});
+        userProfileObj.$loaded().then(function(userProfile) {
+            // add the event to the user's profile
+            var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events").child(eventName);
+
+            userEventsRef.update({team: ""});
 
 
-        var member = {};
-        member[$scope.user.uid] = {name: $scope.user.displayName};
+            var member = {};
+            member[$scope.user.uid] = {name: $scope.user.displayName, skills: userProfile.skills};
 
-        var eventMemberRef = firebase.database().ref().child("events").child(eventName).child("member");
-        var eventMemberObj = $firebaseObject(eventMemberRef);
+            var eventMemberRef = firebase.database().ref().child("events").child(eventName).child("member");
+            var eventMemberObj = $firebaseObject(eventMemberRef);
 
-        eventMemberRef.update(member);
+            eventMemberRef.update(member);
+        });
     };
 })
 .config(function($mdThemingProvider) {
