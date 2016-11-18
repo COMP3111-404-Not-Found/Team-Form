@@ -7,14 +7,17 @@
 function parseTeams(teamObj) {
     var teams = [];
 
-    teamObj.forEach(function(value, key) {
-        teams.push({
-            name: key,
-            size: value.size,
-            currentTeamSize: value.currentTeamSize,
-            skills: value.skills,
-            teamMembers: value.teamMembers
-        });
+    angular.forEach(teamObj, function(value, key) {
+        var c = key.charAt(0);
+        if (c !== "_" && c !== "$" && c !== ".") {
+            teams.push({
+                name: key,
+                size: value.size,
+                currentTeamSize: value.currentTeamSize,
+                skills: value.skills,
+                teamMembers: value.teamMembers
+            });
+        }
     });
 
     console.log(teams);
