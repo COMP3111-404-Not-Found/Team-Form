@@ -109,7 +109,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // sort teams by the number of places left
     $scope.sortPlaces = function(teams) {
         console.log("sortPlaces()");
-        return teams;
+        return teams.sort(function(a, b) {
+            var x = a["size"]-a["currentTeamSize"]; var y = b["size"]-b["currentTeamSize"];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
     };
 
     // filter teams that match the signed in user skills
