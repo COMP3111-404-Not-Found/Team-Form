@@ -77,16 +77,145 @@ describe("Team Controller", function() {
 
     var $controller, $firebaseObject, $firebaseArray;
 
+    var adminObj = {
+        admin: {
+            param: {
+                maxTeamSize: 10,
+                minTeamSize: 1
+            }
+        }
+    };
+
+    var teamObj = {
+        team: {
+            team: {
+                size: 5,
+                currentTeamSize: 1,
+                skills: {0: "Programming"},
+                teamMembers: {
+                    0: {uid: "uid", name: "member", skills: {0: "Programming"}}
+                },
+                teamSkills: {0: "Programming"}
+            }
+        }
+    };
+
+    var memberObj = {
+        member: {
+            uid: {
+                name: "member",
+                skills: {0: "Programming"}
+            },
+            uid1: {
+                $id: "uid1",
+                name: "member1",
+                skills: {0: "Programming"},
+                selection: ["team", "test"]
+            }
+        }
+    }
+
     beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $controller = _$controller_;
-        $firebaseObject = _$firebaseObject_;
-        $firebaseArray = _$firebaseArray_;
+
+        // mock $firebaseObject
+        $firebaseObject = jasmine.createSpy("$firebaseObject");
+        $firebaseObject.and.callFake(function(ref) {
+            var refUrl = ref.toString();
+            var refUrlSplit = refUrl.split("/");
+            var refUrlSplitLength = refUrlSplit.length;
+
+            // https://team-form-4ffd7.firebaseio.com/.../admin/param
+            if (refUrlSplit[refUrlSplitLength-2] === "admin" && refUrlSplit[refUrlSplitLength-1] === "param") {
+                var obj = adminObj.admin.param;
+                obj.$loaded = function() {return {then: function(callback) {callback(adminObj.admin.param);}};};
+
+                return obj;
+            }
+
+            // https://team-form-4ffd7.firebaseio.com/.../team/...
+            if (refUrlSplit[refUrlSplitLength-2] === "team") {
+                var obj = teamObj.team.team;
+                obj.$loaded = function() {return {then: function(callback) {callback(teamObj.team.team);}};};
+
+                return obj;
+            }
+        });
+
+        // mock $firebaseArray
+        $firebaseArray = jasmine.createSpy("$firebaseArray");
+        $firebaseArray.and.callFake(function(ref) {
+            var refUrl = ref.toString();
+            var refUrlSplit = refUrl.split("/");
+            var refUrlSplitLength = refUrlSplit.length;
+
+            // https://team-form-4ffd7.firebaseio.com/.../team/.../teamMembers
+            if (refUrlSplit[refUrlSplitLength-3] === "team" && refUrlSplit[refUrlSplitLength-1] === "teamMembers") {
+                var obj = teamObj.team.team.teamMembers;
+                obj.$loaded = function() {return {then: function(callback) {callback(teamObj.team.team.teamMembers);}};};
+
+                return obj;
+            }
+
+            // https://team-form-4ffd7.firebaseio.com/.../team/.../skills
+            if (refUrlSplit[refUrlSplitLength-3] === "team" && refUrlSplit[refUrlSplitLength-1] === "skills") {
+                var obj = teamObj.team.team.skills;
+                obj.$loaded = function() {return {then: function(callback) {callback(teamObj.team.team.skills);}};};
+
+                return obj;
+            }
+
+            // https://team-form-4ffd7.firebaseio.com/.../team/.../teamSkills
+            if (refUrlSplit[refUrlSplitLength-3] === "team" && refUrlSplit[refUrlSplitLength-1] === "teamSkills") {
+                var obj = teamObj.team.team.teamSkills;
+                obj.$loaded = function() {return {then: function(callback) {callback(teamObj.team.team.teamSkills);}};};
+
+                return obj;
+            }
+
+            // https://team-form-4ffd7.firebaseio.com/.../member
+            if (refUrlSplit[refUrlSplitLength-1] === "member") {
+                var obj = memberObj.member;
+                obj.$loaded = function() {return {then: function(callback) {callback(memberObj.member);}};};
+
+                return obj;
+            }
+        });
     }));
-    
+
     afterEach(function() {
         firebase.app().delete();
     });
+
+
+    describe("load data", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("TeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        it("load data", function() {
+            expect($scope.minTeamSize).toEqual(adminObj.admin.param.minTeamSize);
+            expect($scope.maxTeamSize).toEqual(adminObj.admin.param.maxTeamSize);
+
+            expect($scope.size).toEqual(teamObj.team.team.size);
+            expect($scope.currentTeamSize).toEqual(teamObj.team.team.currentTeamSize);
+
+            expect($scope.members).toEqual(teamObj.team.team.teamMembers);
+
+            expect($scope.skills).toEqual(teamObj.team.team.skills);
+
+            expect($scope.teamSkills).toEqual(teamObj.team.team.teamSkills);
+
+            expect($scope.requests).toEqual([
+                {uid: "uid1", name: "member1", skills: {0: "Programming"}}
+            ]);
+        });
+    });
+
 
     describe("$scope.changeCurrentTeamSize", function() {
         var $scope, controller;

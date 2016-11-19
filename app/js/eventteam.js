@@ -15,7 +15,8 @@ function parseTeams(teamObj) {
                 size: value.size,
                 currentTeamSize: value.currentTeamSize,
                 skills: value.skills,
-                teamMembers: value.teamMembers
+                teamMembers: value.teamMembers,
+                teamSkills: value.teamSkills
             });
         }
     });
