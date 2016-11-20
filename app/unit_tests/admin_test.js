@@ -1,15 +1,16 @@
 describe("Admin Controller", function() {
     beforeEach(module("teamform-admin-app"));
 
-    var $controller, $firebaseObject, $firebaseArray;
+    var $controller, $firebaseObject, $firebaseArray, $mdDialog;
 
-    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_) {
+    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_, _$mdDialog_) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $controller = _$controller_;
         $firebaseObject = _$firebaseObject_;
         $firebaseArray = _$firebaseArray_;
+        $mdDialog = _$mdDialog_;
     }));
-    
+
     afterEach(function() {
         firebase.app().delete();
     });
@@ -19,7 +20,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
@@ -73,7 +74,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
@@ -123,9 +124,11 @@ describe("Admin Controller", function() {
 
 
     /*describe("$scope.saveFunc", function() {
+        var $scope, controller;
+
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
@@ -147,7 +150,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         it("set the minimum date when the start date changes", function() {
@@ -166,7 +169,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         it("invalid details ($scope.details === null)", function() {
@@ -204,7 +207,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
         it("the team does not have any members (teamMembers === null)", function() {
@@ -226,6 +229,66 @@ describe("Admin Controller", function() {
             var output = $scope.zeroMember(teamMembers);
 
             expect(output).toEqual(true);
+        });
+    });
+
+
+    describe("$scope.confirmAutomaticTeamForm", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("confirm the automatic team form", function() {
+            // mock $mdDialog.show
+            spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
+            });
+
+            $scope.confirmAutomaticTeamForm(function(confirm) {
+                expect(confirm).toEqual(true);
+            });
+        });
+
+        it("cancel the automatic team form", function() {
+            // mock $mdDialog.show
+            spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
+            });
+
+            $scope.confirmAutomaticTeamForm(function(confirm) {
+                expect(confirm).toEqual(false);
+            });
+        });
+    });
+
+
+    describe("$scope.automaticTeamForm", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("cancel the automatic team form", function() {
+            // mock $mdDialog.show
+            spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
+            });
+
+            $scope.automaticTeamForm();
+        });
+
+        it("automatic team form", function() {
+            // mock $mdDialog.show
+            spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
+            });
+
+            $scope.automaticTeamForm();
         });
     });
 });

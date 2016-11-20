@@ -4,7 +4,7 @@ $(document).ready(function() {
 });
 
 angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
-.controller("AdminCtrl", function($scope, $firebaseObject, $firebaseArray) {
+.controller("AdminCtrl", function($scope, $firebaseObject, $firebaseArray, $mdDialog) {
 
     // TODO: implementation of AdminCtrl
     // Initialize $scope.param as an empty JSON object
@@ -107,6 +107,34 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         } else {
             return false;
         }
+    };
+
+
+    // confirm automatic team form
+    $scope.confirmAutomaticTeamForm = function(callback) {
+        var confirm = $mdDialog.confirm()
+            .title("Automatic Team Form")
+            .ok("Form")
+            .cancel("Cancel");
+
+        $mdDialog.show(confirm)
+            .then(function() {
+                callback(true);
+            }, function() {
+                callback(false);
+            });
+    };
+
+    // automatic team form
+    $scope.automaticTeamForm = function() {
+        $scope.confirmAutomaticTeamForm(function(confirm) {
+            if (!confirm) {
+                // document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Cancel automatic team form"});
+                return;
+            }
+
+            console.log("automatic team form");
+        });
     };
 })
 .config(function($mdThemingProvider) {
