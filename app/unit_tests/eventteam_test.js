@@ -147,17 +147,8 @@ describe("Event Team Controller", function() {
 
             var expected = [
                 {
-                    name: "team2",
-                    size: 2,
-                    currentTeamSize: 1,
-                    skills: ["Programming"],
-                    teamMembers: [
-                        {uid: "uid", name: "name", skills: ["Programming"]}
-                    ]
-                },
-                {
-                    name: "team4",
-                    size: 2,
+                    name: "team1",
+                    size: 5,
                     currentTeamSize: 1,
                     skills: ["Programming"],
                     teamMembers: [
@@ -173,10 +164,18 @@ describe("Event Team Controller", function() {
                         {uid: "uid", name: "name", skills: ["Programming"]}
                     ]
                 },
-                
                 {
-                    name: "team1",
-                    size: 5,
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team4",
+                    size: 2,
                     currentTeamSize: 1,
                     skills: ["Programming"],
                     teamMembers: [

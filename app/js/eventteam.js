@@ -111,7 +111,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         console.log("sortPlaces()");
         return teams.sort(function(a, b) {
             var x = a["size"]-a["currentTeamSize"]; var y = b["size"]-b["currentTeamSize"];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
         });
     };
 
