@@ -81,10 +81,38 @@
 
                     <div id="team-list">
                         <!-- filter and sort switches -->
-                        <form>
-                            <md-switch ng-model="filterPlacesSwitch" ng-change="filterSort(filterPlacesSwitch, filterSkillsMatchSwitch)">Teams with places left</md-switch>
-                            <md-switch ng-model="filterSkillsMatchSwitch" ng-change="filterSort(filterPlacesSwitch, filterSkillsMatchSwitch)">Teams that match my skills</md-switch>
-                        </form>
+                        <div class="container-fluid">
+                            <form>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <span>Filter</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <md-switch ng-model="filterPlacesSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch)">Places left</md-switch>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <md-switch ng-model="filterSkillsMatchSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch)">Match my skills</md-switch>
+                                    </div>
+                                    <div class="col-sm-3">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <span>Sort</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <md-switch ng-model="sortPlacesSwitch" ng-change="sortTeams('places')">Places left</md-switch>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <md-switch ng-model="sortSkillsMatchSwitch" ng-change="sortTeams('skillsMatch')">Match my skills</md-switch>
+                                    </div>
+                                    <div class="col-sm-3">
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
 
 
                         <!-- teams -->

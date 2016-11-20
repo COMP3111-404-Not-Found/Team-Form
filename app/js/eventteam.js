@@ -98,7 +98,9 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     /* filter and sort switches */
     // bind variables
     $scope.filterPlacesSwitch = false;
-    $scope.filterSkillsMatchSwitch = true;
+    $scope.filterSkillsMatchSwitch = false;
+    $scope.sortPlacesSwitch = false;
+    $scope.sortSkillsMatchSwitch = false;
 
     // filter teams that still have places left
     $scope.filterPlaces = function(teams) {
@@ -106,15 +108,30 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         return getAvailableTeam(teams);
     };
 
-    // sort teams by the number of places left
-    $scope.sortPlaces = function(teams) {
-        console.log("sortPlaces()");
-        return teams;
-    };
-
     // filter teams that match the signed in user skills
     $scope.filterSkillsMatch = function(teams) {
         console.log("filterSkillsMatch()");
+        return teams;
+    };
+
+    // filter the teams
+    $scope.filterTeams = function(filterPlacesSwitch, filterSkillsMatchSwitch) {
+        var teams = angular.copy($scope.dbTeams);
+
+        if (filterPlacesSwitch) {
+            teams = $scope.filterPlaces(teams);
+        }
+
+        if (filterSkillsMatchSwitch) {
+            teams = $scope.filterSkillsMatch(teams);
+        }
+
+        $scope.teams = angular.copy(teams);
+    };
+
+    // sort teams by the number of places left
+    $scope.sortPlaces = function(teams) {
+        console.log("sortPlaces()");
         return teams;
     };
 
@@ -124,17 +141,19 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         return teams;
     };
 
-    // filter and sort the teams
-    $scope.filterSort = function(filterPlacesSwitch, filterSkillsMatchSwitch) {
-        var teams = angular.copy($scope.dbTeams);
-
-        if (filterPlacesSwitch) {
-            teams = $scope.filterPlaces(teams);
-            teams = $scope.sortPlaces(teams);
+    // sort the teams
+    $scope.sortTeams = function(sortBy) {
+        if (sortBy === "places") {
+            $scope.sortSkillsMatchSwitch = false;
+        } else if (sortBy === "skillsMatch") {
+            $scope.sortPlacesSwitch = false;
         }
 
-        if (filterSkillsMatchSwitch) {
-            teams = $scope.filterSkillsMatch(teams);
+        var teams = angular.copy($scope.teams);
+
+        if ($scope.sortPlacesSwitch) {
+            teams = $scope.sortPlaces(teams);
+        } else if ($scope.sortSkillsMatchSwitch) {
             teams = $scope.sortSkillsMatch(teams);
         }
 
