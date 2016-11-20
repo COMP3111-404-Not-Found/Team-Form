@@ -109,8 +109,8 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     $scope.members = $firebaseArray(eventTeamMembersRef);
     var membersArray = [];
     $scope.members.$loaded().then(function(members) {
-        members.forEach(function(member) {
-            membersArray.push({uid: member.$id, name: member.name, skills: member.skills});
+        angular.forEach(members, function(member) {
+            membersArray.push({uid: member.uid, name: member.name, skills: member.skills});
         });
     });
 
@@ -121,7 +121,7 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     $scope.teamSkills = $firebaseArray(teamSkillsRef);
     var teamSkillsArray = [];
     $scope.teamSkills.$loaded().then(function(teamSkills) {
-        teamSkills.forEach(function(teamSkill) {
+        angular.forEach(teamSkills, function(teamSkill) {
             teamSkillsArray.push(teamSkill.$value);
         });
     });
@@ -132,7 +132,7 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
     eventTeamMemberRequestsArray.$loaded().then(function(members) {
         $scope.requests = [];
 
-        members.forEach(function(member) {
+        angular.forEach(members, function(member) {
             if (member.selection !== undefined && member.selection.includes(teamName)) {
                 $scope.requests.push({uid: member.$id, name: member.name, skills: member.skills});
             }
