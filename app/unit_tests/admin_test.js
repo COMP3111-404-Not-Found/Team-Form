@@ -210,15 +210,15 @@ describe("Admin Controller", function() {
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
-        it("the team does not have any members (teamMembers === null)", function() {
-            teamMembers = null;
+        it("the team does not have any members (teamMembers === undefined)", function() {
+            teamMembers = undefined;
 
             var output = $scope.zeroMember(teamMembers);
 
-            expect(output).toEqual(false);
+            expect(output).toEqual(true);
         });
 
-        it("the team does not have any members (teamMembers !== null)", function() {
+        it("the team does not have any members (teamMembers !== undefined)", function() {
             teamMembers = [
                 {
                     uid: "uid",
@@ -228,7 +228,7 @@ describe("Admin Controller", function() {
 
             var output = $scope.zeroMember(teamMembers);
 
-            expect(output).toEqual(true);
+            expect(output).toEqual(false);
         });
     });
 
