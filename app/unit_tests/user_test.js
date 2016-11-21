@@ -103,4 +103,199 @@ describe("User Controller", function() {
             expect($scope.filterEvents(eventTeamObj, userObj)).toEqual(expected);
         });
     });
+
+
+    describe("$scope.limitRecommendations", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("UserCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        it("limit the number of recommendations for each event", function() {
+            var recommendations = [
+                {
+                    eventName: "event1",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team5",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team6",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                },
+                {
+                    eventName: "event2",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team5",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                },
+                {
+                    eventName: "event3",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                }
+            ];
+
+            var expected = [
+                {
+                    eventName: "event1",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team5",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                },
+                {
+                    eventName: "event2",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team5",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                },
+                {
+                    eventName: "event3",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team2",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team3",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        },
+                        {
+                            teamName: "team4",
+                            placesLeft: 1,
+                            skillsMatch: {match: "Programming", number: 1}
+                        }
+                    ]
+                }
+            ];
+
+            expect($scope.limitRecommendations(recommendations, 5)).toEqual(expected);
+        });
+    });
 });
