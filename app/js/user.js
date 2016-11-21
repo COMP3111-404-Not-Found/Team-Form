@@ -83,6 +83,24 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
             $("#skillInput").blur();
         });
     };
+
+
+    // recommendations
+    $scope.recommendations = [
+        {
+            eventName: "event_name",
+            teams: [
+                {
+                    teamName: "team_name",
+                    placesLeft: 1,
+                    skillsMatch: {
+                        match: ["AngularJS", "Firebase"],
+                        number: 1
+                    }
+                }
+            ]
+        }
+    ];
 })
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')

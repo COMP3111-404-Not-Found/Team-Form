@@ -85,24 +85,56 @@
                             <md-button type="submit" ng-click="addSkill()" class="md-raised">Add Skill</md-button>
                         </form>
 
-                        <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline">{{eventKey}}</span>
-                                    <span class="md-subhead">{{eventValue.team}}</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content ng-if="!eventValue.team">
-                                <md-subheader>Requests</md-subheader>
-                                <md-content>
-                                    <md-list ng-cloak>
-                                        <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?q={{eventKey}}">
-                                            <span>{{request}}</span>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-content>
-                            </md-card-content>
-                        </md-card>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <md-subheader>Joined Events</md-subheader>
+                                    <md-card ng-repeat="(eventKey, eventValue) in userObj.events">
+                                        <md-card-title>
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{eventKey}}</span>
+                                                <span class="md-subhead">{{eventValue.team}}</span>
+                                            </md-card-title-text>
+                                        </md-card-title>
+                                        <md-card-content ng-if="!eventValue.team">
+                                            <md-subheader>Requests</md-subheader>
+                                            <md-content>
+                                                <md-list ng-cloak>
+                                                    <md-list-item ng-repeat="request in eventValue.selection" ng-href="team.html?event={{eventKey}}&team={{request}}">
+                                                        <span>{{request}}</span>
+                                                    </md-list-item>
+                                                </md-list>
+                                            </md-content>
+                                        </md-card-content>
+                                    </md-card>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <md-subheader>Recommendations</md-subheader>
+                                    <md-card ng-repeat="recommendation in recommendations">
+                                        <md-card-title>
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{recommendation.eventName}}</span>
+                                            </md-card-title-text>
+                                        </md-card-title>
+                                        <md-card-content>
+                                            <md-content>
+                                                <md-list ng-cloak>
+                                                    <md-list-item ng-repeat="team in recommendation.teams" ng-href="team.html?event={{recommendation.eventName}}&team={{team.teamName}}" class="md-3-line">
+                                                        <div class="md-list-item-text" layout="column">
+                                                            <p>Team: {{team.teamName}}</p>
+                                                            <p>Places left: {{team.placesLeft}}</p>
+                                                            <p>Skills match ({{team.skillsMatch.number}}): {{team.skillsMatch.match.join(", ")}}</p>
+                                                        </div>
+                                                        <md-button ng-click="requestTeam(team.teamName)" class="md-secondary">Request</md-button>
+                                                    </md-list-item>
+                                                </md-list>
+                                            </md-content>
+                                        </md-card-content>
+                                    </md-card>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div ng-if="!user">
