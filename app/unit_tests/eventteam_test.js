@@ -184,7 +184,85 @@ describe("Event Team Controller", function() {
         });
 
         it("sort the teams by the number of places left", function() {
-            // $scope.sortPlaces(teams);
+            var teams = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                }
+            ];
+
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ]
+                }
+            ];
+
+            expect($scope.sortPlaces(teams)).toEqual(expected);
         });
     });
 
