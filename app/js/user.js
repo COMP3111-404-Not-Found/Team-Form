@@ -120,6 +120,33 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         return eventTeam;
     };
 
+    // construct the recommendations array object
+    $scope.constructRecommendations = function(eventTeamObj) {
+        var recommendations = [];
+
+        angular.forEach(eventTeamObj, function(eventValue, eventKey) {
+            var recommendation = {
+                eventName: eventKey,
+                teams: []
+            };
+
+            angular.forEach(eventValue.team, function(teamValue, teamKey) {
+                recommendation.teams.push({
+                    teamName: teamKey,
+                    placesLeft: teamValue.size - teamValue.currentTeamSize,
+                    skillsMatch: {match: [], number: 0},
+                    missingSkillsMatch: {match: [], number: 0},
+                    skills: teamValue.skills,
+                    teamSkills: teamValue.teamSkills
+                });
+            });
+
+            recommendations.push(recommendation);
+        });
+
+        return recommendations;
+    };
+
     // limit the number of recommendations for each event
     $scope.limitRecommendations = function(recommendations, limit) {
         var recommendationsLimited = [];
@@ -139,7 +166,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         $scope.recommendations = [];
 
         var eventsFiltered = $scope.filterEvents($scope.eventTeamObj, $scope.userObj);
-        console.log(eventsFiltered);
+
+        $scope.recommendations = $scope.constructRecommendations(eventsFiltered);
+        console.log($scope.recommendations);
     };
 })
 .config(function($mdThemingProvider) {
