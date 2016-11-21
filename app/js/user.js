@@ -120,6 +120,21 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         return eventTeam;
     };
 
+    // limit the number of recommendations for each event
+    $scope.limitRecommendations = function(recommendations, limit) {
+        var recommendationsLimited = [];
+
+        angular.forEach(recommendations, function(recommendation) {
+            recommendationsLimited.push(recommendation);
+
+            if (recommendation.teams.length > limit) {
+                recommendationsLimited[recommendationsLimited.length-1].teams = recommendation.teams.slice(0, limit);
+            }
+        });
+
+        return recommendationsLimited;
+    };
+
     $scope.recommend = function() {
         $scope.recommendations = [];
 
