@@ -105,6 +105,49 @@ describe("User Controller", function() {
     });
 
 
+    describe("$scope.constructRecommendations", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("UserCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        it("construct the recommendations array object", function() {
+            var eventTeamObj = {
+                event1: {
+                    team: {
+                        team1: {
+                            size: 5,
+                            currentTeamSize: 1,
+                            skills: ["Programming"],
+                            teamSkills: ["Programming"]
+                        }
+                    }
+                }
+            };
+
+            var expected = [
+                {
+                    eventName: "event1",
+                    teams: [
+                        {
+                            teamName: "team1",
+                            placesLeft: 4,
+                            skillsMatch: {match: [], number: 0},
+                            missingSkillsMatch: {match: [], number: 0},
+                            skills: ["Programming"],
+                            teamSkills: ["Programming"]
+                        }
+                    ]
+                }
+            ];
+
+            expect($scope.constructRecommendations(eventTeamObj)).toEqual(expected);
+        });
+    });
+
+
     describe("$scope.limitRecommendations", function() {
         var $scope, controller;
 
