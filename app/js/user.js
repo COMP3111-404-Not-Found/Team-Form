@@ -10,6 +10,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
     var skillsRef = null;
     $scope.skills = null;
 
+    var eventTeamRef = null;
+    $scope.eventTeamObj = null;
+
     // observe the auth state change
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -27,6 +30,16 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
                 skillsRef = userRef.child("skills");
                 $scope.skills = $firebaseArray(skillsRef);
 
+                $scope.userObj.$loaded().then(function() {
+                    // get the events object from the database after the user object is loaded
+                    eventTeamRef = firebase.database().ref().child("events");
+                    $scope.eventTeamObj = $firebaseObject(eventTeamRef);
+                    $scope.eventTeamObj.$loaded().then(function() {
+                        console.log($scope.eventTeamObj);
+                        $scope.recommend();
+                    });
+                });
+
                 // change the title in the navigation to the name of the signed in user
                 $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html($scope.user.displayName);
             });
@@ -43,6 +56,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
 
                 skillsRef = null;
                 $scope.skills = null;
+
+                eventTeamRef = null;
+                $scope.eventTeamObj = null;
 
                 // change the title in the navigation to "User"
                 $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html("User");
@@ -85,22 +101,31 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
     };
 
 
-    // recommendations
-    $scope.recommendations = [
-        {
-            eventName: "event_name",
-            teams: [
-                {
-                    teamName: "team_name",
-                    placesLeft: 1,
-                    skillsMatch: {
-                        match: ["AngularJS", "Firebase"],
-                        number: 1
-                    }
+    /* recommendations */
+    $scope.recommendations = [];
+
+    // filter the events to events that the user joined
+    $scope.filterEvents = function(eventTeamObj, userObj) {
+        var eventTeam = {};
+
+        angular.forEach(eventTeamObj, function(eventValue, eventKey) {
+            var c = eventKey.charAt(0);
+            if (c !== "_" && c !== "$" && c !== ".") {
+                if (userObj.events[eventKey] !== undefined) {
+                    eventTeam[eventKey] = eventValue;
                 }
-            ]
-        }
-    ];
+            }
+        });
+
+        return eventTeam;
+    };
+
+    $scope.recommend = function() {
+        $scope.recommendations = [];
+
+        var eventsFiltered = $scope.filterEvents($scope.eventTeamObj, $scope.userObj);
+        console.log(eventsFiltered);
+    };
 })
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
