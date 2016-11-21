@@ -119,7 +119,10 @@
                                         <div class="md-list-item-text">
                                             <h3><strong> {{t.$id}} </strong></h3>
                                             <h4>Preferred team size: <span class="badge">{{t.size}}</span></h4>
-                                            <h4>Current team members: {{t.teamMembers}} <span class="badge" ng-if="zeroMember(t.teamMembers)">{{0}}</span></h4>
+                                            <h4>Current team members: <span class="badge" ng-if="zeroMember(t.teamMembers)">{{0}}</span></h4>
+                                            <div ng-repeat="member in t.teamMembers">
+                                                <h4>{{member.name}}</h4>
+                                            </div>
                                         </div>
                                         <md-divider ng-if="!$last"></md-divider>
                                     </md-list-item>
