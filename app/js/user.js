@@ -177,6 +177,36 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         $scope.limitRecommendations($scope.recommendations, 5);
         console.log($scope.recommendations);
     };
+
+
+    // request team function
+    $scope.requestTeam = function(eventName, teamName) {
+        var eventMemberTeamRef = firebase.database().ref().child("events").child(eventName).child("member").child($scope.user.uid).child("selection");
+        var userEventRef = firebase.database().ref().child("users").child($scope.user.uid).child("events").child(eventName).child("selection");
+        var eventMemberTeamArray = $firebaseArray(eventMemberTeamRef);
+
+        eventMemberTeamArray.$loaded().then(function(selections) {
+            var requests = [];
+
+            // add the selections stored in the database
+            selections.forEach(function(selection) {
+                requests.push(selection.$value);
+            });
+
+            // add the request team if it was not in the database
+            if (!requests.includes(teamName)) {
+                requests.push(teamName);
+            }
+
+            // update the record in the event
+            eventMemberTeamRef.set(requests);
+            // update the record in the user's profile
+            userEventRef.set(requests);
+
+            // refresh the recommendations
+            $scope.recommend();
+        });
+    };
 })
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
