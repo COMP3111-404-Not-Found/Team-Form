@@ -583,4 +583,44 @@ describe("User Controller", function() {
             expect($scope.recommendations[0].teams[4].teamName).toEqual("team1");
         });
     });
+
+
+    describe("$scope.requestTeam", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("UserCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
+        });
+
+        beforeEach(function() {
+            $scope.user = {
+                uid: "uid",
+                name: "name"
+            };
+
+            // mock $firebaseArray object $loaded
+            spyOn($firebaseArray.prototype, "$loaded").and.callFake(function() {
+                return {then: function(callback) {callback([{$value: "team1"}]);}};
+            });
+
+            // mock firebase reference set
+            spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
+                console.log("set", obj);
+            });
+
+            // mock $scope.recommend
+            spyOn($scope, "recommend").and.callFake(function() {
+                console.log("recommend");
+            });
+        });
+
+        it("request joining a team", function() {
+            $scope.requestTeam("event", "team2");
+
+            expect($firebaseArray.prototype.$loaded).toHaveBeenCalled();
+            expect(firebase.database.Reference.prototype.set).toHaveBeenCalledWith(["team1", "team2"]);
+            expect($scope.recommend).toHaveBeenCalled();
+        });
+    });
 });

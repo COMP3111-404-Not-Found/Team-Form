@@ -126,7 +126,7 @@
                                                             <p>Places left: {{team.placesLeft}}</p>
                                                             <p>Skills match ({{team.skillsMatch.number}}): {{team.skillsMatch.match.join(", ")}}</p>
                                                         </div>
-                                                        <md-button ng-click="requestTeam(team.teamName)" class="md-secondary">Request</md-button>
+                                                        <md-button ng-click="requestTeam(recommendation.eventName, team.teamName)" class="md-secondary">Request</md-button>
                                                     </md-list-item>
                                                 </md-list>
                                             </md-content>

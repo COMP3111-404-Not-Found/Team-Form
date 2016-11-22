@@ -329,10 +329,8 @@ describe("Event Team Controller", function() {
     });
 
 
-    /*describe("$scope.requestTeam", function() {
+    describe("$scope.requestTeam", function() {
         var $scope, controller;
-
-        var teamName = "";
 
         beforeEach(function() {
             $scope = {};
@@ -342,13 +340,25 @@ describe("Event Team Controller", function() {
         beforeEach(function() {
             $scope.user = {
                 uid: "uid",
-                displayName: "name"
+                name: "name"
             };
-            teamName = "team";
+
+            // mock $firebaseArray object $loaded
+            spyOn($firebaseArray.prototype, "$loaded").and.callFake(function() {
+                return {then: function(callback) {callback([{$value: "team1"}]);}};
+            });
+
+            // mock firebase reference set
+            spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
+                console.log("set", obj);
+            });
         });
 
         it("request joining a team", function() {
-            $scope.requestTeam(teamName);
+            $scope.requestTeam("team2");
+
+            expect($firebaseArray.prototype.$loaded).toHaveBeenCalled();
+            expect(firebase.database.Reference.prototype.set).toHaveBeenCalledWith(["team1", "team2"]);
         });
-    });*/
+    });
 });
