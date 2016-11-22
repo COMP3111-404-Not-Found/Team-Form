@@ -147,19 +147,22 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         return recommendations;
     };
 
+    // sort the recommendations by the number of places left descendingly
+    $scope.sortRecommendationsPlacesLeft = function(recommendations) {
+        angular.forEach(recommendations, function(recommendation, index, recommendationsArray) {
+            recommendationsArray[index].teams = recommendation.teams.sort(function(team1, team2) {
+                return team2.placesLeft - team1.placesLeft;
+            });
+        });
+    };
+
     // limit the number of recommendations for each event
     $scope.limitRecommendations = function(recommendations, limit) {
-        var recommendationsLimited = [];
-
-        angular.forEach(recommendations, function(recommendation) {
-            recommendationsLimited.push(recommendation);
-
+        angular.forEach(recommendations, function(recommendation, index, recommendationsArray) {
             if (recommendation.teams.length > limit) {
-                recommendationsLimited[recommendationsLimited.length-1].teams = recommendation.teams.slice(0, limit);
+                recommendationsArray[index].teams = recommendation.teams.slice(0, limit);
             }
         });
-
-        return recommendationsLimited;
     };
 
     $scope.recommend = function() {
@@ -168,6 +171,10 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         var eventsFiltered = $scope.filterEvents($scope.eventTeamObj, $scope.userObj);
 
         $scope.recommendations = $scope.constructRecommendations(eventsFiltered);
+
+        $scope.sortRecommendationsPlacesLeft($scope.recommendations);
+
+        $scope.limitRecommendations($scope.recommendations, 5);
         console.log($scope.recommendations);
     };
 })
