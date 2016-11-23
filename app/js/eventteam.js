@@ -113,16 +113,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // filter teams that match the signed in user skills
     $scope.filterSkillsMatch = function(teams) {
         console.log("filterSkillsMatch()");
-        return teams.filter(
-            function(each) {
-                for (var i = 0; i < teams.length; i++) {
-                    if(each.skillsMatch.number > 0) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        );
+        return teams.filter(function(team) {return team.skillsMatch.number > 0;});
     };
 
     // filter the teams
