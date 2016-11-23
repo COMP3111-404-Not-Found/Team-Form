@@ -19,8 +19,26 @@ describe("User Controller", function() {
 
         beforeEach(function() {
             $scope = {};
+
+            /*// mock $firebaseArray
+            $firebaseArray = jasmine.createSpy("$firebaseObject");
+            $firebaseArray.and.callFake(function(ref) {
+                return {
+                    $loaded: function() {
+                        return {then: function(callback) {callback([]);}};
+                    }
+                };
+            });*/
+
             controller = $controller("UserCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray});
         });
+
+        /*beforeEach(function() {
+            // mock firebase reference update
+            spyOn(firebase.database.Reference.prototype, "update").and.callFake(function(obj) {
+                console.log("update", obj);
+            });
+        });*/
 
         it("no user is signed in ($scope.user === null)", function() {
             $scope.user = null;
@@ -38,6 +56,23 @@ describe("User Controller", function() {
 
             $scope.addSkill();
         });
+
+        /*it("add a skill to the user profile", function() {
+            $scope.user = {
+                uid: "uid",
+                displayName: "name"
+            };
+            $scope.userObj = {
+                events: {
+                    event1: {}
+                }
+            };
+            $scope.skillInput = "Programming";
+
+            $scope.addSkill();
+
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({0: "Programming"});
+        });*/
     });
 
 
@@ -596,7 +631,7 @@ describe("User Controller", function() {
         beforeEach(function() {
             $scope.user = {
                 uid: "uid",
-                name: "name"
+                displayName: "name"
             };
 
             // mock $firebaseArray object $loaded
