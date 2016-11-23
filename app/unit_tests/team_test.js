@@ -91,11 +91,11 @@ describe("Team Controller", function() {
             team: {
                 size: 5,
                 currentTeamSize: 1,
-                skills: {0: "Programming"},
+                skills: ["Programming"],
                 teamMembers: {
                     0: {uid: "uid", name: "member", skills: {0: "Programming"}}
                 },
-                teamSkills: {0: "Programming"}
+                teamSkills: ["Programming"]
             }
         }
     };
@@ -183,6 +183,18 @@ describe("Team Controller", function() {
             }
         });
     }));
+
+    beforeEach(function() {
+        // mock firebase reference update
+        spyOn(firebase.database.Reference.prototype, "update").and.callFake(function(obj) {
+            console.log("update", obj);
+        });
+
+        // mock firebase reference set
+        spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
+            console.log("set", obj);
+        });
+    });
 
     afterEach(function() {
         firebase.app().delete();
@@ -293,25 +305,53 @@ describe("Team Controller", function() {
         });
 
         beforeEach(function() {
-            request = {
-                uid: "uid",
-                displayName: "name"
-            };
+            // mock addTeamSkills
+            addTeamSkills = jasmine.createSpy("addTeamSkills");
+            addTeamSkills.and.callFake(function(teamSkills, userSkills) {
+                return ["Programming"];
+            });
         });
 
-        it("the team is full already ($scope.currentTeamSize >= $scope.size", function() {
-            $scope.currentTeamSize = 5;
+        beforeEach(function() {
+            request = {
+                uid: "uid",
+                name: "name",
+                skills: ["Programming"]
+            };
+
             $scope.size = 5;
+            $scope.currentTeamSize = 0;
+
+            $scope.requests = [
+                {uid: "uid", name: "name", skills: ["Programming"]}
+            ];
+        });
+
+        it("the team is full already ($scope.currentTeamSize > $scope.size", function() {
+            $scope.size = 5;
+            $scope.currentTeamSize = 6;
 
             $scope.addMember(request);
         });
 
-        /*it("add the member request", function() {
-            $scope.currentTeamSize = 4;
+        it("the team is full already ($scope.currentTeamSize = $scope.size", function() {
             $scope.size = 5;
+            $scope.currentTeamSize = 5;
 
-            $scope.addMember();
-        });*/
+            $scope.addMember(request);
+        });
+
+        it("add the member request", function() {
+            $scope.addMember(request);
+
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({0: {uid: "uid", name: "name", skills: ["Programming"]}});
+            expect(firebase.database.Reference.prototype.set).toHaveBeenCalledWith(["Programming"]);
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({selection: null});
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({team: "test", selection: null});
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({currentTeamSize: 1});
+            expect($scope.requests).toEqual([]);
+            expect($scope.currentTeamSize).toEqual(1);
+        });
     });
 
 
@@ -326,15 +366,38 @@ describe("Team Controller", function() {
         });
 
         beforeEach(function() {
-            member = {
-                uid: "uid",
-                displayName: "name"
-            };
+            // mock removeTeamSkills
+            removeTeamSkills = jasmine.createSpy("removeTeamSkills");
+            removeTeamSkills.and.callFake(function(teamSkillsArray, membersArray, member) {
+                return [];
+            });
         });
 
-        /*it("remove the member", function() {
+        beforeEach(function() {
+            member = {
+                uid: "uid",
+                name: "name",
+                skills: ["Programming"]
+            };
+
+            $scope.members = {
+                0: {uid: "uid", name: "name", skills: ["Programming"]},
+                $remove: function() {
+                    console.log("$remove");
+                }
+            };
+
+            $scope.currentTeamSize = 1;
+        });
+
+        it("remove the member", function() {
             $scope.removeMember(member);
-        });*/
+
+            expect(firebase.database.Reference.prototype.set).toHaveBeenCalledWith([]);
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({team: ""});
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({currentTeamSize: 0});
+            expect($scope.currentTeamSize).toEqual(0);
+        });
     });
 
 
@@ -350,8 +413,11 @@ describe("Team Controller", function() {
             $scope.skillInput = "Programming";
         });
 
-        /*it("add the preferred skill", function() {
+        it("add the preferred skill", function() {
             $scope.addSkill();
-        });*/
+
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({1: "Programming"});
+            expect($scope.skillInput).toBeNull();
+        });
     });
 });
