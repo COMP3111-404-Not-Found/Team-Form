@@ -91,7 +91,7 @@
                                         <md-switch ng-model="filterPlacesSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch)">Places left</md-switch>
                                     </div>
                                     <div class="col-sm-3">
-                                        <md-switch ng-model="filterSkillsMatchSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch)">Match my skills</md-switch>
+                                        <md-switch ng-model="filterSkillsMatchSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch)" ng-if="user">Match my skills</md-switch>
                                     </div>
                                     <div class="col-sm-3">
 
@@ -105,7 +105,7 @@
                                         <md-switch ng-model="sortPlacesSwitch" ng-change="sortTeams('places')">Places left</md-switch>
                                     </div>
                                     <div class="col-sm-3">
-                                        <md-switch ng-model="sortSkillsMatchSwitch" ng-change="sortTeams('skillsMatch')">Match my skills</md-switch>
+                                        <md-switch ng-model="sortSkillsMatchSwitch" ng-change="sortTeams('skillsMatch')" ng-if="user">Match my skills</md-switch>
                                     </div>
                                     <div class="col-sm-3">
 

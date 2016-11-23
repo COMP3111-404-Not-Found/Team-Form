@@ -4,7 +4,7 @@
  * @param teamObj team firebaseObject
  * @return team JavaScript array
  */
-function parseTeams(teamObj) {
+function parseTeams(teamObj, userObj) {
     var teams = [];
 
     angular.forEach(teamObj, function(value, key) {
@@ -16,7 +16,8 @@ function parseTeams(teamObj) {
                 currentTeamSize: value.currentTeamSize,
                 skills: value.skills,
                 teamMembers: value.teamMembers,
-                teamSkills: value.teamSkills
+                teamSkills: value.teamSkills,
+                skillsMatch: (userObj !== null) ? isMatched(value.skills, userObj.skills) : null
             });
         }
     });
@@ -91,7 +92,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     var teamObj = $firebaseObject(teamRef);
 
     teamObj.$loaded().then(function(teams) {
-        $scope.teams = parseTeams(teams);
+        $scope.teams = parseTeams(teams, $scope.userObj);
         $scope.dbTeams = angular.copy($scope.teams);
     });
 
@@ -112,7 +113,16 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // filter teams that match the signed in user skills
     $scope.filterSkillsMatch = function(teams) {
         console.log("filterSkillsMatch()");
-        return teams;
+        return teams.filter(
+            function(each) {
+                for (var i = 0; i < teams.length; i++) {
+                    if(each.skillsMatch.number > 0) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        );
     };
 
     // filter the teams
@@ -142,7 +152,11 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // sort teams by the number of skills matched
     $scope.sortSkillsMatch = function(teams) {
         console.log("sortSkillsMatch()");
-        return teams;
+
+        return teams.sort(function(a, b) {
+            var x = a.skillsMatch.number; var y = b.skillsMatch.number;
+            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+        });
     };
 
     // sort the teams
