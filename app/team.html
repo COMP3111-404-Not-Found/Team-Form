@@ -62,22 +62,22 @@
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
                     <div>
-                        <span>Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): {{size}}</span>
+                        <span class="md-headline">Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): {{size}}</span>
                         <button ng-click="changeCurrentTeamSize(1)"><span class="glyphicon glyphicon-plus"></span></button>
                         <button ng-click="changeCurrentTeamSize(-1)"><span class="glyphicon glyphicon-minus"></span></button>
                     </div>
 
                     <div>
-                        <span>Preferred skills:</span>
+                        <span class="md-headline">Preferred skills:</span>
                         <ul>
-                            <li ng-repeat="skill in skills">{{skill.$value}}</li>
+                            <h6><li ng-repeat="skill in skills">{{skill.$value}}</li></h6>
                         <ul>
                     </div>
 
                     <div>
-                        <span>Skills:</span>
+                        <span class="md-headline">Skills:</span>
                         <ul>
-                            <li ng-repeat="teamSkill in teamSkills">{{teamSkill.$value}}</li>
+                            <h6><li ng-repeat="teamSkill in teamSkills">{{teamSkill.$value}}</li></h6>
                         <ul>
                     </div>
 
@@ -89,11 +89,24 @@
                         <md-button ng-click="addSkill()" class="md-raised">Add Skill</md-button>
                     </form>
 
-                    <p>Team members ({{currentTeamSize}}):</p>
-                    <button ng-repeat="member in members" ng-click="removeMember(member)">{{member.name}}</button>
+                    <md-list ng-cloak>
+                        <span class="md-headline">Team members ({{currentTeamSize}}):</span>
+                        <md-list-item class="secondary-button-padding" ng-repeat="member in members">
+                            <p>{{member.name}}</p>
+                            <md-button class="md-raised" ng-click="removeMember(member)">Remove</md-button>
+                        </md-list-item>
+                    </md-list>
+                    <md-divider></md-divider>
 
-                    <p>Requests received:</p>
-                    <button ng-repeat="request in requests" ng-click="addMember(request)">{{request.name}}</button>
+                    <md-list ng-cloak>
+                        <span class="md-headline">Requests received:</span>
+                        <md-list-item class="secondary-button-padding" ng-repeat="request in requests">
+                            <p>{{request.name}}</p>
+                            <md-button class="md-raised" ng-click="addMember(request)">Accept</md-button>
+                        </md-list-item>
+                    </md-list>
+                    <md-divider></md-divider>
+
                 </md-content>
             </main>
         </div>
