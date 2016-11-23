@@ -4,7 +4,7 @@ $(document).ready(function() {
 });
 
 angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
-.controller("AdminCtrl", function($scope, $firebaseObject, $firebaseArray, $mdDialog) {
+.controller("AdminCtrl", function($scope, $firebaseObject, $firebaseArray, $window, $mdDialog) {
 
     // TODO: implementation of AdminCtrl
     // Initialize $scope.param as an empty JSON object
@@ -59,7 +59,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
     $scope.saveFunc = function() {
         $scope.param.$save();
         // Finally, go back to the front-end
-        window.location.href = "index.html";
+        $window.open("index.html", "_self");
     };
 
     // Date

@@ -1,15 +1,28 @@
 describe("Admin Controller", function() {
     beforeEach(module("teamform-admin-app"));
 
-    var $controller, $firebaseObject, $firebaseArray, $mdDialog;
+    var $controller, $firebaseObject, $firebaseArray, $window, $mdDialog;
 
-    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_, _$mdDialog_) {
+    beforeEach(inject(function(_$controller_, _$firebaseObject_, _$firebaseArray_, _$window_, _$mdDialog_) {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $controller = _$controller_;
         $firebaseObject = _$firebaseObject_;
         $firebaseArray = _$firebaseArray_;
+        $window = _$window_;
         $mdDialog = _$mdDialog_;
     }));
+
+    beforeEach(function() {
+        // mock firebase reference update
+        spyOn(firebase.database.Reference.prototype, "update").and.callFake(function(obj) {
+            console.log("update", obj);
+        });
+
+        // mock firebase reference set
+        spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
+            console.log("set", obj);
+        });
+    });
 
     afterEach(function() {
         firebase.app().delete();
@@ -20,7 +33,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
@@ -74,7 +87,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
@@ -123,26 +136,79 @@ describe("Admin Controller", function() {
     });
 
 
-    /*describe("$scope.saveFunc", function() {
+    describe("$scope.saveFunc", function() {
         var $scope, controller;
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         beforeEach(function() {
             $scope.param = {
                 $save: function() {
-                    console.log("saved");
+                    console.log("save");
                 }
             };
+
+            // mock $window.open
+            spyOn($window, "open").and.callFake(function(url, name) {
+                console.log("open " + url + " in " + name);
+            });
         });
 
         it("save", function() {
             $scope.saveFunc();
+
+            expect($window.open).toHaveBeenCalledWith("index.html", "_self");
         });
-    });*/
+    });
+
+
+    describe("load data", function() {
+        var $scope, controller;
+
+        var adminObj = {
+            admin: {
+                param: {
+                    minTeamSize: 1,
+                    maxTeamSize: 10,
+                    details: "details",
+                    startDate: new Date().getTime(),
+                    endDate: new Date().getTime()
+                }
+            }
+        };
+
+        beforeEach(function() {
+            $scope = {};
+
+            firebaseObjectMock = jasmine.createSpy("$firebaseObject mock");
+            firebaseObjectMock.and.callFake(function(ref) {
+                var refUrl = ref.toString();
+                var refUrlSplit = refUrl.split("/");
+                var refUrlSplitLength = refUrlSplit.length;
+
+                // https://team-form-4ffd7.firebaseio.com/.../admin/param
+                if (refUrlSplit[refUrlSplitLength-2] === "admin" && refUrlSplit[refUrlSplitLength-1] === "param") {
+                    var obj = adminObj.admin.param;
+                    obj.$loaded = function() {return {then: function(callback) {callback(adminObj.admin.param); return {catch: function(callback) {callback();}};}};};
+
+                    return obj;
+                }
+            });
+
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: firebaseObjectMock, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        it("load data", function() {
+            expect($scope.param.minTeamSize).toEqual(adminObj.admin.param.minTeamSize);
+            expect($scope.param.maxTeamSize).toEqual(adminObj.admin.param.maxTeamSize);
+            expect($scope.details).toEqual(adminObj.admin.param.details);
+            expect($scope.startDate).toEqual(new Date(adminObj.admin.param.startDate));
+            expect($scope.endDate).toEqual(new Date(adminObj.admin.param.endDate));
+        });
+    });
 
 
     describe("$scope.startChange", function() {
@@ -150,7 +216,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         it("set the minimum date when the start date changes", function() {
@@ -169,7 +235,13 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            $scope.details = "details";
+            $scope.startDate = new Date();
+            $scope.endDate = new Date();
         });
 
         it("invalid details ($scope.details === null)", function() {
@@ -196,9 +268,11 @@ describe("Admin Controller", function() {
             $scope.saveContent();
         });
 
-        /*it("save the details of the event", function() {
+        it("save the details of the event", function() {
             $scope.saveContent();
-        });*/
+
+            expect(firebase.database.Reference.prototype.update).toHaveBeenCalledWith({details: "details", startDate: $scope.startDate.getTime(), endDate: $scope.endDate.getTime()});
+        });
     });
 
 
@@ -207,7 +281,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         it("the team does not have any members (teamMembers === undefined)", function() {
@@ -238,7 +312,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         it("confirm the automatic team form", function() {
@@ -270,7 +344,7 @@ describe("Admin Controller", function() {
 
         beforeEach(function() {
             $scope = {};
-            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
         it("cancel the automatic team form", function() {
