@@ -106,41 +106,30 @@
                         <div class="row featurette" id="page_team">
                             <div class="col-md-12">
                                 <h2 class="featurette-heading">
-                                    Development Team
+                                    <span>Development Team</span>
                                     <br>
-                                    <span class="text-muted">{{teamName}}</span>
+                                    <span class="text-muted">404 Not Found</span>
                                 </h2>
-                                <!-- <div class="row border" > -->
-                                    <md-card md-theme="default" md-theme-watch ng-repeat="member in team">
-                                        <md-card-title class='text-align-center'>
-                                            <div class="col-md-4">
-                                                <md-card-title-media>
-                                                    <div class="md-media-lg card-media">
-                                                        <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
-                                                    </div>
-                                                </md-card-title-media>
-                                                <md-card-title-text>
-                                                    <span class="md-headline">{{member.name}}</span><br>
-                                                    <span class="md-subhead">{{member.email}}</span>
-                                                </md-card-title-text>
+                                <md-card ng-repeat="member in team">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <img ng-src="images/{{member.profilePicPath}}" class="img-responsive img-circle">
                                             </div>
-                                            <div class="col-md-8">
-                                                <h4>{{member.information}}</h4>
+                                            <div class="col-sm-8">
+                                                <md-card-title>
+                                                    <md-card-title-text>
+                                                        <span class="md-headline">{{member.name}} ({{member.id}})</span><br>
+                                                        <span class="md-subhead">{{member.email}}</span>
+                                                    </md-card-title-text>
+                                                </md-card-title>
+                                                <md-card-content>
+                                                    <p>{{member.bio}}</p>
+                                                </md-card-content>
                                             </div>
-                                        </md-card-title>
-                                    </md-card>
-
-                                    <div class="col-md-4 text-center">
-                                        <img ng-src="images/{{member.pic}}" class="img-circle img-responsive">
-                                        <div class="caption">
-                                            <h4>{{member.name}}</h4>
-                                            <p>{{member.email}}</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <h4>{{members.information}}</h4>
-                                    </div>
-                                <!-- </div> -->
+                                </md-card>
                             </div>
                         </div>
                         <!-- /END THE FEATURETTES -->
