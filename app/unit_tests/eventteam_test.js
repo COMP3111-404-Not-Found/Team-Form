@@ -1,6 +1,7 @@
 describe("Event Team Functions", function() {
     describe("parseTeams", function() {
         it("parse the team firebaseObject to a JavaScript array", function() {
+            var userObj = {uid: "uid", name: "name", skills: ["Programming"]};
             var teamObj = {
                 team1: {
                     size: 5,
@@ -15,7 +16,6 @@ describe("Event Team Functions", function() {
                     }
                 }
             };
-
             var expected = [
                 {
                     name: "team1",
@@ -25,11 +25,44 @@ describe("Event Team Functions", function() {
                     teamMembers: [
                         {uid: "uid", name: "name", skills: ["Programming"]}
                     ],
-                    teamSkills: ["Programming"]
+                    teamSkills: ["Programming"],
+                    skillsMatch: {match:["Programming"], number: 1 }
                 }
             ];
+            expect(parseTeams(teamObj, userObj)).toEqual(expected);
 
-            expect(parseTeams(teamObj)).toEqual(expected);
+        });
+        it("parse the team firebaseObject to a JavaScript array", function() {
+            var userObj = null;
+            var teamObj = {
+                team1: {
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    $loaded: function() {
+                        console.log("$loaded()");
+                    }
+                }
+            };
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch: null
+                }
+            ];
+            expect(parseTeams(teamObj, userObj)).toEqual(expected);
+
         });
     });
 });
@@ -121,6 +154,10 @@ describe("Event Team Controller", function() {
             controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
+        beforeEach(function() {
+            $scope.userObj = {uid: "uid", name: "name", skills: ["Programming"]};
+        });
+
         it("load data", function() {
             expect($scope.minTeamSize).toEqual(adminObj.admin.param.minTeamSize);
             expect($scope.maxTeamSize).toEqual(adminObj.admin.param.maxTeamSize);
@@ -129,7 +166,7 @@ describe("Event Team Controller", function() {
             expect($scope.details).toEqual(adminObj.admin.param.details);
 
             expect($scope.teams).toEqual([
-                {name: "team", size: 5, currentTeamSize: 1, skills: ["Programming"], teamMembers: [{uid: "uid", name: "member", skills: ["Programming"]}], teamSkills: ["Programming"]}
+                {name: "team", size: 5, currentTeamSize: 1, skills: ["Programming"], teamMembers: [{uid: "uid", name: "member", skills: ["Programming"]}], teamSkills: ["Programming"], skillsMatch: null}
             ]);
             expect($scope.dbTeams).toEqual($scope.teams);
         });
@@ -284,7 +321,71 @@ describe("Event Team Controller", function() {
         });
 
         it("filter the teams that have skills that the user has", function() {
-            // $scope.filterSkillsMatch(teams);
+            var teams = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Android","C++"], number: 2 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[], number: 0 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[""], number: 0 }
+                }
+            ];
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Android","C++"], number: 2 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Delta"], number: 1 }
+                }
+            ];
+            expect($scope.filterSkillsMatch(teams)).toEqual(expected);
         });
     });
 
@@ -298,7 +399,93 @@ describe("Event Team Controller", function() {
         });
 
         it("sort the teams by the number of skills matched", function() {
-            // $scope.sortSkillsMatch(teams);
+            var teams = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Android","C++"], number: 2 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[], number: 0 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[""], number: 0 }
+                }
+            ];
+
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Android","C++"], number: 2 }
+                },
+                
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[], number: 0 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    skillsMatch:{match:[""], number: 0 }
+                }
+            ];
+            expect($scope.sortSkillsMatch(teams)).toEqual(expected);
         });
     });
 
