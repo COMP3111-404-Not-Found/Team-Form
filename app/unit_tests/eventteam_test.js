@@ -94,11 +94,19 @@ describe("Event Team Controller", function() {
         $firebaseArray = _$firebaseArray_;
 
         $mdDialog = _$mdDialog_;
-        // mock $mdDialog.show
-        spyOn($mdDialog, "show").and.callFake(function(options) {
-            return {then: function(callback) {console.log("$mdDialog show promise");}};
-        });
     }));
+
+    beforeEach(function() {
+        // mock firebase reference update
+        spyOn(firebase.database.Reference.prototype, "update").and.callFake(function(obj) {
+            console.log("update", obj);
+        });
+
+        // mock firebase reference set
+        spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
+            console.log("set", obj);
+        });
+    });
 
     afterEach(function() {
         firebase.app().delete();
@@ -322,9 +330,23 @@ describe("Event Team Controller", function() {
             controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
+        beforeEach(function() {
+            // mock $mdDialog.show
+            spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(callback) {callback("team")}};
+            });
+        });
+
+        beforeEach(function() {
+            $scope.minTeamSize = 1;
+            $scope.maxTeamSize = 10;
+        });
+
         it("create a team", function() {
             $scope.createTeam();
+
             expect($mdDialog.show).toHaveBeenCalled();
+            expect(firebase.database.Reference.prototype.set).toHaveBeenCalledWith({size: 5, currentTeamSize: 0});
         });
     });
 
@@ -346,11 +368,6 @@ describe("Event Team Controller", function() {
             // mock $firebaseArray object $loaded
             spyOn($firebaseArray.prototype, "$loaded").and.callFake(function() {
                 return {then: function(callback) {callback([{$value: "team1"}]);}};
-            });
-
-            // mock firebase reference set
-            spyOn(firebase.database.Reference.prototype, "set").and.callFake(function(obj) {
-                console.log("set", obj);
             });
         });
 
