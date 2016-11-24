@@ -26,7 +26,8 @@ describe("Event Team Functions", function() {
                         {uid: "uid", name: "name", skills: ["Programming"]}
                     ],
                     teamSkills: ["Programming"],
-                    skillsMatch: {match:["Programming"], number: 1 }
+                    skillsMatch: {match:["Programming"], number: 1 },
+                    missingSkillsMatch: {match: [], number: 0 }
                 }
             ];
             expect(parseTeams(teamObj, userObj)).toEqual(expected);
@@ -58,7 +59,8 @@ describe("Event Team Functions", function() {
                         {uid: "uid", name: "name", skills: ["Programming"]}
                     ],
                     teamSkills: ["Programming"],
-                    skillsMatch: null
+                    skillsMatch: null,
+                    missingSkillsMatch: null
                 }
             ];
             expect(parseTeams(teamObj, userObj)).toEqual(expected);
@@ -380,6 +382,108 @@ describe("Event Team Controller", function() {
         });
     });
 
+    describe("$scope.filterMissingSkillsMatch", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("filter the teams that missing skills that the user has", function() {
+            var teams = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch: {match:["Android","C++"], number: 2 },
+                    missingSkillsMatch: {match:["Android", "C++"], number: 2 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[""], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team5",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]},
+                        {uid: "uid", name: "name", skills: ["Delta"]}
+                    ],
+                    teamSkills: ["Programming", "Delta"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                }
+            ];
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch: {match:["Android","C++"], number: 2 },
+                    missingSkillsMatch: {match:["Android", "C++"], number: 2 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:["Delta"], number: 1 }
+                }
+            ];
+            expect($scope.filterMissingSkillsMatch(teams)).toEqual(expected);
+        });
+    });
+
 
     describe("$scope.sortSkillsMatch", function() {
         var $scope, controller;
@@ -477,6 +581,146 @@ describe("Event Team Controller", function() {
                 }
             ];
             expect($scope.sortSkillsMatch(teams)).toEqual(expected);
+        });
+    });
+
+    describe("$scope.sortMissingSkillsMatch", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        it("sort the teams by the number of missing skills matched", function() {
+            var teams = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch: {match:["Android","C++"], number: 2 },
+                    missingSkillsMatch: {match:["Android", "C++"], number: 2 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[""], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team5",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]},
+                        {uid: "uid", name: "name", skills: ["Delta"]}
+                    ],
+                    teamSkills: ["Programming", "Delta"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                }
+            ];
+
+            var expected = [
+                {
+                    name: "team1",
+                    size: 5,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Android", "C++"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch: {match:["Android","C++"], number: 2 },
+                    missingSkillsMatch: {match:["Android", "C++"], number: 2 }
+                },
+                {
+                    name: "team3",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:["Delta"], number: 1 }
+                },
+                {
+                    name: "team2",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming","Beta"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team4",
+                    size: 2,
+                    currentTeamSize: 1,
+                    skills: ["Programming"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]}
+                    ],
+                    teamSkills: ["Programming"],
+                    skillsMatch:{match:[""], number: 0 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                },
+                {
+                    name: "team5",
+                    size: 4,
+                    currentTeamSize: 1,
+                    skills: ["Programming", "Delta", "Python"],
+                    teamMembers: [
+                        {uid: "uid", name: "name", skills: ["Programming"]},
+                        {uid: "uid", name: "name", skills: ["Delta"]}
+                    ],
+                    teamSkills: ["Programming", "Delta"],
+                    skillsMatch:{match:["Delta"], number: 1 },
+                    missingSkillsMatch: {match:[], number: 0 }
+                }
+            ];
+            expect($scope.sortMissingSkillsMatch(teams)).toEqual(expected);
         });
     });
 

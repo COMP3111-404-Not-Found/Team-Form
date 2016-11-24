@@ -17,7 +17,8 @@ function parseTeams(teamObj, userObj) {
                 skills: value.skills,
                 teamMembers: value.teamMembers,
                 teamSkills: value.teamSkills,
-                skillsMatch: (userObj !== null) ? isMatched(value.skills, userObj.skills) : null
+                skillsMatch: (userObj !== null) ? isMatched(value.skills, userObj.skills) : null,
+                missingSkillsMatch: (userObj !== null) ? missingSkillsMatched(value.skills, value.teamSkills, userObj.skills) : null
             });
         }
     });
@@ -110,8 +111,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // bind variables
     $scope.filterPlacesSwitch = false;
     $scope.filterSkillsMatchSwitch = false;
+    $scope.filterMissingSkillsMatchSwitch = false;
     $scope.sortPlacesSwitch = false;
     $scope.sortSkillsMatchSwitch = false;
+    $scope.sortMissingSkillsMatchSwitch = false;
 
     // filter teams that still have places left
     $scope.filterPlaces = function(teams) {
@@ -123,6 +126,12 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     $scope.filterSkillsMatch = function(teams) {
         console.log("filterSkillsMatch()");
         return teams.filter(function(team) {return team.skillsMatch.number > 0;});
+    };
+
+    // filter teams that missing the signed in user skills
+    $scope.filterMissingSkillsMatch = function(teams) {
+        console.log("filterMissingSkillsMatch()");
+        return teams.filter(function(team) {return team.missingSkillsMatch.number > 0;});
     };
 
     // filter the teams
@@ -152,9 +161,17 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     // sort teams by the number of skills matched
     $scope.sortSkillsMatch = function(teams) {
         console.log("sortSkillsMatch()");
-
         return teams.sort(function(a, b) {
             var x = a.skillsMatch.number; var y = b.skillsMatch.number;
+            return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+        });
+    };
+
+    // sort teams by the number of skills missing
+    $scope.sortMissingSkillsMatch = function(teams) {
+        console.log("sortMissingSkillsMatch()");
+        return teams.sort(function(a, b) {
+            var x = a.missingSkillsMatch.number; var y = b.missingSkillsMatch.number;
             return ((x < y) ? 1 : ((x > y) ? -1 : 0));
         });
     };
