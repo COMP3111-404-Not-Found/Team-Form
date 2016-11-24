@@ -125,6 +125,34 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
             });
     };
 
+    // get the event object
+    $scope.getEventObj = function(eventName, callback) {
+        var eventRef = firebase.database().ref().child("events").child(eventName);
+        var eventObj = $firebaseObject(eventRef);
+
+        eventObj.$loaded(function(event) {
+            callback(event);
+        });
+    };
+
+    // get the user object
+    $scope.getUserObj = function(eventName, callback) {
+        var userRef = firebase.database().ref().child("users");
+        var userObj = $firebaseObject(userRef);
+
+        userObj.$loaded(function(users) {
+            var usersFiltered = {};
+
+            angular.forEach(users, function(userValue, userKey) {
+                if (userValue.events !== undefined && userValue.events[eventName] !== undefined) {
+                    usersFiltered[userKey] = userValue;
+                }
+            });
+
+            callback(usersFiltered);
+        });
+    };
+
     // automatic team form
     $scope.automaticTeamForm = function() {
         $scope.confirmAutomaticTeamForm(function(confirm) {
@@ -134,6 +162,16 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
             }
 
             console.log("automatic team forming");
+
+            $scope.getEventObj(eventName, function(event) {
+                console.log(event);
+
+                $scope.getUserObj(eventName, function(users) {
+                    console.log(users);
+
+
+                });
+            });
         });
     };
 })

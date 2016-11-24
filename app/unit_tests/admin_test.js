@@ -339,17 +339,113 @@ describe("Admin Controller", function() {
     });
 
 
-    describe("$scope.automaticTeamForm", function() {
+    describe("$scope.getEventObj", function() {
         var $scope, controller;
+
+        var eventObj = {};
 
         beforeEach(function() {
             $scope = {};
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
-        it("cancel the automatic team form", function() {
+        beforeEach(function() {
+            spyOn($firebaseObject.prototype, "$loaded").and.callFake(function(callback) {
+                callback(eventObj);
+            });
+        });
+
+        it("get the event object", function() {
+            $scope.getEventObj("event", function(event) {
+                expect(event).toEqual(eventObj);
+            });
+        });
+    });
+
+
+    describe("$scope.getUserObj", function() {
+        var $scope, controller;
+
+        var userObj = {
+            uid1: {
+                displayName: "name1",
+                events: {
+                    event: {}
+                }
+            },
+            uid2: {
+                displayName: "name2"
+            },
+            uid3: {
+                displayName: "name3",
+                events: {
+                    event2: {}
+                }
+            }
+        };
+
+        var usersFiltered = {
+            uid1: {
+                displayName: "name1",
+                events: {
+                    event: {}
+                }
+            }
+        };
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            spyOn($firebaseObject.prototype, "$loaded").and.callFake(function(callback) {
+                callback(userObj);
+            });
+        });
+
+        it("get the user object", function() {
+            $scope.getUserObj("event", function(users) {
+                expect(users).toEqual(usersFiltered);
+            });
+        });
+    });
+
+
+    describe("$scope.automaticTeamForm", function() {
+        var $scope, controller;
+
+        var eventObj = {};
+
+        var usersFiltered = {};
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
             // mock $mdDialog.show
             spyOn($mdDialog, "show").and.callFake(function(options) {
+                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
+            });
+        });
+
+        beforeEach(function() {
+            // mock $scope getEventObj
+            spyOn($scope, "getEventObj").and.callFake(function(eventName, callback) {
+                callback(eventObj);
+            });
+
+            // mock $scope getUserObj
+            spyOn($scope, "getUserObj").and.callFake(function(eventName, callback) {
+                callback(usersFiltered);
+            });
+        });
+
+        it("cancel the automatic team form", function() {
+            // mock $mdDialog.show
+            $mdDialog.show.and.callFake(function(options) {
                 return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
             });
 
@@ -357,11 +453,6 @@ describe("Admin Controller", function() {
         });
 
         it("automatic team form", function() {
-            // mock $mdDialog.show
-            spyOn($mdDialog, "show").and.callFake(function(options) {
-                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
-            });
-
             $scope.automaticTeamForm();
         });
     });
