@@ -133,7 +133,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                 return;
             }
 
-            console.log("automatic team form");
+            console.log("automatic team forming");
         });
     };
 })
