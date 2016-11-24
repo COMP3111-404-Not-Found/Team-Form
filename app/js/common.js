@@ -22,6 +22,10 @@ function getAvailableTeam(teams) {
  * @return missing skills matched and number of missing skills matched
  */
 function missingSkillsMatched(preferredSkills, foundSkills, currentSkills){
+	if (preferredSkills === undefined || currentSkills === undefined) {
+		return {match: [], number: 0};
+	}
+
 	var missingSkillsArray = preferredSkills.filter(
 	function(preferredSkill){
 		return !foundSkills.includes(preferredSkill);
@@ -44,6 +48,10 @@ function missingSkillsMatched(preferredSkills, foundSkills, currentSkills){
  * @return skills match and number of skills matched
  */
 function isMatched(preferredSkills, currentSkills){
+	if (preferredSkills === undefined || currentSkills === undefined) {
+		return {match: [], number: 0};
+	}
+
 	var filteredArray = preferredSkills.filter(
 	function(each){
 		for (var i=0;i<currentSkills.length;i++){

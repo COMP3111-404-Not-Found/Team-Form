@@ -31,6 +31,21 @@ describe('Test common', function() {
 
     // A test case of missingSkillsMatched
     describe('missingSkillsMatched Coverage Test', function() {
+        it("the team does not have any preferred skills (skills = undefined)", function() {
+            var skills = undefined;
+            var teamSkills = undefined;
+            var userSkills = ["Programming"];
+
+            expect(missingSkillsMatched(skills, teamSkills, userSkills)).toEqual({match: [], number: 0});
+        });
+
+        it("the user does not have any skills (userSkills = undefined)", function() {
+            var skills = ["Programming"];
+            var teamSkills = undefined;
+            var userSkills = undefined;
+
+            expect(missingSkillsMatched(skills, teamSkills, userSkills)).toEqual({match: [], number: 0});
+        });
 
         it('returns match of missing skills of team and skills of user', function() {
             var team = {
@@ -59,6 +74,19 @@ describe('Test common', function() {
 
     // A test case of matchedSkills
     describe('getMatchedSkills Coverage Test', function() {
+        it("the team does not have any preferred skills (skills = undefined)", function() {
+            var skills = undefined;
+            var userSkills = ["Programming"];
+
+            expect(isMatched(skills, userSkills)).toEqual({match: [], number: 0});
+        });
+
+        it("the user does not have any skills (userSkills = undefined)", function() {
+            var skills = ["Programming"];
+            var userSkills = undefined;
+
+            expect(isMatched(skills, userSkills)).toEqual({match: [], number: 0});
+        });
 
         it('returns matched skills of team and user', function() {
             var team = {
@@ -78,7 +106,7 @@ describe('Test common', function() {
 
             var matched = isMatched(team.preferredSkills, user.skills);
             var expected = ["C++","php"];
-            
+
             expect(matched.match).toEqual(expected);
             expect(matched.number).toEqual(2);
         });
@@ -113,7 +141,7 @@ describe('Test common', function() {
 
             expect(noTeam).toEqual(expected);
         });
-		
+
 		it('returns members who have an undefined team', function() {
         	var members = [
         	{
@@ -142,7 +170,7 @@ describe('Test common', function() {
     });
 
 
-    // A test case of teams with insufficient members 
+    // A test case of teams with insufficient members
     describe('insufficientMemberTeams Coverage Test', function() {
 
         it('returns uid of all members in teams with insufficient members', function() {

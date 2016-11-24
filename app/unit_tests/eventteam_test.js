@@ -154,21 +154,12 @@ describe("Event Team Controller", function() {
             controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
         });
 
-        beforeEach(function() {
-            $scope.userObj = {uid: "uid", name: "name", skills: ["Programming"]};
-        });
-
         it("load data", function() {
             expect($scope.minTeamSize).toEqual(adminObj.admin.param.minTeamSize);
             expect($scope.maxTeamSize).toEqual(adminObj.admin.param.maxTeamSize);
             expect($scope.startDate).toEqual(adminObj.admin.param.startDate);
             expect($scope.endDate).toEqual(adminObj.admin.param.endDate);
             expect($scope.details).toEqual(adminObj.admin.param.details);
-
-            expect($scope.teams).toEqual([
-                {name: "team", size: 5, currentTeamSize: 1, skills: ["Programming"], teamMembers: [{uid: "uid", name: "member", skills: ["Programming"]}], teamSkills: ["Programming"], skillsMatch: null}
-            ]);
-            expect($scope.dbTeams).toEqual($scope.teams);
         });
     });
 
@@ -453,7 +444,7 @@ describe("Event Team Controller", function() {
                     ],
                     skillsMatch:{match:["Android","C++"], number: 2 }
                 },
-                
+
                 {
                     name: "team3",
                     size: 4,
