@@ -30,6 +30,7 @@
 
     <!-- Customized libraries shared by pages -->
     <script src="js/site.js"></script>
+    <script src="js/common.js"></script>
 </head>
 <body>
     <div ng-app="teamform-user-app" ng-controller="UserCtrl">
@@ -62,28 +63,35 @@
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
                     <div ng-if="user">
-                        <div>
-                            <h1>{{user.displayName}}</h1>
-                            <h2>{{user.email}}</h2>
-                            <img ng-src="{{user.photoURL}}" />
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img ng-src="{{user.photoURL}}" />
+                                </div>
+                                <div class="col-sm-9">
+                                    <h2>{{user.email}}</h2>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <span>Skills:</span>
+                                            <ul>
+                                                <li ng-repeat="skill in skills">{{skill.$value}}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <!-- skills input -->
+                                            <form>
+                                                <md-input-container>
+                                                    <label>Skills</label>
+                                                    <input id="skillInput" type="text" ng-model="$parent.skillInput" ng-required="true">
+                                                </md-input-container>
+                                                <md-button type="submit" ng-click="addSkill()" class="md-raised">Add Skill</md-button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div>
-                            <span>Skills:</span>
-                            <ul>
-                                <li ng-repeat="skill in skills">{{skill.$value}}</li>
-                            </ul>
-                        </div>
-
-                        <!-- skills input -->
-                        <form>
-                            <md-input-container>
-                                <label>Skills</label>
-                                <input id="skillInput" type="text" ng-model="$parent.skillInput" ng-required="true">
-                            </md-input-container>
-                            <br>
-                            <md-button type="submit" ng-click="addSkill()" class="md-raised">Add Skill</md-button>
-                        </form>
 
                         <div class="container-fluid">
                             <div class="row">
@@ -122,8 +130,8 @@
                                                 <md-list ng-cloak>
                                                     <md-list-item ng-repeat="team in recommendation.teams" ng-href="team.html?event={{recommendation.eventName}}&team={{team.teamName}}" class="md-3-line">
                                                         <div class="md-list-item-text" layout="column">
-                                                            <p>Team: {{team.teamName}}</p>
-                                                            <p>Places left: {{team.placesLeft}}</p>
+                                                            <p>Team: {{team.teamName}} (Places: {{team.placesLeft}})</p>
+                                                            <p>Missing Skills match ({{team.missingSkillsMatch.number}}): {{team.missingSkillsMatch.match.join(", ")}}</p>
                                                             <p>Skills match ({{team.skillsMatch.number}}): {{team.skillsMatch.match.join(", ")}}</p>
                                                         </div>
                                                         <md-button ng-click="requestTeam(recommendation.eventName, team.teamName)" class="md-secondary">Request</md-button>
