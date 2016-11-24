@@ -1,3 +1,47 @@
+/*
+ * sort 2 teams for recommendation
+ *
+ * - check if any one team has places left, but another team does not
+ * - compare the number of missing skills match
+ * - compare the number of skills match
+ * - compare the number of places left
+ */
+function recommendationSort(team1, team2) {
+    if (team1.placesLeft !== 0 && team2.placesLeft === 0) {
+        return -1;
+    }
+
+    if (team1.placesLeft === 0 && team2.placesLeft !== 0) {
+        return 1;
+    }
+
+    if (team1.missingSkillsMatch.number > team2.missingSkillsMatch.number) {
+        return -1;
+    }
+
+    if (team1.missingSkillsMatch.number < team2.missingSkillsMatch.number) {
+        return 1;
+    }
+
+    if (team1.skillsMatch.number > team2.skillsMatch.number) {
+        return -1;
+    }
+
+    if (team1.skillsMatch.number < team2.skillsMatch.number) {
+        return 1;
+    }
+
+    if (team1.placesLeft > team2.placesLeft) {
+        return -1;
+    }
+
+    if (team1.placesLeft < team2.placesLeft) {
+        return 1;
+    }
+
+    return 0;
+}
+
 angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
 .controller("UserCtrl", function($scope, $firebaseObject, $firebaseArray) {
     initializeFirebase();
@@ -121,7 +165,7 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
     };
 
     // construct the recommendations array object
-    $scope.constructRecommendations = function(eventTeamObj) {
+    $scope.constructRecommendations = function(eventTeamObj, userObj) {
         var recommendations = [];
 
         angular.forEach(eventTeamObj, function(eventValue, eventKey) {
@@ -134,8 +178,8 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
                 recommendation.teams.push({
                     teamName: teamKey,
                     placesLeft: teamValue.size - teamValue.currentTeamSize,
-                    skillsMatch: {match: [], number: 0},
-                    missingSkillsMatch: {match: [], number: 0},
+                    skillsMatch: isMatched(teamValue.skills, userObj.skills),
+                    missingSkillsMatch: missingSkillsMatched(teamValue.skills, teamValue.teamSkills, userObj.skills),
                     skills: teamValue.skills,
                     teamSkills: teamValue.teamSkills
                 });
@@ -147,12 +191,19 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
         return recommendations;
     };
 
-    // sort the recommendations by the number of places left descendingly
-    $scope.sortRecommendationsPlacesLeft = function(recommendations) {
+    /*
+     * Provide recommendations
+     *
+     * 1. separate the teams into 2 sets (teams with places left, teams without places left)
+     * 2. sort each set by the number of missing skills match
+     * 3. sort each set by the number of skills match
+     * 4. sort each set by the number of places left
+     *
+     * @param recommendations recommendations object
+     */
+    $scope.provideRecommendations = function(recommendations) {
         angular.forEach(recommendations, function(recommendation, index, recommendationsArray) {
-            recommendationsArray[index].teams = recommendation.teams.sort(function(team1, team2) {
-                return team2.placesLeft - team1.placesLeft;
-            });
+            recommendationsArray[index].teams = recommendation.teams.sort(recommendationSort);
         });
     };
 
@@ -170,9 +221,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
 
         var eventsFiltered = $scope.filterEvents($scope.eventTeamObj, $scope.userObj);
 
-        $scope.recommendations = $scope.constructRecommendations(eventsFiltered);
+        $scope.recommendations = $scope.constructRecommendations(eventsFiltered, $scope.userObj);
 
-        $scope.sortRecommendationsPlacesLeft($scope.recommendations);
+        $scope.provideRecommendations($scope.recommendations);
 
         $scope.limitRecommendations($scope.recommendations, 5);
         console.log($scope.recommendations);

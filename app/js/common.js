@@ -26,6 +26,10 @@ function missingSkillsMatched(preferredSkills, foundSkills, currentSkills){
 		return {match: [], number: 0};
 	}
 
+	if (foundSkills === undefined) {
+		foundSkills = [];
+	}
+
 	var missingSkillsArray = preferredSkills.filter(
 	function(preferredSkill){
 		return !foundSkills.includes(preferredSkill);

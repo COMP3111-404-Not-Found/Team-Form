@@ -1,3 +1,242 @@
+describe("User Functions", function() {
+    describe("recommendationSort", function() {
+        it("team1 has places left, team2 does not have places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("team1 does not have places left, team2 has places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("team1 has more missing skills match, both teams have places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("team1 has more missing skills match, both teams do not have places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("team2 has more missing skills match, both teams have places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("team2 has more missing skills match, both teams do not have places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("team1 has more skills match, both teams have places left and same missing skills match", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("team1 has more skills match, both teams do not have places left and same missing skills match", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("team2 has more skills match, both teams have places left and same missing skills match", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("team2 has more skills match, both teams do not have places left and same missing skills match", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: [], number: 0}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: [], number: 0},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("both teams have the same missing skills match and skills match, team1 has more places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 0,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(-1);
+        });
+
+        it("both teams have the same missing skills match and skills match, team2 has more places left", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 0,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(1);
+        });
+
+        it("both teams are the same for recommendation sorting", function() {
+            var team1 = {
+                teamName: "team1",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            var team2 = {
+                teamName: "team2",
+                placesLeft: 1,
+                missingSkillsMatch: {match: ["Programming"], number: 1},
+                skillsMatch: {match: ["Programming"], number: 1}
+            };
+
+            expect(recommendationSort(team1, team2)).toEqual(0);
+        });
+    });
+});
+
+
 describe("User Controller", function() {
     beforeEach(module("teamform-user-app"));
 
@@ -162,6 +401,17 @@ describe("User Controller", function() {
                 }
             };
 
+            var userObj = {
+                name: "user",
+                skills: ["Programming"],
+                events: {
+                    event1: {
+                        team: "",
+                        selection: ["team1"]
+                    }
+                }
+            };
+
             var expected = [
                 {
                     eventName: "event1",
@@ -169,7 +419,7 @@ describe("User Controller", function() {
                         {
                             teamName: "team1",
                             placesLeft: 4,
-                            skillsMatch: {match: [], number: 0},
+                            skillsMatch: {match: ["Programming"], number: 1},
                             missingSkillsMatch: {match: [], number: 0},
                             skills: ["Programming"],
                             teamSkills: ["Programming"]
@@ -178,12 +428,12 @@ describe("User Controller", function() {
                 }
             ];
 
-            expect($scope.constructRecommendations(eventTeamObj)).toEqual(expected);
+            expect($scope.constructRecommendations(eventTeamObj, userObj)).toEqual(expected);
         });
     });
 
 
-    describe("$scope.sortRecommendationsPlacesLeft", function() {
+    describe("$scope.provideRecommendations", function() {
         var $scope, controller;
 
         beforeEach(function() {
@@ -219,120 +469,16 @@ describe("User Controller", function() {
                             missingSkillsMatch: {match: [], number: 0},
                             skills: ["Programming"],
                             teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team4",
-                            placesLeft: 5,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        }
-                    ]
-                },
-                {
-                    eventName: "event2",
-                    teams: [
-                        {
-                            teamName: "team1",
-                            placesLeft: 5,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team2",
-                            placesLeft: 4,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team3",
-                            placesLeft: 6,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
                         }
                     ]
                 }
             ];
 
-            var expected = [
-                {
-                    eventName: "event1",
-                    teams: [
-                        {
-                            teamName: "team2",
-                            placesLeft: 6,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team1",
-                            placesLeft: 5,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team4",
-                            placesLeft: 5,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team3",
-                            placesLeft: 4,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        }
-                    ]
-                },
-                {
-                    eventName: "event2",
-                    teams: [
-                        {
-                            teamName: "team3",
-                            placesLeft: 6,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team1",
-                            placesLeft: 5,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        },
-                        {
-                            teamName: "team2",
-                            placesLeft: 4,
-                            skillsMatch: {match: [], number: 0},
-                            missingSkillsMatch: {match: [], number: 0},
-                            skills: ["Programming"],
-                            teamSkills: ["Programming"]
-                        }
-                    ]
-                }
-            ];
+            $scope.provideRecommendations(recommendations);
 
-            $scope.sortRecommendationsPlacesLeft(recommendations);
-
-            expect(recommendations).toEqual(expected);
+            expect(recommendations[0].teams[0].teamName).toEqual("team2");
+            expect(recommendations[0].teams[1].teamName).toEqual("team1");
+            expect(recommendations[0].teams[2].teamName).toEqual("team3");
         });
     });
 
