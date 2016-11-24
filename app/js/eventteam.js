@@ -36,6 +36,17 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     initializeFirebase();
 
 
+    $scope.eventName = getURLParameter("event");
+    if ($scope.eventName === null) {
+        $scope.eventName = "test";
+    }
+
+
+    /* teams */
+    var teamRef = firebase.database().ref().child("events").child($scope.eventName).child("team");
+    var teamObj = null;
+
+
     $scope.user = null;
 
     var userRef = null;
@@ -54,6 +65,14 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
                 // get the user object from the database
                 userRef = firebase.database().ref().child("users").child(user.uid);
                 $scope.userObj = $firebaseObject(userRef);
+
+                $scope.userObj.$loaded().then(function(user) {
+                    teamObj = $firebaseObject(teamRef);
+                    teamObj.$loaded().then(function(teams) {
+                        $scope.teams = parseTeams(teams, $scope.userObj);
+                        $scope.dbTeams = angular.copy($scope.teams);
+                    });
+                });
             });
         } else {
             // No user is signed in.
@@ -65,15 +84,16 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
                 userRef = null;
                 $scope.userObj = null;
+
+                teamObj = $firebaseObject(teamRef);
+                teamObj.$loaded().then(function(teams) {
+                    $scope.teams = parseTeams(teams, $scope.userObj);
+                    $scope.dbTeams = angular.copy($scope.teams);
+                });
             });
         }
     });
 
-
-    $scope.eventName = getURLParameter("event");
-    if ($scope.eventName === null) {
-        $scope.eventName = "test";
-    }
 
     var eventAdminParamRef = firebase.database().ref().child("events").child($scope.eventName).child("admin").child("param");
     var eventAdminParamObj = $firebaseObject(eventAdminParamRef);
@@ -83,17 +103,6 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         $scope.startDate = admin.startDate;
         $scope.endDate = admin.endDate;
         $scope.details = admin.details;
-    });
-
-
-    /* teams */
-    var teamRef = firebase.database().ref().child("events").child($scope.eventName).child("team");
-
-    var teamObj = $firebaseObject(teamRef);
-
-    teamObj.$loaded().then(function(teams) {
-        $scope.teams = parseTeams(teams, $scope.userObj);
-        $scope.dbTeams = angular.copy($scope.teams);
     });
 
 
