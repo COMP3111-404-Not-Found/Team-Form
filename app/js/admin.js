@@ -131,7 +131,11 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         var eventObj = $firebaseObject(eventRef);
 
         eventObj.$loaded(function(event) {
-            callback(event);
+            var eventParsed = {};
+            eventParsed.team = event.team;
+            eventParsed.member = event.member;
+
+            callback(eventParsed);
         });
     };
 
@@ -153,6 +157,51 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
         });
     };
 
+    // sort the requests by missing skills match and skills match
+    $scope.sortRequests = function(requests, skills, teamSkills) {
+        return;
+    };
+
+    // add requests to fill all the places left for all teams
+    $scope.addRequests = function(event, users, eventName) {
+        angular.forEach(event.team, function(teamValue, teamKey, teams) {
+            var placesLeft = teamValue.size - teamValue.currentTeamSize;
+
+            if (placesLeft > 0) {
+                var requests = [];
+
+                angular.forEach(event.member, function(memberValue, memberKey) {
+                    if (memberValue.selection !== undefined && memberValue.selection !== null && memberValue.selection.includes(teamKey)) {
+                        requests.push({uid: memberKey, name: memberValue.name, skills: memberValue.skills});
+                    }
+                });
+
+                $scope.sortRequests(requests, teamValue.skills, teamValue.teamSkills);
+
+                var addRequestsNumber = (requests.length < placesLeft) ? requests.length : placesLeft;
+                for (var i = 0; i < addRequestsNumber; i++) {
+                    // add the request
+                    if (teams[teamKey].teamMembers === undefined) {
+                        teams[teamKey].teamMembers = [];
+                    }
+                    teams[teamKey].teamMembers.push(requests[i]);
+
+                    // update the skills that the team have
+                    teams[teamKey].teamSkills = addTeamSkills(teams[teamKey].teamSkills, requests[i].skills);
+
+                    // update the request for the user
+                    event.member[requests[i].uid].selection = null;
+
+                    // update the team for the event in the user's profile
+                    users[requests[i].uid].events[eventName] = {team: teamKey, selection: null};
+
+                    // increase the current team size by 1
+                    teams[teamKey].currentTeamSize += 1
+                }
+            }
+        });
+    };
+
     // automatic team form
     $scope.automaticTeamForm = function() {
         $scope.confirmAutomaticTeamForm(function(confirm) {
@@ -164,12 +213,14 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
             console.log("automatic team forming");
 
             $scope.getEventObj(eventName, function(event) {
-                console.log(event);
+                console.log("$scope.getEventObj", event);
 
                 $scope.getUserObj(eventName, function(users) {
-                    console.log(users);
+                    console.log("$scope.getUserObj", users);
 
-
+                    $scope.addRequests(event, users, eventName);
+                    console.log("$scope.addRequests", event);
+                    console.log("$scope.addRequests", users);
                 });
             });
         });

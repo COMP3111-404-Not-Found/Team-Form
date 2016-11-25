@@ -342,7 +342,11 @@ describe("Admin Controller", function() {
     describe("$scope.getEventObj", function() {
         var $scope, controller;
 
-        var eventObj = {};
+        var eventObj = {
+            admin: {},
+            team: {},
+            member: {}
+        };
 
         beforeEach(function() {
             $scope = {};
@@ -356,8 +360,13 @@ describe("Admin Controller", function() {
         });
 
         it("get the event object", function() {
+            var expected = {
+                team: {},
+                member: {}
+            };
+
             $scope.getEventObj("event", function(event) {
-                expect(event).toEqual(eventObj);
+                expect(event).toEqual(expected);
             });
         });
     });
@@ -408,6 +417,127 @@ describe("Admin Controller", function() {
             $scope.getUserObj("event", function(users) {
                 expect(users).toEqual(usersFiltered);
             });
+        });
+    });
+
+
+    describe("$scope.sortRequests", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        it("sort the requests by missing skills match and skills match", function() {
+            var requests = {};
+            var skills = [];
+            var teamSkills = [];
+
+            var expected = {};
+
+            $scope.sortRequests(requests, skills, teamSkills);
+
+            expect(requests).toEqual(expected);
+        });
+    });
+
+
+    describe("$scope.addRequests", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            // mock $scope sortRequests
+            spyOn($scope, "sortRequests").and.callFake(function(requests, skills, teamSkills) {
+                return;
+            });
+        });
+
+        xit("add requests to fill all the places left for all teams", function() {
+            var event = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 4,
+                        teamMembers: [],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    },
+                    team2: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    },
+                    team3: {
+                        size: 5,
+                        currentTeamSize: 4,
+                        teamMembers: [],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: ["team1"]},
+                    uid2: {name: "name2"},
+                    uid3: {name: "name3", selection: ["team2"]}
+                }
+            };
+            var users = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
+                uid2: {name: "name2"},
+                uid3: {name: "name3", events: {event: {team: "", selection: ["team2"]}}}
+            };
+            var eventName = "event";
+
+            var eventExpected = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["Programming"]}
+                        ],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    },
+                    team2: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    },
+                    team3: {
+                        size: 5,
+                        currentTeamSize: 4,
+                        teamMembers: [],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: ["team1"]},
+                    uid2: {name: "name2"},
+                    uid3: {name: "name3", selection: ["team2"]}
+                }
+            };
+            var usersExpected = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1"}}},
+                uid2: {name: "name2"},
+                uid3: {name: "name3", events: {event: {team: "", selection: ["team2"]}}}
+            };
+
+            $scope.addRequests(event, users, eventName);
+
+            expect(event).toEqual(eventExpected);
+            expect(users).toEqual(usersExpected);
         });
     });
 
