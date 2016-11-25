@@ -617,7 +617,7 @@ describe("Admin Controller", function() {
         });
 
         beforeEach(function() {
-            // mock $mdDialog.show
+            // mock $mdDialog.show that the user confirmed the automatic team forming
             spyOn($mdDialog, "show").and.callFake(function(options) {
                 return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
             });
@@ -633,10 +633,20 @@ describe("Admin Controller", function() {
             spyOn($scope, "getUserObj").and.callFake(function(eventName, callback) {
                 callback(usersFiltered);
             });
+
+            // mock $scope addRequests
+            spyOn($scope, "addRequests").and.callFake(function(event, users, eventName) {
+                return;
+            });
+
+            // mock $scope formRemaining
+            spyOn($scope, "formRemaining").and.callFake(function(event, users, eventName) {
+                return;
+            });
         });
 
         it("cancel the automatic team form", function() {
-            // mock $mdDialog.show
+            // mock $mdDialog.show that the user cancelled the automatic team forming
             $mdDialog.show.and.callFake(function(options) {
                 return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
             });
@@ -644,7 +654,7 @@ describe("Admin Controller", function() {
             $scope.automaticTeamForm();
         });
 
-        xit("automatic team form", function() {
+        it("automatic team form", function() {
             $scope.automaticTeamForm();
         });
     });
