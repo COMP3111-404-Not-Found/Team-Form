@@ -361,6 +361,7 @@ describe("Admin Controller", function() {
 
         it("get the event object", function() {
             var expected = {
+                admin: {},
                 team: {},
                 member: {}
             };
@@ -542,6 +543,67 @@ describe("Admin Controller", function() {
     });
 
 
+    describe("$scope.remainingTeamSizes", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        it("even distribution", function() {
+            var minTeamSize = 1;
+            var maxTeamSize = 10;
+            var remaining = 30;
+
+            var expected = [];
+            for (var i = 0; i < 6; i++) {
+                expected.push(5);
+            }
+
+            expect($scope.remainingTeamSizes(minTeamSize, maxTeamSize, remaining)).toEqual(expected);
+        });
+
+        it("uneven distribution", function() {
+            var minTeamSize = 1;
+            var maxTeamSize = 10;
+            var remaining = 34;
+
+            var expected = [];
+            for (var i = 0; i < 6; i++) {
+                expected.push(5);
+            }
+            expected.push(4);
+
+            expect($scope.remainingTeamSizes(minTeamSize, maxTeamSize, remaining)).toEqual(expected);
+        });
+    });
+
+
+    describe("$scope.formRemaining", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        xit("form teams for the remaining members that do not have a team", function() {
+            var event = {};
+            var users = {};
+            var eventName = "event";
+
+            var eventExpected = {};
+            var usersExpected = {};
+
+            $scope.formRemaining(event, users, eventName);
+
+            expect(event).toEqual(eventExpected);
+            expect(users).toEqual(usersExpected);
+        });
+    });
+
+
     describe("$scope.automaticTeamForm", function() {
         var $scope, controller;
 
@@ -582,7 +644,7 @@ describe("Admin Controller", function() {
             $scope.automaticTeamForm();
         });
 
-        it("automatic team form", function() {
+        xit("automatic team form", function() {
             $scope.automaticTeamForm();
         });
     });

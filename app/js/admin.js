@@ -132,6 +132,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
         eventObj.$loaded(function(event) {
             var eventParsed = {};
+            eventParsed.admin = event.admin;
             eventParsed.team = event.team;
             eventParsed.member = event.member;
 
@@ -193,6 +194,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                     event.member[requests[i].uid].selection = null;
 
                     // update the team for the event in the user's profile
+                    users[memberKey].events[eventName].selection = null;
                     users[requests[i].uid].events[eventName] = {team: teamKey, selection: null};
 
                     // increase the current team size by 1
@@ -200,6 +202,65 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                 }
             }
         });
+    };
+
+    // calculate the team sizes for the remaining members
+    $scope.remainingTeamSizes = function(minTeamSize, maxTeamSize, remaining) {
+        var sizeAverage = Math.floor((minTeamSize + maxTeamSize) / 2);
+        var teams = Math.floor(remaining / sizeAverage);
+
+        var sizes = [];
+        for (var i = 0; i < teams; i++) {
+            sizes.push(sizeAverage);
+        }
+        if (remaining % sizeAverage !== 0) {
+            sizes.push(remaining % sizeAverage);
+        }
+
+        return sizes;
+    };
+
+    // form teams for the remaining members that do not have a team
+    $scope.formRemaining = function(event, users, eventName) {
+        var remainingMembers = [];
+
+        angular.forEach(event.member, function(memberValue, memberKey, members) {
+            if (users[memberKey].events[eventName].team === "") {
+                remainingMembers.push({uid: memberKey, name: memberValue.name, skills: memberValue.skills});
+            }
+
+            // update the request for the user
+            members[memberKey].selection = null;
+
+            // update the team for the event in the user's profile
+            users[memberKey].events[eventName].selection = null;
+        });
+
+        var teamSizes = $scope.remainingTeamSizes(event.admin.param.minTeamSize, event.admin.param.maxTeamSize, remainingMembers.length);
+
+        var teams = {};
+        var memberIndex = 0;
+        for (var i = 0; i < teamSizes.length; i++) {
+            var team = {
+                size: teamSizes[i],
+                currentTeamSize: teamSizes[i],
+                teamMembers: [],
+                skills: [],
+                teamSkills: []
+            };
+            var teamName = "atf_team" + (i+1).toString();
+
+            team.teamMembers = remainingMembers.slice(memberIndex, memberIndex + teamSizes[i]);
+            memberIndex += teamSizes[i];
+
+            // form the team
+            teams[teamName] = team;
+
+            // update the team for the event in the users' profile
+            angular.forEach(team.teamMembers, function(member, index) {
+                users[member.uid].events[eventName].team = teamName;
+            });
+        }
     };
 
     // automatic team form
@@ -221,6 +282,10 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                     $scope.addRequests(event, users, eventName);
                     console.log("$scope.addRequests", event);
                     console.log("$scope.addRequests", users);
+
+                    $scope.formRemaining(event, users, eventName);
+                    console.log("$scope.formRemaining", event);
+                    console.log("$scope.formRemaining", users);
                 });
             });
         });
