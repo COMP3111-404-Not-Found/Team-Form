@@ -697,6 +697,13 @@ describe("Admin Controller", function() {
             });
         });
 
+        beforeEach(function() {
+            // mock document querySelector that a snackbar is showed for notification
+            spyOn(document, "querySelector").and.callFake(function(selector) {
+                return {MaterialSnackbar: {showSnackbar: function(data) {console.log("snackbar", data.message);}}};
+            });
+        });
+
         it("cancel the automatic team form", function() {
             // mock $scope confirmAutomaticTeamForm that the user cancelled the automatic team forming
             $scope.confirmAutomaticTeamForm.and.callFake(function(callback) {

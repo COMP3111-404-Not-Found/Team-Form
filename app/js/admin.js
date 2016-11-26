@@ -317,10 +317,11 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                 $scope.confirmAutomaticTeamForm(function(confirm) {
                     if (!confirm) {
                         console.log("cancel automatic team forming");
-                        // document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Cancel automatic team form"});
+                        document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Cancel automatic team form"});
                         return;
                     }
 
+                    document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Team formed"});
                     console.log("confirm automatic team forming");
                 });
             });
