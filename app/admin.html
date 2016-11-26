@@ -22,6 +22,7 @@
     <!-- Angular Material CDN -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- CSS files -->
@@ -59,91 +60,100 @@
                 </nav>
             </div>
 
-
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
-                    <div class="text-center">
+                    <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-2 col-xs-2"></div>
-                            <div class="col-md-8 col-xs-8 text-left panel">
-                                <strong>Minimum Team Size:</strong>
-                                <span class="badge">
-                                    {{param.minTeamSize}}</span>
-                                <button><span class="glyphicon glyphicon-plus" ng-click="changeMinTeamSize(1);"></span></button>
-                                <button><span class="glyphicon glyphicon-minus" ng-click="changeMinTeamSize(-1);"></span></button>
-                                <br><br>
-                                <strong>Maximum Team Size: </strong>
-                                <span class="badge">
-                                    {{param.maxTeamSize}}</span>
-                                <button><span class="glyphicon glyphicon-plus" ng-click="changeMaxTeamSize(1);"></span></button>
-                                <button><span class="glyphicon glyphicon-minus" ng-click="changeMaxTeamSize(-1);"></span></button>
-                                <br><br>
-                                <button type="button" class="btn btn-primary" ng-click="saveFunc();" >Create/Modify</button>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <strong class="padding-left-8">Minimum Team Size: </strong>
+                                        <span class="badge">{{param.minTeamSize}}</span>
+                                        <button><i ng-click="changeMinTeamSize(1)" class="glyphicon glyphicon-plus"></i></button>
+                                        <button><i ng-click="changeMinTeamSize(-1)" class="glyphicon glyphicon-minus"></i></button>
+                                        <br><br>
+                                        <strong class="padding-left-8">Maximum Team Size: </strong>
+                                        <span class="badge">{{param.maxTeamSize}}</span>
+                                        <button><i ng-click="changeMaxTeamSize(1)" class="glyphicon glyphicon-plus"></i></button>
+                                        <button><i ng-click="changeMaxTeamSize(-1)" class="glyphicon glyphicon-minus"></i></button>
+                                        <br><br>
+                                        <md-button type="button" ng-click="saveFunc()" class="md-raised">Create / Modify</md-button>
+                                    </div>
+                                </div>
+                                <hr><br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <md-button id="automaticTeamFormButton" ng-click="automaticTeamForm()" class="md-raised md-accent">Automatic Team Forming</md-button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
                                 <form>
                                     <!-- Datepicker -->
-                                    <br><br>
-                                    <div class="row" ng-cloak>
-                                        <div layout-gt-xs="row">
-                                            <div flex-gt-xs>
-                                                <h4>Start Date: </h4>
-                                                <md-datepicker ng-model="startDate" ng-change="startChange()" ng-required="true" md-placeholder="Enter date"></md-datepicker>
-                                            </div>
-
-                                            <div flex-gt-xs>
-                                                <h4>End Date: </h4>
-                                                <md-datepicker ng-model="endDate" md-min-date="minDate" ng-required="true" md-placeholder="Enter date"></md-datepicker>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <strong class="padding-left-8">Start Date: </strong>
+                                            <md-datepicker ng-model="startDate" ng-change="startChange()" ng-required="true" md-placeholder="Enter date"></md-datepicker>
                                         </div>
                                     </div>
-                                    <br>
-                                    <br><br>
-                                    <!-- TextArea -->
-                                    <md-input-container class="md-block">
-                                        <label>Details: </label>
-                                        <textarea ng-model="details" ng-required="true" md-maxlength="150" rows="2" md-select-on-focus></textarea>
-                                    </md-input-container>
-                                    <button type="submit" class="btn btn-primary" ng-click="saveContent()" >Submit</button>
-                                </form>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <strong class="padding-left-8">End Date: </strong>
+                                            <md-datepicker ng-model="endDate" md-min-date="minDate" ng-required="true" md-placeholder="Enter date"></md-datepicker>
+                                        </div>
+                                    </div>
 
+                                    <!-- TextArea -->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <md-input-container class="md-block">
+                                                <label>Details: </label>
+                                                <textarea ng-model="details" ng-required="true" md-maxlength="150" rows="2" md-select-on-focus></textarea>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+
+                                    <md-button type="submit" ng-click="saveContent()" class="md-raised">Save dates and details</md-button>
+                                </form>
                             </div>
-                            <div class="col-md-2 col-xs-2"></div>
                         </div>
 
-                        <md-button ng-click="automaticTeamForm()" class="md-raised">Automatic Team Forming</md-button>
-
                         <hr>
-                        <div layout="row" layout-align="space-around">
-                            <md-content>
+
+                        <div class="row">
+                            <div class="col-sm-6">
                                 <md-list>
-                                    <h3>All teams:</h3>
-                                    <md-list-item class="md-3-line" ng-repeat="t in team">
+                                    <md-subheader>All teams:</md-subheader>
+                                    <md-list-item class="md-3-line md-long-text" ng-repeat="t in team">
                                         <div class="md-list-item-text">
-                                            <h3><strong> {{t.$id}} </strong></h3>
-                                            <h4>Preferred team size: <span class="badge">{{t.size}}</span></h4>
-                                            <h4>Current team members: <span class="badge" ng-if="zeroMember(t.teamMembers)">{{0}}</span></h4>
-                                            <div ng-repeat="member in t.teamMembers">
-                                                <h4>{{member.name}}</h4>
-                                            </div>
+                                            <h3>{{t.$id}}</h3>
+                                            <p>Preferred team size: {{t.size}}</p>
+                                            <p>
+                                                <span>Current team members (<span ng-if="!zeroMember(t.teamMembers)">{{t.currentTeamSize}}</span><span ng-if="zeroMember(t.teamMembers)">0</span>): </span>
+                                                <span ng-repeat="member in t.teamMembers"><span ng-if="!$first">, </span>{{member.name}}</span>
+                                            </p>
                                         </div>
                                         <md-divider ng-if="!$last"></md-divider>
                                     </md-list-item>
                                 </md-list>
-                            </md-content>
-                            <md-content>
+                            </div>
+
+                            <div class="col-sm-6">
                                 <md-list>
-                                    <h3>All members:</h3>
-                                    <md-list-item class="md-3-line" ng-repeat="m in member">
+                                    <md-subheader>All members:</md-subheader>
+                                    <md-list-item class="md-3-line md-long-text" ng-repeat="m in member">
                                         <div class="md-list-item-text">
-                                            <h3><strong> {{m.name}} </strong></h3>
-                                            <h4>request to join the following teams: </h4>
-                                            <div ng-repeat="selection in m.selection">
-                                                <h4>{{selection}}</h4>
-                                            </div>
+                                            <h3>{{m.name}}</h3>
+                                            <p>
+                                                <span>Request to join the following teams: </span>
+                                                <span ng-repeat="selection in m.selection"><span ng-if="!$first">, </span>{{selection}}</span>
+                                            </p>
                                         </div>
                                         <md-divider ng-if="!$last"></md-divider>
                                     </md-list-item>
                                 </md-list>
-                            </md-content>
+                            </div>
                         </div>
                     </div>
                 </md-content>
