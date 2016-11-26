@@ -273,8 +273,15 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
             };
             var teamName = "atf_team" + (i+1).toString();
 
+            // add the members
             team.teamMembers = remainingMembers.slice(memberIndex, memberIndex + teamSizes[i]);
             memberIndex += teamSizes[i];
+
+            // add the team skills
+            angular.forEach(team.teamMembers, function(member, index) {
+                teamSkills = addTeamSkills(teamSkills, member.skills);
+            });
+            skills = teamSkills;
 
             // form the team
             teams[teamName] = team;
