@@ -318,7 +318,7 @@ describe("Admin Controller", function() {
         it("confirm the automatic team form", function() {
             // mock $mdDialog.show
             spyOn($mdDialog, "show").and.callFake(function(options) {
-                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
+                return {then: function(confirmCallback, cancelCallback) {confirmCallback();}};
             });
 
             $scope.confirmAutomaticTeamForm(function(confirm) {
@@ -329,12 +329,54 @@ describe("Admin Controller", function() {
         it("cancel the automatic team form", function() {
             // mock $mdDialog.show
             spyOn($mdDialog, "show").and.callFake(function(options) {
-                return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
+                return {then: function(confirmCallback, cancelCallback) {cancelCallback();}};
             });
 
             $scope.confirmAutomaticTeamForm(function(confirm) {
                 expect(confirm).toEqual(false);
             });
+        });
+    });
+
+
+    describe("$scope.dialogConfirm", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            // mock $mdDialog.hide
+            spyOn($mdDialog, "hide").and.callFake(function() {
+                console.log("confirm automatic team forming");
+            });
+        });
+
+        it("confirm automatic team forming", function() {
+            $scope.dialogConfirm();
+        });
+    });
+
+
+    describe("$scope.dialogCancel", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            // mock $mdDialog.cancel
+            spyOn($mdDialog, "cancel").and.callFake(function() {
+                console.log("cancel automatic team forming");
+            });
+        });
+
+        it("cancel automatic team forming", function() {
+            $scope.dialogCancel();
         });
     });
 
@@ -617,9 +659,9 @@ describe("Admin Controller", function() {
         });
 
         beforeEach(function() {
-            // mock $mdDialog.show that the user confirmed the automatic team forming
-            spyOn($mdDialog, "show").and.callFake(function(options) {
-                return {then: function(confirmCallback, cancelCallback) {confirmCallback(true);}};
+            // mock $mdDialog confirmAutomaticTeamForm that the user confirmed the automatic team forming
+            spyOn($scope, "confirmAutomaticTeamForm").and.callFake(function(callback) {
+                callback(true);
             });
         });
 
@@ -646,9 +688,9 @@ describe("Admin Controller", function() {
         });
 
         it("cancel the automatic team form", function() {
-            // mock $mdDialog.show that the user cancelled the automatic team forming
-            $mdDialog.show.and.callFake(function(options) {
-                return {then: function(confirmCallback, cancelCallback) {cancelCallback(false);}};
+            // mock $scope confirmAutomaticTeamForm that the user cancelled the automatic team forming
+            $scope.confirmAutomaticTeamForm.and.callFake(function(callback) {
+                callback(false);
             });
 
             $scope.automaticTeamForm();

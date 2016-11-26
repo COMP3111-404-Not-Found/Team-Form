@@ -112,17 +112,21 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
     // confirm automatic team form
     $scope.confirmAutomaticTeamForm = function(callback) {
-        var confirm = $mdDialog.confirm()
-            .title("Automatic Team Form")
-            .ok("Form")
-            .cancel("Cancel");
+        $mdDialog.show({
+            contentElement: "#automaticTeamFormDialog",
+        }).then(function() {
+            callback(true);
+        }, function() {
+            callback(false);
+        });
+    };
 
-        $mdDialog.show(confirm)
-            .then(function() {
-                callback(true);
-            }, function() {
-                callback(false);
-            });
+    $scope.dialogConfirm = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.dialogCancel = function() {
+        $mdDialog.cancel();
     };
 
     // get the event object
@@ -194,7 +198,6 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                     event.member[requests[i].uid].selection = null;
 
                     // update the team for the event in the user's profile
-                    users[memberKey].events[eventName].selection = null;
                     users[requests[i].uid].events[eventName] = {team: teamKey, selection: null};
 
                     // increase the current team size by 1
@@ -265,27 +268,33 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
     // automatic team form
     $scope.automaticTeamForm = function() {
-        $scope.confirmAutomaticTeamForm(function(confirm) {
-            if (!confirm) {
-                // document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Cancel automatic team form"});
-                return;
-            }
+        console.log("automatic team forming");
 
-            console.log("automatic team forming");
+        $scope.getEventObj(eventName, function(event) {
+            console.log("$scope.getEventObj", event);
 
-            $scope.getEventObj(eventName, function(event) {
-                console.log("$scope.getEventObj", event);
+            $scope.getUserObj(eventName, function(users) {
+                console.log("$scope.getUserObj", users);
 
-                $scope.getUserObj(eventName, function(users) {
-                    console.log("$scope.getUserObj", users);
+                $scope.addRequests(event, users, eventName);
+                console.log("$scope.addRequests", event);
+                console.log("$scope.addRequests", users);
 
-                    $scope.addRequests(event, users, eventName);
-                    console.log("$scope.addRequests", event);
-                    console.log("$scope.addRequests", users);
+                $scope.formRemaining(event, users, eventName);
+                console.log("$scope.formRemaining", event);
+                console.log("$scope.formRemaining", users);
 
-                    $scope.formRemaining(event, users, eventName);
-                    console.log("$scope.formRemaining", event);
-                    console.log("$scope.formRemaining", users);
+                $scope.automaticTeamFormEvent = event;
+                $scope.automaticTeamFormUsers = users;
+
+                $scope.confirmAutomaticTeamForm(function(confirm) {
+                    if (!confirm) {
+                        console.log("cancel automatic team forming");
+                        // document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Cancel automatic team form"});
+                        return;
+                    }
+
+                    console.log("confirm automatic team forming");
                 });
             });
         });

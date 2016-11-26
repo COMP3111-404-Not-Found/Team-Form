@@ -149,6 +149,40 @@
                 </md-content>
             </main>
 
+            <div style="visibility: hidden">
+                <div id="automaticTeamFormDialog" class="md-dialog-container">
+                    <md-dialog>
+                        <md-dialog-content class="md-dialog-content">
+                            <h2 class="md-title">Automatic Team Form</h2>
+                            <p>Please review the result after automatic team forming. Teams in red are new teams formed by automatic team forming.</p>
+
+                            <div class="table-responsive">
+                                <table class="mdl-data-table mdl-js-data-table">
+                                    <thead>
+                                        <th class="mdl-data-table__cell--non-numeric">Team</th>
+                                        <th class="mdl-data-table__cell--non-numeric">Members</th>
+                                        <th class="mdl-data-table__cell--non-numeric">Skills</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="(teamKey, teamValue) in automaticTeamFormEvent.team">
+                                            <td class="mdl-data-table__cell--non-numeric"><span ng-class="{atf: teamKey.substring(0, 3) === 'atf'}">{{teamKey}}</span></td>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <span ng-repeat="member in teamValue.teamMembers"><br ng-if="!$first">{{member.name}}</span>
+                                            </td>
+                                            <td class="mdl-data-table__cell--non-numeric">{{teamValue.teamSkills.join(", ")}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </md-dialog-content>
+                        <md-dialog-actions>
+                            <md-button class="md-primary md-cancel-button" ng-click="dialogCancel()">Cancel</md-button>
+                            <md-button class="md-primary md-confirm-button" ng-click="dialogConfirm()">Form</md-button>
+                        </md-dialog-actions>
+                    </md-dialog>
+                </div>
+            </div>
+
             <!-- toast -->
             <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
                 <div class="mdl-snackbar__text"></div>

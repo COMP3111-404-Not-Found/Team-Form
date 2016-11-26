@@ -1,0 +1,15 @@
+md-dialog {
+    flex: 80;
+}
+
+md-dialog h2 {
+    margin: 0px;
+}
+
+md-dialog table {
+    width: 100%;
+}
+
+md-dialog table .atf {
+    color: red;
+}
