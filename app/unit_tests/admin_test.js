@@ -473,11 +473,21 @@ describe("Admin Controller", function() {
         });
 
         it("sort the requests by missing skills match and skills match", function() {
-            var requests = {};
-            var skills = [];
-            var teamSkills = [];
+            var requests = [
+                {uid: "uid1", name: "name1", skills: ["Firebase"]},
+                {uid: "uid2", name: "name2", skills: ["AngularJS"]},
+                {uid: "uid3", name: "name3", skills: ["Python"]},
+                {uid: "uid3", name: "name3", skills: ["C++"]}
+            ];
+            var skills = ["AngularJS", "Firebase"];
+            var teamSkills = ["AngularJS"];
 
-            var expected = {};
+            var expected = [
+                {uid: "uid1", name: "name1", skills: ["Firebase"]},
+                {uid: "uid2", name: "name2", skills: ["AngularJS"]},
+                {uid: "uid3", name: "name3", skills: ["Python"]},
+                {uid: "uid3", name: "name3", skills: ["C++"]}
+            ];
 
             $scope.sortRequests(requests, skills, teamSkills);
 

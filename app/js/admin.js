@@ -164,7 +164,27 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
     // sort the requests by missing skills match and skills match
     $scope.sortRequests = function(requests, skills, teamSkills) {
-        return;
+        requests.sort(function(request1, request2) {
+            var missingSkillsMatch1 = missingSkillsMatched(skills, teamSkills, request1.skills);
+            var missingSkillsMatch2 = missingSkillsMatched(skills, teamSkills, request2.skills);
+
+            if (missingSkillsMatch1.number > missingSkillsMatch2.number) {
+                return -1;
+            } else if (missingSkillsMatch1.number < missingSkillsMatch2.number) {
+                return 1;
+            }
+
+            var skillsMatch1 = isMatched(skills, request1.skills);
+            var skillsMatch2 = isMatched(skills, request2.skills);
+
+            if (skillsMatch1.number > skillsMatch2.number) {
+                return -1;
+            } else if (skillsMatch1.number < skillsMatch2.number) {
+                return 1;
+            }
+
+            return 0;
+        });
     };
 
     // add requests to fill all the places left for all teams
