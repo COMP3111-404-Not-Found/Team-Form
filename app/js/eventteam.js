@@ -135,7 +135,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
     };
 
     // filter the teams
-    $scope.filterTeams = function(filterPlacesSwitch, filterSkillsMatchSwitch) {
+    $scope.filterTeams = function(filterPlacesSwitch, filterSkillsMatchSwitch, filterMissingSkillsMatchSwitch) {
         var teams = angular.copy($scope.dbTeams);
 
         if (filterPlacesSwitch) {
@@ -146,6 +146,10 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
             teams = $scope.filterSkillsMatch(teams);
         }
 
+        if (filterMissingSkillsMatchSwitch) {
+            teams = $scope.filterMissingSkillsMatch(teams);    
+        }
+        
         $scope.teams = angular.copy(teams);
     };
 
@@ -176,11 +180,17 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         });
     };
 
+
     // sort the teams
     $scope.sortTeams = function(sortBy) {
         if (sortBy === "places") {
             $scope.sortSkillsMatchSwitch = false;
+            $scope.sortMissingSkillsMatchSwitch = false;
         } else if (sortBy === "skillsMatch") {
+            $scope.sortPlacesSwitch = false;
+            $scope.sortMissingSkillsMatchSwitch = false;
+        } else if (sortBy === "missingSkillsMatch") {
+            $scope.sortSkillsMatchSwitch = false;
             $scope.sortPlacesSwitch = false;
         }
 
@@ -190,6 +200,8 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
             teams = $scope.sortPlaces(teams);
         } else if ($scope.sortSkillsMatchSwitch) {
             teams = $scope.sortSkillsMatch(teams);
+        } else if ($scope.sortMissingSkillsMatchSwitch) {
+            teams = $scope.sortMissingSkillsMatch(teams);    
         }
 
         $scope.teams = angular.copy(teams);
