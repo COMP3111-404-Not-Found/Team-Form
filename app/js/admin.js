@@ -206,13 +206,16 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                 var addRequestsNumber = (requests.length < placesLeft) ? requests.length : placesLeft;
                 for (var i = 0; i < addRequestsNumber; i++) {
                     // add the request
-                    if (teams[teamKey].teamMembers === undefined) {
+                    if (teamValue.teamMembers === undefined) {
                         teams[teamKey].teamMembers = [];
                     }
                     teams[teamKey].teamMembers.push(requests[i]);
 
                     // update the skills that the team have
-                    teams[teamKey].teamSkills = addTeamSkills(teams[teamKey].teamSkills, requests[i].skills);
+                    if (teamValue.teamSkills === undefined) {
+                        teams[teamKey].teamSkills = [];
+                    }
+                    teams[teamKey].teamSkills = addTeamSkills(teamValue.teamSkills, requests[i].skills);
 
                     // update the request for the user
                     event.member[requests[i].uid].selection = null;
@@ -261,7 +264,7 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
         var teamSizes = $scope.remainingTeamSizes(event.admin.param.minTeamSize, event.admin.param.maxTeamSize, remainingMembers.length);
 
-        var teams = {};
+        var teams = event.team;
         var memberIndex = 0;
         for (var i = 0; i < teamSizes.length; i++) {
             var team = {
@@ -279,9 +282,9 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
             // add the team skills
             angular.forEach(team.teamMembers, function(member, index) {
-                teamSkills = addTeamSkills(teamSkills, member.skills);
+                team.teamSkills = addTeamSkills(team.teamSkills, member.skills);
             });
-            skills = teamSkills;
+            team.skills = team.teamSkills;
 
             // form the team
             teams[teamName] = team;

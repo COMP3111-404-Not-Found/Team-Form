@@ -249,6 +249,13 @@ describe("User Controller", function() {
         $firebaseArray = _$firebaseArray_;
     }));
 
+    beforeEach(function() {
+        // mock firebase auth onAuthStateChanged
+        spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
+
+        });
+    });
+
     afterEach(function() {
         firebase.app().delete();
     });

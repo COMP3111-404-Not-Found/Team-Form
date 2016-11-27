@@ -511,41 +511,47 @@ describe("Admin Controller", function() {
             });
         });
 
-        xit("add requests to fill all the places left for all teams", function() {
+        it("add requests to fill all the places left for all teams", function() {
             var event = {
                 team: {
                     team1: {
                         size: 5,
                         currentTeamSize: 4,
-                        teamMembers: [],
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["Programming"]},
+                            {uid: "uid2", name: "name2", skills: ["Programming"]},
+                            {uid: "uid3", name: "name3", skills: ["Programming"]},
+                            {uid: "uid4", name: "name4", skills: ["Programming"]}
+                        ],
                         skills: ["Programming"],
                         teamSkills: ["Programming"]
                     },
                     team2: {
-                        size: 5,
-                        currentTeamSize: 5,
-                        teamMembers: [],
-                        skills: ["Programming"],
-                        teamSkills: ["Programming"]
-                    },
-                    team3: {
-                        size: 5,
-                        currentTeamSize: 4,
-                        teamMembers: [],
+                        size: 1,
+                        currentTeamSize: 1,
+                        teamMembers: [
+                            {uid: "uid5", name: "name5", skills: ["Programming"]}
+                        ],
                         skills: ["Programming"],
                         teamSkills: ["Programming"]
                     }
                 },
                 member: {
-                    uid1: {name: "name1", skills: ["Programming"], selection: ["team1"]},
-                    uid2: {name: "name2"},
-                    uid3: {name: "name3", selection: ["team2"]}
+                    uid1: {name: "name1", skills: ["Programming"], selection: null},
+                    uid2: {name: "name2", skills: ["Programming"], selection: null},
+                    uid3: {name: "name3", skills: ["Programming"], selection: null},
+                    uid4: {name: "name4", skills: ["Programming"], selection: null},
+                    uid5: {name: "name5", skills: ["Programming"], selection: null},
+                    uid6: {name: "name6", skills: ["Programming", "AI"], selection: ["team1"]}
                 }
             };
             var users = {
-                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
-                uid2: {name: "name2"},
-                uid3: {name: "name3", events: {event: {team: "", selection: ["team2"]}}}
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid5: {name: "name5", skills: ["Programming"], events: {event: {team: "team2", selection: null}}},
+                uid6: {name: "name6", skills: ["Programming", "AI"], events: {event: {team: "", selection: ["team1"]}}}
             };
             var eventName = "event";
 
@@ -555,36 +561,180 @@ describe("Admin Controller", function() {
                         size: 5,
                         currentTeamSize: 5,
                         teamMembers: [
-                            {uid: "uid1", name: "name1", skills: ["Programming"]}
+                            {uid: "uid1", name: "name1", skills: ["Programming"]},
+                            {uid: "uid2", name: "name2", skills: ["Programming"]},
+                            {uid: "uid3", name: "name3", skills: ["Programming"]},
+                            {uid: "uid4", name: "name4", skills: ["Programming"]},
+                            {uid: "uid6", name: "name6", skills: ["Programming", "AI"]}
                         ],
                         skills: ["Programming"],
-                        teamSkills: ["Programming"]
+                        teamSkills: ["Programming", "AI"]
                     },
                     team2: {
-                        size: 5,
-                        currentTeamSize: 5,
-                        teamMembers: [],
-                        skills: ["Programming"],
-                        teamSkills: ["Programming"]
-                    },
-                    team3: {
-                        size: 5,
-                        currentTeamSize: 4,
-                        teamMembers: [],
+                        size: 1,
+                        currentTeamSize: 1,
+                        teamMembers: [
+                            {uid: "uid5", name: "name5", skills: ["Programming"]}
+                        ],
                         skills: ["Programming"],
                         teamSkills: ["Programming"]
                     }
                 },
                 member: {
-                    uid1: {name: "name1", skills: ["Programming"], selection: ["team1"]},
-                    uid2: {name: "name2"},
-                    uid3: {name: "name3", selection: ["team2"]}
+                    uid1: {name: "name1", skills: ["Programming"], selection: null},
+                    uid2: {name: "name2", skills: ["Programming"], selection: null},
+                    uid3: {name: "name3", skills: ["Programming"], selection: null},
+                    uid4: {name: "name4", skills: ["Programming"], selection: null},
+                    uid5: {name: "name5", skills: ["Programming"], selection: null},
+                    uid6: {name: "name6", skills: ["Programming", "AI"], selection: null}
                 }
             };
             var usersExpected = {
-                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1"}}},
-                uid2: {name: "name2"},
-                uid3: {name: "name3", events: {event: {team: "", selection: ["team2"]}}}
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid5: {name: "name5", skills: ["Programming"], events: {event: {team: "team2", selection: null}}},
+                uid6: {name: "name6", skills: ["Programming", "AI"], events: {event: {team: "team1", selection: null}}}
+            };
+
+            $scope.addRequests(event, users, eventName);
+
+            expect(event).toEqual(eventExpected);
+            expect(users).toEqual(usersExpected);
+        });
+
+        it("add requests to fill all the places left for all teams, less requests than places left", function() {
+            var event = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 4,
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["Programming"]},
+                            {uid: "uid2", name: "name2", skills: ["Programming"]},
+                            {uid: "uid3", name: "name3", skills: ["Programming"]},
+                            {uid: "uid4", name: "name4", skills: ["Programming"]}
+                        ],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: null},
+                    uid2: {name: "name2", skills: ["Programming"], selection: null},
+                    uid3: {name: "name3", skills: ["Programming"], selection: null},
+                    uid4: {name: "name4", skills: ["Programming"], selection: null},
+                    uid5: {name: "name5", skills: ["Programming", "AI"], selection: ["team1"]},
+                    uid6: {name: "name6", skills: ["Programming"], selection: ["team1"]}
+                }
+            };
+            var users = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid5: {name: "name5", skills: ["Programming", "AI"], events: {event: {team: "", selection: ["team1"]}}},
+                uid6: {name: "name6", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}}
+            };
+            var eventName = "event";
+
+            var eventExpected = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["Programming"]},
+                            {uid: "uid2", name: "name2", skills: ["Programming"]},
+                            {uid: "uid3", name: "name3", skills: ["Programming"]},
+                            {uid: "uid4", name: "name4", skills: ["Programming"]},
+                            {uid: "uid5", name: "name5", skills: ["Programming", "AI"]}
+                        ],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming", "AI"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: null},
+                    uid2: {name: "name2", skills: ["Programming"], selection: null},
+                    uid3: {name: "name3", skills: ["Programming"], selection: null},
+                    uid4: {name: "name4", skills: ["Programming"], selection: null},
+                    uid5: {name: "name5", skills: ["Programming", "AI"], selection: null},
+                    uid6: {name: "name6", skills: ["Programming"], selection: ["team1"]}
+                }
+            };
+            var usersExpected = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid5: {name: "name5", skills: ["Programming", "AI"], events: {event: {team: "team1", selection: null}}},
+                uid6: {name: "name6", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}}
+            };
+
+            $scope.addRequests(event, users, eventName);
+
+            expect(event).toEqual(eventExpected);
+            expect(users).toEqual(usersExpected);
+        });
+
+        it("add requests to fill all the places left for all teams, no team members", function() {
+            var event = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 0,
+                        skills: ["Programming"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: ["team1"]},
+                    uid2: {name: "name2", skills: ["Programming"], selection: ["team1"]},
+                    uid3: {name: "name3", skills: ["Programming"], selection: ["team1"]},
+                    uid4: {name: "name4", skills: ["Programming"], selection: ["team1"]},
+                    uid5: {name: "name5", skills: ["Programming"], selection: ["team1"]}
+                }
+            };
+            var users = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}},
+                uid5: {name: "name5", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}}
+            };
+            var eventName = "event";
+
+            var eventExpected = {
+                team: {
+                    team1: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["Programming"]},
+                            {uid: "uid2", name: "name2", skills: ["Programming"]},
+                            {uid: "uid3", name: "name3", skills: ["Programming"]},
+                            {uid: "uid4", name: "name4", skills: ["Programming"]},
+                            {uid: "uid5", name: "name5", skills: ["Programming"]}
+                        ],
+                        skills: ["Programming"],
+                        teamSkills: ["Programming"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["Programming"], selection: null},
+                    uid2: {name: "name2", skills: ["Programming"], selection: null},
+                    uid3: {name: "name3", skills: ["Programming"], selection: null},
+                    uid4: {name: "name4", skills: ["Programming"], selection: null},
+                    uid5: {name: "name5", skills: ["Programming"], selection: null}
+                }
+            };
+            var usersExpected = {
+                uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
+                uid5: {name: "name5", skills: ["Programming"], events: {event: {team: "team1", selection: null}}}
             };
 
             $scope.addRequests(event, users, eventName);
@@ -640,13 +790,82 @@ describe("Admin Controller", function() {
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
-        xit("form teams for the remaining members that do not have a team", function() {
-            var event = {};
-            var users = {};
+        it("form teams for the remaining members that do not have a team", function() {
+            var event = {
+                admin: {param: {minTeamSize: 1, maxTeamSize: 10}},
+                team: {
+                    team1: {
+                        size: 1,
+                        currentTeamSize: 1,
+                        teamMembers: [
+                            {uid: "uid6", name: "name6", skills: ["AngularJS"]}
+                        ],
+                        skills: ["AngularJS"],
+                        teamSkills: ["AngularJS"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["AngularJS"], selection: ["team1"]},
+                    uid2: {name: "name2", skills: ["Firebase"], selection: ["team2"]},
+                    uid3: {name: "name3", skills: ["Python"], selection: ["team3"]},
+                    uid4: {name: "name4", skills: ["C++"], selection: ["team4"]},
+                    uid5: {name: "name5", skills: ["AngularJS"], selection: ["team5"]},
+                    uid6: {name: "name6", skills: ["AngularJS"], selection: null}
+                }
+            };
+            var users = {
+                uid1: {name: "name1", skills: ["AngularJS"], events: {event: {team: "", selection: ["team1"]}}},
+                uid2: {name: "name2", skills: ["Firebase"], events: {event: {team: "", selection: ["team2"]}}},
+                uid3: {name: "name3", skills: ["Python"], events: {event: {team: "", selection: ["team3"]}}},
+                uid4: {name: "name4", skills: ["C++"], events: {event: {team: "", selection: ["team4"]}}},
+                uid5: {name: "name5", skills: ["AngularJS"], events: {event: {team: "", selection: ["team5"]}}},
+                uid6: {name: "name6", skills: ["AngularJS"], events: {event: {team: "team1", selection: null}}}
+            };
             var eventName = "event";
 
-            var eventExpected = {};
-            var usersExpected = {};
+            var eventExpected = {
+                admin: {param: {minTeamSize: 1, maxTeamSize: 10}},
+                team: {
+                    atf_team1: {
+                        size: 5,
+                        currentTeamSize: 5,
+                        teamMembers: [
+                            {uid: "uid1", name: "name1", skills: ["AngularJS"]},
+                            {uid: "uid2", name: "name2", skills: ["Firebase"]},
+                            {uid: "uid3", name: "name3", skills: ["Python"]},
+                            {uid: "uid4", name: "name4", skills: ["C++"]},
+                            {uid: "uid5", name: "name5", skills: ["AngularJS"]}
+                        ],
+                        skills: ["AngularJS", "Firebase", "Python", "C++"],
+                        teamSkills: ["AngularJS", "Firebase", "Python", "C++"]
+                    },
+                    team1: {
+                        size: 1,
+                        currentTeamSize: 1,
+                        teamMembers: [
+                            {uid: "uid6", name: "name6", skills: ["AngularJS"]}
+                        ],
+                        skills: ["AngularJS"],
+                        teamSkills: ["AngularJS"]
+                    }
+                },
+                member: {
+                    uid1: {name: "name1", skills: ["AngularJS"], selection: null},
+                    uid2: {name: "name2", skills: ["Firebase"], selection: null},
+                    uid3: {name: "name3", skills: ["Python"], selection: null},
+                    uid4: {name: "name4", skills: ["C++"], selection: null},
+                    uid5: {name: "name5", skills: ["AngularJS"], selection: null},
+                    uid6: {name: "name6", skills: ["AngularJS"], selection: null}
+                }
+            };
+            var usersExpected = {
+                uid1: {name: "name1", skills: ["AngularJS"], events: {event: {team: "atf_team1", selection: null}}},
+                uid2: {name: "name2", skills: ["Firebase"], events: {event: {team: "atf_team1", selection: null}}},
+                uid3: {name: "name3", skills: ["Python"], events: {event: {team: "atf_team1", selection: null}}},
+                uid4: {name: "name4", skills: ["C++"], events: {event: {team: "atf_team1", selection: null}}},
+                uid5: {name: "name5", skills: ["AngularJS"], events: {event: {team: "atf_team1", selection: null}}},
+                uid6: {name: "name6", skills: ["AngularJS"], events: {event: {team: "team1", selection: null}}}
+            };
 
             $scope.formRemaining(event, users, eventName);
 

@@ -166,6 +166,13 @@ describe("Team Controller", function() {
         });
     });
 
+    beforeEach(function() {
+        // mock firebase auth onAuthStateChanged
+        spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
+
+        });
+    });
+
     afterEach(function() {
         firebase.app().delete();
     });

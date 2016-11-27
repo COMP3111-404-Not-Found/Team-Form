@@ -24,6 +24,18 @@ describe("Index Controller", function() {
         });
     });
 
+    beforeEach(function() {
+        // mock firebase auth onAuthStateChanged
+        spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
+
+        });
+
+        // mock firebase auth getRedirectResult
+        spyOn(firebase.auth.Auth.prototype, "getRedirectResult").and.callFake(function() {
+            return {then: function(callback) {return {catch: function(callback) {}}}};
+        });
+    });
+
     afterEach(function() {
         firebase.app().delete();
     });
