@@ -311,8 +311,8 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                 console.log("$scope.formRemaining", event);
                 console.log("$scope.formRemaining", users);
 
-                $scope.automaticTeamFormEvent = event;
-                $scope.automaticTeamFormUsers = users;
+                $scope.automaticTeamFormEvent = angular.copy(event);
+                $scope.automaticTeamFormUsers = angular.copy(users);
 
                 $scope.confirmAutomaticTeamForm(function(confirm) {
                     if (!confirm) {
