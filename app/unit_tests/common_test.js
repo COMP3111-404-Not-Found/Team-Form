@@ -90,7 +90,7 @@ describe("Common Functions", function() {
     describe('missingSkillsMatched Coverage Test', function() {
         it("the team does not have any preferred skills (skills = undefined)", function() {
             var skills = undefined;
-            var teamSkills = undefined;
+            var teamSkills = ["Programming"];
             var userSkills = ["Programming"];
 
             expect(missingSkillsMatched(skills, teamSkills, userSkills)).toEqual({match: [], number: 0});
@@ -98,10 +98,18 @@ describe("Common Functions", function() {
 
         it("the user does not have any skills (userSkills = undefined)", function() {
             var skills = ["Programming"];
-            var teamSkills = undefined;
+            var teamSkills = ["Programming"];
             var userSkills = undefined;
 
             expect(missingSkillsMatched(skills, teamSkills, userSkills)).toEqual({match: [], number: 0});
+        });
+
+        it("the team does not have any skills (teamSkills = undefined)", function() {
+            var skills = ["Programming"];
+            var teamSkills = undefined;
+            var userSkills = ["Programming"];
+
+            expect(missingSkillsMatched(skills, teamSkills, userSkills)).toEqual({match: ["Programming"], number: 1});
         });
 
         it('returns match of missing skills of team and skills of user', function() {

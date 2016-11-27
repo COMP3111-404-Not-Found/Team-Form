@@ -24,21 +24,68 @@ describe("Index Controller", function() {
         });
     });
 
-    beforeEach(function() {
-        // mock firebase auth onAuthStateChanged
-        spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
-
-        });
-
-        // mock firebase auth getRedirectResult
-        spyOn(firebase.auth.Auth.prototype, "getRedirectResult").and.callFake(function() {
-            return {then: function(callback) {return {catch: function(callback) {}}}};
-        });
-    });
-
     afterEach(function() {
         firebase.app().delete();
     });
+
+
+    describe("firebase authentication", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            // mock firebase auth getRedirectResult that the sign in is successful
+            spyOn(firebase.auth.Auth.prototype, "getRedirectResult").and.callFake(function() {
+                return {then: function(callback) {callback({credential: {accessToken: "access token"}, user: {}}); return {catch: function(callback) {}}}};
+            });
+        });
+
+        beforeEach(function() {
+            var user = {uid: "uid", displayName: "name"};
+
+            // mock firebase auth onAuthStateChanged that a user is signed in
+            spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
+                callback(user);
+            });
+
+            // mock $scope.$apply
+            $scope.$apply = jasmine.createSpy("$apply").and.callFake(function(callback) {
+                callback();
+            });
+        });
+
+        it("sign in is successful", function() {
+
+        });
+
+        it("sign in is successful, no credential", function() {
+
+        });
+
+        it("sign in is unsuccessful", function() {
+            firebase.auth.Auth.prototype.getRedirectResult.and.callFake(function() {
+                return {then: function(callback) {return {catch: function(callback) {callback({code: "code", message: "message", email: "email", credential: "credential"});}}}};
+            });
+        });
+
+        it("user is signed in", function() {
+
+        });
+
+        it("no user is signed in", function() {
+            // mock firebase auth onAuthStateChanged that no user is signed in
+            firebase.auth.Auth.prototype.onAuthStateChanged.and.callFake(function(callback) {
+                callback(null);
+            });
+
+            expect($scope.user).toBeNull();
+        });
+    });
+
 
     describe("$scope.login", function() {
         var $scope, controller;

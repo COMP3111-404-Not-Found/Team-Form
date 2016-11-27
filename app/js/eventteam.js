@@ -38,9 +38,6 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
 
 
     $scope.eventName = getURLParameter("event");
-    if ($scope.eventName === null) {
-        $scope.eventName = "test";
-    }
 
 
     /* teams */
@@ -147,9 +144,9 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         }
 
         if (filterMissingSkillsMatchSwitch) {
-            teams = $scope.filterMissingSkillsMatch(teams);    
+            teams = $scope.filterMissingSkillsMatch(teams);
         }
-        
+
         $scope.teams = angular.copy(teams);
     };
 
@@ -171,7 +168,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         });
     };
 
-    // sort teams by the number of skills missing
+    // sort teams by the number of missing skills matched
     $scope.sortMissingSkillsMatch = function(teams) {
         console.log("sortMissingSkillsMatch()");
         return teams.sort(function(a, b) {
@@ -201,7 +198,7 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         } else if ($scope.sortSkillsMatchSwitch) {
             teams = $scope.sortSkillsMatch(teams);
         } else if ($scope.sortMissingSkillsMatchSwitch) {
-            teams = $scope.sortMissingSkillsMatch(teams);    
+            teams = $scope.sortMissingSkillsMatch(teams);
         }
 
         $scope.teams = angular.copy(teams);

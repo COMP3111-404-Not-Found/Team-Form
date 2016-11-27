@@ -13,6 +13,13 @@ describe("Admin Controller", function() {
     }));
 
     beforeEach(function() {
+        // spyOn getURLParameter
+        getURLParameter = jasmine.createSpy("getURLParameter").and.callFake(function(parameterName) {
+            return "test";
+        });
+    });
+
+    beforeEach(function() {
         // mock firebase reference update
         spyOn(firebase.database.Reference.prototype, "update").and.callFake(function(obj) {
             console.log("update", obj);
@@ -180,7 +187,7 @@ describe("Admin Controller", function() {
             }
         };
 
-        beforeEach(function() {
+        it("load data", function() {
             $scope = {};
 
             firebaseObjectMock = jasmine.createSpy("$firebaseObject mock");
@@ -199,14 +206,59 @@ describe("Admin Controller", function() {
             });
 
             controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: firebaseObjectMock, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
-        });
 
-        it("load data", function() {
             expect($scope.param.minTeamSize).toEqual(adminObj.admin.param.minTeamSize);
             expect($scope.param.maxTeamSize).toEqual(adminObj.admin.param.maxTeamSize);
             expect($scope.details).toEqual(adminObj.admin.param.details);
             expect($scope.startDate).toEqual(new Date(adminObj.admin.param.startDate));
             expect($scope.endDate).toEqual(new Date(adminObj.admin.param.endDate));
+        });
+
+        it("load data, $scope.param.minTeamSize = undefined, $scope.param.maxTeamSize = undefined", function() {
+            $scope = {};
+
+            firebaseObjectMock = jasmine.createSpy("$firebaseObject mock");
+            firebaseObjectMock.and.callFake(function(ref) {
+                var refUrl = ref.toString();
+                var refUrlSplit = refUrl.split("/");
+                var refUrlSplitLength = refUrlSplit.length;
+
+                // https://team-form-4ffd7.firebaseio.com/.../admin/param
+                if (refUrlSplit[refUrlSplitLength-2] === "admin" && refUrlSplit[refUrlSplitLength-1] === "param") {
+                    var obj = {minTeamSize: undefined, maxTeamSize: undefined};
+                    obj.$loaded = function() {return {then: function(callback) {callback({minTeamSize: undefined, maxTeamSize: undefined}); return {catch: function(callback) {callback();}};}};};
+
+                    return obj;
+                }
+            });
+
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: firebaseObjectMock, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+
+            expect($scope.param.minTeamSize).toEqual(1);
+            expect($scope.param.maxTeamSize).toEqual(10);
+        });
+
+        it("load data, $scope.param.minTeamSize = undefined, $scope.param.maxTeamSize = undefined", function() {
+            $scope = {};
+
+            firebaseObjectMock = jasmine.createSpy("$firebaseObject mock");
+            firebaseObjectMock.and.callFake(function(ref) {
+                var refUrl = ref.toString();
+                var refUrlSplit = refUrl.split("/");
+                var refUrlSplitLength = refUrlSplit.length;
+
+                // https://team-form-4ffd7.firebaseio.com/.../admin/param
+                if (refUrlSplit[refUrlSplitLength-2] === "admin" && refUrlSplit[refUrlSplitLength-1] === "param") {
+                    var obj = {details: null, startDate: null, endDate: null};
+                    obj.$loaded = function() {return {then: function(callback) {callback({details: null, startDate: null, endDate: null}); return {catch: function(callback) {callback();}};}};};
+
+                    return obj;
+                }
+            });
+
+            controller = $controller("AdminCtrl", {$scope: $scope, $firebaseObject: firebaseObjectMock, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+
+            expect($scope.details).toBeNull;
         });
     });
 
