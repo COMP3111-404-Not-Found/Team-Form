@@ -14,7 +14,7 @@ describe("Admin Controller", function() {
 
     beforeEach(function() {
         // spyOn getURLParameter
-        getURLParameter = jasmine.createSpy("getURLParameter").and.callFake(function() {
+        getURLParameter = jasmine.createSpy("getURLParameter").and.callFake(function(parameterName) {
             return "test";
         });
     });
