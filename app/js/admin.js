@@ -321,8 +321,14 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
                         return;
                     }
 
-                    document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Team formed"});
                     console.log("confirm automatic team forming");
+                    document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Team formed"});
+
+                    var eventRef = firebase.database().ref().child("events").child(eventName);
+                    eventRef.update(event);
+
+                    var usersRef = firebase.database().ref().child("users");
+                    usersRef.update(users);
                 });
             });
         });
