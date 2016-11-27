@@ -48,6 +48,13 @@ describe("Index Controller", function() {
             controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
         });
 
+        beforeEach(function() {
+            // mock firebase auth signInWithRedirect
+            spyOn(firebase.auth.Auth.prototype, "signInWithRedirect").and.callFake(function(provider) {
+                console.log("sign in with redirect");
+            });
+        });
+
         it("login", function() {
             $scope.login();
         });
@@ -60,6 +67,14 @@ describe("Index Controller", function() {
         beforeEach(function() {
             $scope = {};
             controller = $controller("IndexCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $window: $window, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            // mock firebase auth signOut
+            spyOn(firebase.auth.Auth.prototype, "signOut").and.callFake(function() {
+                console.log("sign out");
+                return {then: function(signOutSuccessfulCallback, signOutErrorCallback) {}};
+            });
         });
 
         it("logout", function() {
