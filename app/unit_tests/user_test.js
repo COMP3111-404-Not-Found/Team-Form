@@ -414,7 +414,7 @@ describe("User Controller", function() {
                 events: {
                     event1: {
                         team: "",
-                        selection: ["team1"]
+                        selection: []
                     }
                 }
             };
@@ -432,6 +432,41 @@ describe("User Controller", function() {
                             teamSkills: ["Programming"]
                         }
                     ]
+                }
+            ];
+
+            expect($scope.constructRecommendations(eventTeamObj, userObj)).toEqual(expected);
+        });
+
+        it("construct the recommendations array object, the user has requested the team already", function() {
+            var eventTeamObj = {
+                event1: {
+                    team: {
+                        team1: {
+                            size: 5,
+                            currentTeamSize: 1,
+                            skills: ["Programming"],
+                            teamSkills: ["Programming"]
+                        }
+                    }
+                }
+            };
+
+            var userObj = {
+                name: "user",
+                skills: ["Programming"],
+                events: {
+                    event1: {
+                        team: "",
+                        selection: ["team1"]
+                    }
+                }
+            };
+
+            var expected = [
+                {
+                    eventName: "event1",
+                    teams: []
                 }
             ];
 
@@ -768,7 +803,7 @@ describe("User Controller", function() {
             expect($scope.recommendations[0].teams[1].teamName).toEqual("team4");
             expect($scope.recommendations[0].teams[2].teamName).toEqual("team5");
             expect($scope.recommendations[0].teams[3].teamName).toEqual("team6");
-            expect($scope.recommendations[0].teams[4].teamName).toEqual("team1");
+            expect($scope.recommendations[0].teams[4].teamName).toEqual("team3");
         });
     });
 

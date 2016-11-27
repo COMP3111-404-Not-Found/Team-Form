@@ -175,14 +175,16 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
             };
 
             angular.forEach(eventValue.team, function(teamValue, teamKey) {
-                recommendation.teams.push({
-                    teamName: teamKey,
-                    placesLeft: teamValue.size - teamValue.currentTeamSize,
-                    skillsMatch: isMatched(teamValue.skills, userObj.skills),
-                    missingSkillsMatch: missingSkillsMatched(teamValue.skills, teamValue.teamSkills, userObj.skills),
-                    skills: teamValue.skills,
-                    teamSkills: teamValue.teamSkills
-                });
+                if (!(userObj.events[eventKey].selection !== undefined && userObj.events[eventKey].selection !== null && userObj.events[eventKey].selection.includes(teamKey))) {
+                    recommendation.teams.push({
+                        teamName: teamKey,
+                        placesLeft: teamValue.size - teamValue.currentTeamSize,
+                        skillsMatch: isMatched(teamValue.skills, userObj.skills),
+                        missingSkillsMatch: missingSkillsMatched(teamValue.skills, teamValue.teamSkills, userObj.skills),
+                        skills: teamValue.skills,
+                        teamSkills: teamValue.teamSkills
+                    });
+                }
             });
 
             recommendations.push(recommendation);

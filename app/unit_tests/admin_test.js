@@ -609,12 +609,11 @@ describe("Admin Controller", function() {
                 team: {
                     team1: {
                         size: 5,
-                        currentTeamSize: 4,
+                        currentTeamSize: 3,
                         teamMembers: [
                             {uid: "uid1", name: "name1", skills: ["Programming"]},
                             {uid: "uid2", name: "name2", skills: ["Programming"]},
-                            {uid: "uid3", name: "name3", skills: ["Programming"]},
-                            {uid: "uid4", name: "name4", skills: ["Programming"]}
+                            {uid: "uid3", name: "name3", skills: ["Programming"]}
                         ],
                         skills: ["Programming"],
                         teamSkills: ["Programming"]
@@ -624,18 +623,14 @@ describe("Admin Controller", function() {
                     uid1: {name: "name1", skills: ["Programming"], selection: null},
                     uid2: {name: "name2", skills: ["Programming"], selection: null},
                     uid3: {name: "name3", skills: ["Programming"], selection: null},
-                    uid4: {name: "name4", skills: ["Programming"], selection: null},
-                    uid5: {name: "name5", skills: ["Programming", "AI"], selection: ["team1"]},
-                    uid6: {name: "name6", skills: ["Programming"], selection: ["team1"]}
+                    uid4: {name: "name4", skills: ["Programming", "AI"], selection: ["team1"]}
                 }
             };
             var users = {
                 uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
                 uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
                 uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
-                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
-                uid5: {name: "name5", skills: ["Programming", "AI"], events: {event: {team: "", selection: ["team1"]}}},
-                uid6: {name: "name6", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}}
+                uid4: {name: "name4", skills: ["Programming", "AI"], events: {event: {team: "", selection: ["team1"]}}},
             };
             var eventName = "event";
 
@@ -643,13 +638,12 @@ describe("Admin Controller", function() {
                 team: {
                     team1: {
                         size: 5,
-                        currentTeamSize: 5,
+                        currentTeamSize: 4,
                         teamMembers: [
                             {uid: "uid1", name: "name1", skills: ["Programming"]},
                             {uid: "uid2", name: "name2", skills: ["Programming"]},
                             {uid: "uid3", name: "name3", skills: ["Programming"]},
-                            {uid: "uid4", name: "name4", skills: ["Programming"]},
-                            {uid: "uid5", name: "name5", skills: ["Programming", "AI"]}
+                            {uid: "uid4", name: "name4", skills: ["Programming", "AI"]}
                         ],
                         skills: ["Programming"],
                         teamSkills: ["Programming", "AI"]
@@ -659,18 +653,14 @@ describe("Admin Controller", function() {
                     uid1: {name: "name1", skills: ["Programming"], selection: null},
                     uid2: {name: "name2", skills: ["Programming"], selection: null},
                     uid3: {name: "name3", skills: ["Programming"], selection: null},
-                    uid4: {name: "name4", skills: ["Programming"], selection: null},
-                    uid5: {name: "name5", skills: ["Programming", "AI"], selection: null},
-                    uid6: {name: "name6", skills: ["Programming"], selection: ["team1"]}
+                    uid4: {name: "name4", skills: ["Programming", "AI"], selection: null},
                 }
             };
             var usersExpected = {
                 uid1: {name: "name1", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
                 uid2: {name: "name2", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
                 uid3: {name: "name3", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
-                uid4: {name: "name4", skills: ["Programming"], events: {event: {team: "team1", selection: null}}},
-                uid5: {name: "name5", skills: ["Programming", "AI"], events: {event: {team: "team1", selection: null}}},
-                uid6: {name: "name6", skills: ["Programming"], events: {event: {team: "", selection: ["team1"]}}}
+                uid4: {name: "name4", skills: ["Programming", "AI"], events: {event: {team: "team1", selection: null}}},
             };
 
             $scope.addRequests(event, users, eventName);
