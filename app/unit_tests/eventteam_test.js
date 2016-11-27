@@ -143,15 +143,46 @@ describe("Event Team Controller", function() {
         });
     });
 
-    beforeEach(function() {
-        // mock firebase auth onAuthStateChanged
-        spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
-
-        });
-    });
-
     afterEach(function() {
         firebase.app().delete();
+    });
+
+
+    describe("firebase authentication", function() {
+        var $scope, controller;
+
+        beforeEach(function() {
+            $scope = {};
+            controller = $controller("EventTeamCtrl", {$scope: $scope, $firebaseObject: $firebaseObject, $firebaseArray: $firebaseArray, $mdDialog: $mdDialog});
+        });
+
+        beforeEach(function() {
+            var user = {uid: "uid", displayName: "name"};
+
+            // mock firebase auth onAuthStateChanged that a user is signed in
+            spyOn(firebase.auth.Auth.prototype, "onAuthStateChanged").and.callFake(function(callback) {
+                callback(user);
+            });
+
+            // mock $scope.$apply
+            $scope.$apply = jasmine.createSpy("$apply").and.callFake(function(callback) {
+                callback();
+            });
+        });
+
+        it("user is signed in", function() {
+
+        });
+
+        it("no user is signed in", function() {
+            // mock firebase auth onAuthStateChanged that no user is signed in
+            firebase.auth.Auth.prototype.onAuthStateChanged.and.callFake(function(callback) {
+                callback(null);
+            });
+
+            expect($scope.user).toBeNull();
+            expect($scope.userObj).toBeNull();
+        });
     });
 
 
