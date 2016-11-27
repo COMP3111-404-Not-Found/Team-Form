@@ -1,4 +1,61 @@
-describe('Test common', function() {
+describe("Common Functions", function() {
+    describe("addTeamSkills", function() {
+        it("the team does not have any preferred skills, the user does not have any skills", function() {
+            var teamSkills = undefined;
+            var userSkills = undefined;
+
+            var expected = [];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+
+        it("the team does not have any preferred skills", function() {
+            var teamSkills = undefined;
+            var userSkills = ["Programming"];
+
+            var expected = ["Programming"];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+
+        it("the user does not have any skills", function() {
+            var teamSkills = ["Programming"];
+            var userSkills = undefined;
+
+            var expected = ["Programming"];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+
+        it("test addTeamSkills", function() {
+            var teamSkills = ["AngularJS", "Firebase"];
+            var userSkills = ["Python", "C++", "AngularJS", "Firebase"];
+
+            var expected = ["AngularJS", "Firebase", "Python", "C++"];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+
+        it("the team does not have the skills yet", function() {
+            var teamSkills = ["AngularJS"];
+            var userSkills = ["Firebase"];
+
+            var expected = ["AngularJS", "Firebase"];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+
+        it("the team has the skills already", function() {
+            var teamSkills = ["AngularJS"];
+            var userSkills = ["AngularJS"];
+
+            var expected = ["AngularJS"];
+
+            expect(addTeamSkills(teamSkills, userSkills)).toEqual(expected);
+        });
+    });
+
+
     // A test case of getAvailableTeam
     describe('getAvailableTeam Coverage Test', function() {
         it('returns available teams from a list of teams', function() {

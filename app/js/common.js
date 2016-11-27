@@ -1,3 +1,23 @@
+// add the user's skills to the team when adding a member
+function addTeamSkills(teamSkills, userSkills) {
+	if (teamSkills === undefined && userSkills === undefined) {
+		return [];
+	} else if (teamSkills === undefined && userSkills !== undefined) {
+		return userSkills;
+	} else if (teamSkills !== undefined && userSkills === undefined) {
+		return teamSkills;
+	}
+
+    userSkills.forEach(function(userSkill) {
+        if (!teamSkills.includes(userSkill)) {
+            teamSkills.push(userSkill);
+        }
+    });
+
+    return teamSkills;
+}
+
+
 function isAvailable(team) {
 	return team.currentTeamSize < team.size;
 }

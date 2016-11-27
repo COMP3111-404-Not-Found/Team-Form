@@ -3,17 +3,6 @@ $(document).ready(function() {
     $(".mdl-layout>.mdl-layout__header>.mdl-layout__header-row>.mdl-layout__title").html(getURLParameter("team") + " (" + getURLParameter("event") + ")");
 });
 
-// add the user's skills to the team when adding a member
-function addTeamSkills(teamSkills, userSkills) {
-    userSkills.forEach(function(userSkill) {
-        if (!teamSkills.includes(userSkill)) {
-            teamSkills.push(userSkill);
-        }
-    });
-
-    return teamSkills;
-}
-
 // remove the user's skills from the team when removing a member
 function removeTeamSkills(teamSkills, teamMembers, member) {
     return teamSkills.filter(function(teamSkill) {
