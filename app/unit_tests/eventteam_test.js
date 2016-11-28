@@ -166,6 +166,15 @@ describe("Event Team Controller", function() {
         });
     });
 
+    beforeEach(function() {
+        // mock document querySelector that a snackbar is showed for notification
+        spyOn(document, "querySelector").and.callFake(function(selector) {
+            if (selector === ".mdl-js-snackbar") {
+                return {MaterialSnackbar: {showSnackbar: function(data) {console.log("snackbar", data.message);}}};
+            }
+        });
+    });
+
     afterEach(function() {
         firebase.app().delete();
     });

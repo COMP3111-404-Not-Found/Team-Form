@@ -97,17 +97,15 @@ angular.module("teamform-index-app", ["firebase", "ngMaterial"])
         userProfileObj.$loaded().then(function(userProfile) {
             // add the event to the user's profile
             var userEventsRef = firebase.database().ref().child("users").child($scope.user.uid).child("events").child(eventName);
-
             userEventsRef.update({team: ""});
-
 
             var member = {};
             member[$scope.user.uid] = {name: $scope.user.displayName, skills: userProfile.skills};
 
             var eventMemberRef = firebase.database().ref().child("events").child(eventName).child("member");
-            var eventMemberObj = $firebaseObject(eventMemberRef);
-
             eventMemberRef.update(member);
+
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Joined event " + eventName});
         });
     };
 })

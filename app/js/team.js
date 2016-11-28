@@ -164,6 +164,8 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
             // increase the current team size by 1
             eventTeamRef.update({currentTeamSize: $scope.currentTeamSize + 1});
             $scope.currentTeamSize += 1;
+
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Added member " + request.name});
         }
     };
 
@@ -182,6 +184,8 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
         // decrease the current team size by 1
         eventTeamRef.update({currentTeamSize: $scope.currentTeamSize - 1});
         $scope.currentTeamSize -= 1;
+
+        document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Removed member " + member.name});
     };
 
 
@@ -194,6 +198,8 @@ angular.module("teamform-team-app", ["firebase", "ngMaterial"])
             skill[skills.length.toString()] = $scope.skillInput;
 
             skillsRef.update(skill);
+
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Added preferred skill " + $scope.skillInput});
 
             $scope.skillInput = null;
         });

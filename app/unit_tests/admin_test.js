@@ -31,6 +31,15 @@ describe("Admin Controller", function() {
         });
     });
 
+    beforeEach(function() {
+        // mock document querySelector that a snackbar is showed for notification
+        spyOn(document, "querySelector").and.callFake(function(selector) {
+            if (selector === ".mdl-js-snackbar") {
+                return {MaterialSnackbar: {showSnackbar: function(data) {console.log("snackbar", data.message);}}};
+            }
+        });
+    });
+
     afterEach(function() {
         firebase.app().delete();
     });
@@ -955,13 +964,6 @@ describe("Admin Controller", function() {
             // mock $scope formRemaining
             spyOn($scope, "formRemaining").and.callFake(function(event, users, eventName) {
                 return;
-            });
-        });
-
-        beforeEach(function() {
-            // mock document querySelector that a snackbar is showed for notification
-            spyOn(document, "querySelector").and.callFake(function(selector) {
-                return {MaterialSnackbar: {showSnackbar: function(data) {console.log("snackbar", data.message);}}};
             });
         });
 

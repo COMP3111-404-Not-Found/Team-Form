@@ -94,8 +94,9 @@ angular.module("teamform-admin-app", ["firebase", "ngMaterial", "ngMessages"])
 
         //console.log($scope.startDate);
         //console.log($scope.details);
-        ref.update({'startDate': $scope.startDate.getTime(), 'endDate': $scope.endDate.getTime(),
-            'details': $scope.details});
+        ref.update({startDate: $scope.startDate.getTime(), endDate: $scope.endDate.getTime(), details: $scope.details});
+
+        document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Saved event dates and details"});
     };
 
     $scope.zeroMember = function(teamMembers) {
