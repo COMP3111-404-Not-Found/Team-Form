@@ -64,7 +64,7 @@
                     <!-- Marketing messaging and featurettes
                     ================================================== -->
                     <!-- Wrap the rest of the page in another container to center all the content. -->
-                    <div class="container marketing">
+                    <div class="container-fluid marketing">
                         <!-- START THE FEATURETTES -->
 
                         <div class="row featurette" id="page_about">
@@ -111,7 +111,7 @@
                                     <span class="text-muted">404 Not Found</span>
                                 </h2>
                                 <md-card ng-repeat="member in team">
-                                    <div class="container-fluid">
+                                    <div class="container-fluid" style="width: 100%">
                                         <div class="row">
                                             <div class="col-sm-4">
                                                 <img ng-src="images/{{member.profilePicPath}}" class="img-responsive img-circle">
@@ -144,26 +144,19 @@
                                     <span class="text-muted">How we developed...</span>
                                 </h2>
 
-                                <p class="lead">Phase Development has been chosen for the project.<br><a href="https://comp3111-404.slack.com/messages/project/">Slack</a> and <a href="https://github.com/COMP3111-404-Not-Found/Team-Form">GitHub Project</a> have been utilized throughout the development.<br><br>Several Additional Libraries are included, as shown below:</p>
+                                <p class="lead">Phase Development has been chosen for the project.<br><a href="https://github.com/COMP3111-404-Not-Found/Team-Form">GitHub</a> and <a href="https://comp3111-404.slack.com/messages/project/">Slack</a> have been utilized throughout the development.<br><br></p>
+
+                                <p>Several Additional Libraries are included, as shown below:</p>
                                 <ul class="list">
-                                    <li>Angular Material, Material Design Lite</li>
-                                    <li>UI Bootstrap</li>
-                                    <li>Google Maps API</li>
-                                    <li>Angular Routing</li>
-                                    <li>JS PDF</li>
+                                    <li>Angular Material</li>
+                                    <li>Material Design Lite</li>
+                                    <li>Bootstrap</li>
                                 </ul>
                                 <br>
                                 <p class="lead">Thank you for following the development of TeamForm.</p>
                             </div>
                         </div>
                         <!-- /end Dev Process -->
-                        <!-- FOOTER -->
-                        <hr>
-                        <footer>
-                            <p class="pull-right"><a href="#">Back to top</a></p>
-                            <p>&copy; 2017 COMP3111/H teaching team </p>
-                            <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
-                        </footer>
                     </div>
                     <!-- /.container -->
                 </md-content>
