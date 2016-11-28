@@ -63,20 +63,38 @@
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
                     <!-- event details -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">Minumum Team Size: {{minTeamSize}}</div>
-                            <div class="col-sm-6">Maximum Team Size: {{maxTeamSize}}</div>
+                    <div id="event-details">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <span class="md-body-2">Minumum Team Size: {{minTeamSize}}</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="md-body-2">Maximum Team Size: {{maxTeamSize}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <span class="md-body-2">Start Date: {{startDate | date:'yyyy-MM-dd'}}</span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="md-body-2">End Date: {{endDate | date:'yyyy-MM-dd'}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="md-body-2">Details: {{details}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <md-button ng-href="admin.html?event={{eventName}}" class="md-raised">Edit</md-button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">Start Date: {{startDate | date:'yyyy-MM-dd'}}</div>
-                            <div class="col-sm-6">End Date: {{endDate | date:'yyyy-MM-dd'}}</div>
-                        </div>
-                        <span>Details: {{details}}</span>
-                        <br>
                     </div>
 
-                    <md-button class="md-raised" ng-href="admin.html?event={{eventName}}">Edit</md-button>
+                    <hr>
 
 
                     <div id="team-list">
@@ -85,7 +103,7 @@
                             <form>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <span>Filter</span>
+                                        <h3 class="md-title">Filter</h3 class="md-title">
                                     </div>
                                     <div class="col-sm-3">
                                         <md-switch ng-model="filterPlacesSwitch" ng-change="filterTeams(filterPlacesSwitch, filterSkillsMatchSwitch, filterMissingSkillsMatchSwitch)">Places left</md-switch>
@@ -99,7 +117,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <span>Sort</span>
+                                        <h3 class="md-title">Sort</h3 class="md-title">
                                     </div>
                                     <div class="col-sm-3">
                                         <md-switch ng-model="sortPlacesSwitch" ng-change="sortTeams('places')">Places left</md-switch>
@@ -116,15 +134,25 @@
 
 
                         <!-- teams -->
+                        <md-switch ng-model="showTeamsDetails" class="padding-left-15">Show Teams Details</md-switch>
                         <md-card ng-repeat="team in teams">
                             <md-card-title>
                                 <md-card-title-text>
                                     <span class="md-headline">{{team.name}}</span>
-                                    <span class="md-subhead">Team members:
-                                        <span ng-repeat="member in team.teamMembers">{{member.name}}<span ng-if="!$last">, </span></span>
-                                    </span>
                                 </md-card-title-text>
                             </md-card-title>
+                            <md-card-content>
+                                <p ng-if="showTeamsDetails">Size: {{team.size}}</p>
+                                <p>Places Left: {{team.size - team.currentTeamSize}}</p>
+                                <p>Preferred Skills: {{team.skills.join(", ")}}</p>
+                                <p>Skills Matched ({{team.skillsMatch.number}}): {{team.skillsMatch.match.join(", ")}}</p>
+                                <p>Missing Skills Matched ({{team.missingSkillsMatch.number}}): {{team.missingSkillsMatch.match.join(", ")}}</p>
+                                <p ng-if="showTeamsDetails">
+                                    <span>Team members ({{team.currentTeamSize}}): <span>
+                                    <span ng-repeat="member in team.teamMembers">{{member.name}}<span ng-if="!$last">, </span></span>
+                                </p>
+                                <p ng-if="showTeamsDetails">Team Skills: {{team.teamSkills.join(", ")}}</p>
+                            </md-card-content>
                             <md-card-actions layout="row" layout-align="end center">
                                 <md-button ng-if="team.currentTeamSize < team.size" ng-click="requestTeam(team.name)">Request</md-button>
                                 <md-button ng-href="team.html?event={{eventName}}&team={{team.name}}">Edit</md-button>
