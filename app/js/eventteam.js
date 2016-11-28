@@ -148,6 +148,8 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         }
 
         $scope.teams = angular.copy(teams);
+
+        document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Filtered events"});
     };
 
     // sort teams by the number of places left
@@ -202,6 +204,14 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
         }
 
         $scope.teams = angular.copy(teams);
+
+        if (sortBy === "places" && $scope.sortPlacesSwitch) {
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Sorted teams by places left"});
+        } else if (sortBy === "skillsMatch" && $scope.sortSkillsMatchSwitch) {
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Sorted teams by skills match"});
+        } else if (sortBy === "missingSkillsMatch" && $scope.sortMissingSkillsMatchSwitch) {
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Sorted teams by missing skills match"});
+        }
     };
 
 
@@ -243,6 +253,8 @@ angular.module("teamform-eventteam-app", ["firebase", "ngMaterial"])
             eventMemberTeamRef.set(requests);
             // update the record in the user's profile
             userEventRef.set(requests);
+
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Requested team " + teamName});
         });
     };
 })

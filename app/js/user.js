@@ -139,8 +139,9 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
                 eventRef.update(skill);
             }
 
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Added skill " + $scope.skillInput});
+
             $scope.skillInput = null;
-            $("#skillInput").blur();
         });
     };
 
@@ -257,7 +258,19 @@ angular.module("teamform-user-app", ["firebase", "ngMaterial", "ngMessages"])
             userEventRef.set(requests);
 
             // refresh the recommendations
-            $scope.recommend();
+            userRef = firebase.database().ref().child("users").child($scope.user.uid);
+            $scope.userObj = $firebaseObject(userRef);
+            $scope.userObj.$loaded().then(function() {
+                // get the events object from the database after the user object is loaded
+                eventTeamRef = firebase.database().ref().child("events");
+                $scope.eventTeamObj = $firebaseObject(eventTeamRef);
+                $scope.eventTeamObj.$loaded().then(function() {
+                    console.log($scope.eventTeamObj);
+                    $scope.recommend();
+                });
+            });
+
+            document.querySelector(".mdl-js-snackbar").MaterialSnackbar.showSnackbar({message: "Requested team " + teamName});
         });
     };
 })

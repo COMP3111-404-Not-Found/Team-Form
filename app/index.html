@@ -68,8 +68,11 @@
                     <!-- event list -->
                     <div id="event-list">
                         <md-list>
-                            <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="secondary-button-padding">
-                                <span>{{eventKey}}</span>
+                            <md-list-item ng-repeat="(eventKey, eventValue) in events" ng-href="eventteam.html?event={{eventKey}}" class="md-2-line secondary-button-padding">
+                                <div class="md-list-item-text">
+                                    <h3>{{eventKey}} ({{eventValue.admin.param.startDate | date: "yyyy-MM-dd"}} to {{eventValue.admin.param.endDate | date: "yyyy-MM-dd"}})</h3>
+                                    <h4>{{eventValue.admin.param.details}}</h4>
+                                </div>
                                 <md-button ng-click="joinEvent(eventKey)" ng-if="user" class="md-secondary">Join</md-button>
                                 <md-button ng-href="admin.html?event={{eventKey}}" class="md-secondary">Edit</md-button>
                             </md-list-item>
@@ -77,22 +80,14 @@
                     </div>
 
                     <md-button ng-click="createEvent($event)" class="md-fab" aria-label="create event"><i class="material-icons">create</i></md-button>
-
-
-                    <!-- Marketing messaging and featurettes
-                    ================================================== -->
-                    <!-- Wrap the rest of the page in another container to center all the content. -->
-                    <div class="container marketing">
-                        <!-- FOOTER -->
-                        <hr>
-                        <footer>
-                            <p class="pull-right"><a href="#">Back to top</a></p>
-                            <p>&copy; 2017 COMP3111/H teaching team </p>
-                            <p>Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
-                        </footer>
-                    </div>
                 </md-content>
             </main>
+
+            <!-- toast -->
+            <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button type="button" class="mdl-snackbar__action"></button>
+            </div>
         </div>
     </div>
 

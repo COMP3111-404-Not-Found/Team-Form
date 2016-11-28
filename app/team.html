@@ -62,54 +62,78 @@
 
             <main class="mdl-layout__content">
                 <md-content ng-cloak class="md-padding">
-                    <div>
-                        <span class="md-headline">Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): {{size}}</span>
-                        <button ng-click="changeCurrentTeamSize(1)"><span class="glyphicon glyphicon-plus"></span></button>
-                        <button ng-click="changeCurrentTeamSize(-1)"><span class="glyphicon glyphicon-minus"></span></button>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong>Preferred team size ({{minTeamSize}} - {{maxTeamSize}}): <span class="badge">{{size}}</span></strong>
+                                <button ng-click="changeCurrentTeamSize(1)"><i class="glyphicon glyphicon-plus"></i></button>
+                                <button ng-click="changeCurrentTeamSize(-1)"><i class="glyphicon glyphicon-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <strong>Preferred skills:</strong>
+                                <ul>
+                                    <li ng-repeat="skill in skills">{{skill.$value}}</li>
+                                <ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <form>
+                                    <md-input-container>
+                                        <label>Preferred skills</label>
+                                        <input ng-model="skillInput">
+                                    </md-input-container>
+                                    <md-button ng-click="addSkill()" class="md-raised">Add Skill</md-button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong>Skills:</strong>
+                                <ul>
+                                    <li ng-repeat="teamSkill in teamSkills">{{teamSkill.$value}}</li>
+                                <ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <md-list>
+                                    <md-subheader>Team members ({{currentTeamSize}}):</md-subheader>
+                                    <md-list-item ng-repeat="member in members" class="md-2-line secondary-button-padding">
+                                        <div class="md-list-item-text">
+                                            <h3>{{member.name}}</h3>
+                                            <h4>Skills: {{member.skills.join(", ")}}</h4>
+                                        </div>
+                                        <md-button ng-click="removeMember(member)" class="md-secondary">Remove</md-button>
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </md-list-item>
+                                </md-list>
+                            </div>
+                            <div class="col-sm-6">
+                                <md-list>
+                                    <md-subheader>Requests received:</md-subheader>
+                                    <md-list-item ng-repeat="request in requests" class="md-2-line secondary-button-padding">
+                                        <div class="md-list-item-text">
+                                            <div class="md-list-item-text">
+                                                <h3>{{request.name}}</h3>
+                                                <h4>Skills: {{request.skills.join(", ")}}</h4>
+                                        </div>
+                                        <md-button ng-click="addMember(request)" class="md-secondary">Accept</md-button>
+                                        <md-divider ng-if="!$last"></md-divider>
+                                    </md-list-item>
+                                </md-list>
+                            </div>
+                        </div>
                     </div>
-
-                    <div>
-                        <span class="md-headline">Preferred skills:</span>
-                        <ul>
-                            <h6><li ng-repeat="skill in skills">{{skill.$value}}</li></h6>
-                        <ul>
-                    </div>
-
-                    <div>
-                        <span class="md-headline">Skills:</span>
-                        <ul>
-                            <h6><li ng-repeat="teamSkill in teamSkills">{{teamSkill.$value}}</li></h6>
-                        <ul>
-                    </div>
-
-                    <form>
-                        <md-input-container>
-                            <label>Preferred skills</label>
-                            <input ng-model="skillInput">
-                        </md-input-container>
-                        <md-button ng-click="addSkill()" class="md-raised">Add Skill</md-button>
-                    </form>
-
-                    <md-list ng-cloak>
-                        <span class="md-headline">Team members ({{currentTeamSize}}):</span>
-                        <md-list-item class="secondary-button-padding" ng-repeat="member in members">
-                            <p>{{member.name}}</p>
-                            <md-button class="md-raised" ng-click="removeMember(member)">Remove</md-button>
-                        </md-list-item>
-                    </md-list>
-                    <md-divider></md-divider>
-
-                    <md-list ng-cloak>
-                        <span class="md-headline">Requests received:</span>
-                        <md-list-item class="secondary-button-padding" ng-repeat="request in requests">
-                            <p>{{request.name}}</p>
-                            <md-button class="md-raised" ng-click="addMember(request)">Accept</md-button>
-                        </md-list-item>
-                    </md-list>
-                    <md-divider></md-divider>
-
                 </md-content>
             </main>
+
+            <!-- toast -->
+            <div aria-live="assertive" aria-atomic="true" aria-relevant="text" class="mdl-snackbar mdl-js-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button type="button" class="mdl-snackbar__action"></button>
+            </div>
         </div>
     </div>
 
