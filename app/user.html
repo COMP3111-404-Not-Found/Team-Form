@@ -66,7 +66,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <img ng-src="{{user.photoURL}}" />
+                                    <img ng-src="https://graph.facebook.com/{{user.providerData[0].uid}}/picture?type=large" />
                                 </div>
                                 <div class="col-sm-9">
                                     <h2>{{user.email}}</h2>
